@@ -1,0 +1,21 @@
+# SLZB-06 Prometheus Exporter Environment Variables Example
+# This project uses environment variables for configuration, not config files
+# Set these environment variables in your deployment environment
+
+# Server configuration
+SLZB_EXPORTER_SERVER_HOST=0.0.0.0
+SLZB_EXPORTER_SERVER_PORT=9110
+
+# SLZB-06 device configuration
+SLZB_EXPORTER_SLZB_API_URL=http://slzb-device.local
+SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL=10s
+
+# Logging configuration
+SLZB_EXPORTER_LOG_LEVEL=info  # debug, info, warn, error
+SLZB_EXPORTER_LOG_FORMAT=json # json, text
+
+# Example Docker run command:
+# docker run -p 9110:9110 \
+#   -e SLZB_EXPORTER_SLZB_API_URL=http://your-slzb-device.local \
+#   -e SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL=60s \
+#   ghcr.io/d0ugal/slzb-exporter:latest
