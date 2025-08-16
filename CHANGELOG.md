@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/d0ugal/slzb-exporter/compare/v1.0.0...v1.1.0) (2025-08-16)
+
+
+### Features
+
+* add missing project files and documentation ([319e212](https://github.com/d0ugal/slzb-exporter/commit/319e2127aaf80106db72a55e37e364b03c6f0cb8))
+* upgrade to Go 1.25 ([627b5d4](https://github.com/d0ugal/slzb-exporter/commit/627b5d4fd9ae091a0316f28e3d1081bb4e2ccf5d))
+
+
+### Bug Fixes
+
+* update golangci-lint config for Go 1.25 compatibility ([b14762a](https://github.com/d0ugal/slzb-exporter/commit/b14762ab761261c7e034f15131bd00bbf8b813a5))
+
 ## [Unreleased]
 
 ### Added
