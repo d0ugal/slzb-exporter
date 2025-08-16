@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/d0ugal/slzb-exporter/compare/v1.1.0...v1.1.1) (2025-08-16)
+
+
+### Bug Fixes
+
+* apply golangci-lint formatting fixes for all issues ([de0954b](https://github.com/d0ugal/slzb-exporter/commit/de0954b3a31f4ea285df9e7627d91686bb2e16fa))
+* correct golangci-lint config version to 2 (only valid version) ([3660290](https://github.com/d0ugal/slzb-exporter/commit/3660290c4f724ab29e1159be6b2a57cc7a3f0b16))
+* update golangci-lint config to match working mqtt-exporter pattern ([a9a73df](https://github.com/d0ugal/slzb-exporter/commit/a9a73df018f4a4e4574bc0195f22befc10369c0c))
+
 ## [1.1.0](https://github.com/d0ugal/slzb-exporter/compare/v1.0.0...v1.1.0) (2025-08-16)
 
 
