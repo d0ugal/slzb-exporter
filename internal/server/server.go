@@ -221,6 +221,7 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 </html>`
 
 	w.Header().Set("Content-Type", "text/html")
+
 	if _, err := w.Write([]byte(html)); err != nil {
 		slog.Error("Failed to write HTML response", "error", err)
 	}
@@ -238,6 +239,7 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	}`, time.Now().Unix(), versionInfo.Version, versionInfo.Commit, versionInfo.BuildDate)
 
 	w.Header().Set("Content-Type", "application/json")
+
 	if _, err := w.Write([]byte(response)); err != nil {
 		slog.Error("Failed to write health response", "error", err)
 	}

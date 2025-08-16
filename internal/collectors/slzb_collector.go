@@ -108,25 +108,28 @@ func (sc *SLZBCollector) collectMetrics() {
 	if sc.collectDeviceInfo(deviceID) {
 		sc.metrics.SLZBDeviceReachable.WithLabelValues(deviceID).Set(1)
 		sc.metrics.SLZBConnected.WithLabelValues(deviceID).Set(1)
+
 		successfulCollections++
 	} else {
 		sc.metrics.SLZBDeviceReachable.WithLabelValues(deviceID).Set(0)
 		sc.metrics.SLZBConnected.WithLabelValues(deviceID).Set(0)
 		sc.metrics.SLZBCollectionErrors.WithLabelValues(deviceID, "device_unreachable").Inc()
 		slog.Error("Device unreachable", "device", deviceID)
+
 		return
 	}
+
 	totalCollections++
 
 	// Collect device information
 	if sc.collectDeviceInfo(deviceID) {
 		successfulCollections++
 	}
+
 	totalCollections++
 
 	// Add a small delay between requests
 	time.Sleep(500 * time.Millisecond)
-
 }
 
 // collectDeviceInfo collects device information and caches it
@@ -136,8 +139,10 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	if err != nil {
 		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "0", "request_error").Inc()
 		slog.Error("Failed to get device info", "error", err)
+
 		return false
 	}
+
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			slog.Error("Failed to close response body", "error", err)
@@ -149,6 +154,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	if resp.StatusCode != http.StatusOK {
 		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "0", "http_error").Inc()
 		slog.Error("HTTP error getting device info", "status", resp.StatusCode)
+
 		return false
 	}
 
@@ -193,6 +199,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 			}
 
 			var heapFree, heapSize float64
+
 			heapFreeValid := false
 			heapSizeValid := false
 
@@ -200,6 +207,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 				if parsedHeapFree, err := strconv.ParseFloat(heapFreeStr, 64); err == nil {
 					heapFree = parsedHeapFree
 					sc.metrics.SLZBHeapFree.WithLabelValues(deviceName).Set(heapFree)
+
 					heapFreeValid = true
 				}
 			}
@@ -208,6 +216,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 				if parsedHeapSize, err := strconv.ParseFloat(heapSizeStr, 64); err == nil {
 					heapSize = parsedHeapSize
 					sc.metrics.SLZBHeapSize.WithLabelValues(deviceName).Set(heapSize)
+
 					heapSizeValid = true
 				}
 			}
@@ -235,12 +244,15 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 				if ip, ok := deviceData["ethIp"]; ok && ip != "" {
 					ipAddr = ip
 				}
+
 				if mac, ok := deviceData["ethMac"]; ok && mac != "" {
 					macAddr = mac
 				}
+
 				if gate, ok := deviceData["ethGate"]; ok && gate != "" {
 					gateway = gate
 				}
+
 				if mask, ok := deviceData["etchMask"]; ok && mask != "" {
 					subnet = mask
 				}
@@ -307,6 +319,7 @@ func (sc *SLZBCollector) parseUptime(uptimeStr string) int64 {
 		slog.Warn("Invalid days value", "uptime", uptimeStr, "days", parts[0], "error", err)
 		return 0
 	}
+
 	if days < 0 {
 		slog.Warn("Negative days value", "uptime", uptimeStr, "days", days)
 		return 0
@@ -325,6 +338,7 @@ func (sc *SLZBCollector) parseUptime(uptimeStr string) int64 {
 		slog.Warn("Invalid hours value", "uptime", uptimeStr, "hours", timeParts[0], "error", err)
 		return 0
 	}
+
 	if hours < 0 || hours > 23 {
 		slog.Warn("Invalid hours value - must be 0-23", "uptime", uptimeStr, "hours", hours)
 		return 0
@@ -336,6 +350,7 @@ func (sc *SLZBCollector) parseUptime(uptimeStr string) int64 {
 		slog.Warn("Invalid minutes value", "uptime", uptimeStr, "minutes", timeParts[1], "error", err)
 		return 0
 	}
+
 	if minutes < 0 || minutes > 59 {
 		slog.Warn("Invalid minutes value - must be 0-59", "uptime", uptimeStr, "minutes", minutes)
 		return 0
@@ -347,6 +362,7 @@ func (sc *SLZBCollector) parseUptime(uptimeStr string) int64 {
 		slog.Warn("Invalid seconds value", "uptime", uptimeStr, "seconds", timeParts[2], "error", err)
 		return 0
 	}
+
 	if seconds < 0 || seconds > 59 {
 		slog.Warn("Invalid seconds value - must be 0-59", "uptime", uptimeStr, "seconds", seconds)
 		return 0
@@ -354,6 +370,7 @@ func (sc *SLZBCollector) parseUptime(uptimeStr string) int64 {
 
 	totalSeconds := int64(days*86400 + hours*3600 + minutes*60 + seconds)
 	slog.Debug("Parsed uptime", "input", uptimeStr, "days", days, "hours", hours, "minutes", minutes, "seconds", seconds, "total_seconds", totalSeconds)
+
 	return totalSeconds
 }
 
@@ -378,6 +395,7 @@ func (sc *SLZBCollector) parseEthernetSpeed(speedStr string) float64 {
 		slog.Warn("Invalid speed value", "speed", speedStr, "value", parts[0], "error", err)
 		return 100.0
 	}
+
 	if speed < 0 {
 		slog.Warn("Negative speed value", "speed", speedStr, "value", speed)
 		return 100.0

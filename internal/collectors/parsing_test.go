@@ -55,6 +55,7 @@ func TestParseUptime(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			collector := &SLZBCollector{}
+
 			result := collector.parseUptime(tt.input)
 			if result != tt.expected {
 				t.Errorf("parseUptime(%q) = %d, want %d", tt.input, result, tt.expected)
@@ -109,6 +110,7 @@ func TestParseUptimeInvalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			collector := &SLZBCollector{}
+
 			result := collector.parseUptime(tt.input)
 			if result != 0 {
 				t.Errorf("parseUptime(%q) = %d, want 0 for invalid input", tt.input, result)
@@ -188,6 +190,7 @@ func TestParseEthernetSpeed(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			collector := &SLZBCollector{}
+
 			result := collector.parseEthernetSpeed(tt.input)
 			if result != tt.expected {
 				t.Errorf("parseEthernetSpeed(%q) = %f, want %f", tt.input, result, tt.expected)
@@ -242,6 +245,7 @@ func TestParseEthernetSpeedInvalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			collector := &SLZBCollector{}
+
 			result := collector.parseEthernetSpeed(tt.input)
 			if result != tt.expected {
 				t.Errorf("parseEthernetSpeed(%q) = %f, want %f", tt.input, result, tt.expected)
@@ -256,6 +260,7 @@ func BenchmarkParseUptime(b *testing.B) {
 	input := "7 d 16:47:19"
 
 	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		collector.parseUptime(input)
 	}
@@ -266,6 +271,7 @@ func BenchmarkParseEthernetSpeed(b *testing.B) {
 	input := "100 Mbps"
 
 	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		collector.parseEthernetSpeed(input)
 	}

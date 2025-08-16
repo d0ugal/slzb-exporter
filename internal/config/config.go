@@ -17,14 +17,14 @@ type Config struct {
 
 // ServerConfig represents the HTTP server configuration
 type ServerConfig struct {
-	Host string `yaml:"host" env:"SLZB_EXPORTER_SERVER_HOST"`
-	Port int    `yaml:"port" env:"SLZB_EXPORTER_SERVER_PORT"`
+	Host string `env:"SLZB_EXPORTER_SERVER_HOST" yaml:"host"`
+	Port int    `env:"SLZB_EXPORTER_SERVER_PORT" yaml:"port"`
 }
 
 // SLZBConfig represents the SLZB device configuration
 type SLZBConfig struct {
-	APIURL   string        `yaml:"api_url" env:"SLZB_EXPORTER_SLZB_API_URL"`
-	Interval time.Duration `yaml:"interval" env:"SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL"`
+	APIURL   string        `env:"SLZB_EXPORTER_SLZB_API_URL"             yaml:"api_url"`
+	Interval time.Duration `env:"SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL" yaml:"interval"`
 }
 
 // LoadConfig loads configuration from environment variables with defaults
@@ -56,6 +56,7 @@ func loadFromEnv(cfg *Config) {
 	if host := os.Getenv("SLZB_EXPORTER_SERVER_HOST"); host != "" {
 		cfg.Server.Host = host
 	}
+
 	if portStr := os.Getenv("SLZB_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := strconv.Atoi(portStr); err == nil {
 			cfg.Server.Port = port
@@ -66,6 +67,7 @@ func loadFromEnv(cfg *Config) {
 	if level := os.Getenv("SLZB_EXPORTER_LOG_LEVEL"); level != "" {
 		cfg.Logging.Level = level
 	}
+
 	if format := os.Getenv("SLZB_EXPORTER_LOG_FORMAT"); format != "" {
 		cfg.Logging.Format = format
 	}
@@ -74,6 +76,7 @@ func loadFromEnv(cfg *Config) {
 	if apiURL := os.Getenv("SLZB_EXPORTER_SLZB_API_URL"); apiURL != "" {
 		cfg.SLZB.APIURL = apiURL
 	}
+
 	if intervalStr := os.Getenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL"); intervalStr != "" {
 		if interval, err := time.ParseDuration(intervalStr); err == nil {
 			cfg.SLZB.Interval = interval
