@@ -1,0 +1,25 @@
+version: 2
+
+run:
+  timeout: 5m
+  go: "1.22"
+
+linters:
+  enable:
+    - govet
+    - unused
+    - staticcheck
+    - ineffassign
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+    ignore: "Close|Setenv|Unsetenv"
+
+issues:
+  exclude-rules:
+    - path: "_test\\.go"
+      linters:
+        - errcheck
+      text: "Error return value of `os\\.(Set|Unset)env` is not checked"
