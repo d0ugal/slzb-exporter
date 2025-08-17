@@ -14,6 +14,33 @@ A Prometheus exporter for SLZB-06 Zigbee 3.0 PoE Ethernet USB Adapters. This exp
 - **Graceful Shutdown**: Proper signal handling and cleanup
 - **Structured Logging**: JSON and text logging with configurable levels
 
+## Metrics
+
+The exporter provides the following Prometheus metrics:
+
+### Device Status Metrics
+- `slzb_device_connected` - Overall connection status
+- `slzb_device_scan_done` - WiFi scan completion status
+- `slzb_device_wifi_rssi_dbm` - WiFi RSSI in dBm
+- `slzb_device_temperature_celsius` - Device temperature in Celsius
+- `slzb_device_uptime_seconds` - Device uptime in seconds
+- `slzb_device_heap_free_kb` - Free heap memory in KB
+- `slzb_device_heap_size_kb` - Total heap memory in KB
+- `slzb_device_ethernet_speed_mbps` - Ethernet connection speed in Mbps
+
+### HTTP Request Metrics
+- `slzb_http_requests_total` - Total number of HTTP requests made by exporter to SLZB-06 device
+- `slzb_http_request_duration_seconds` - Duration of HTTP requests made by exporter to SLZB-06 device
+- `slzb_http_errors_total` - Total number of HTTP errors when making requests to SLZB-06 device
+
+### Device Health and Availability Metrics
+- `slzb_device_reachable` - Device reachability status (1=reachable, 0=unreachable)
+- `slzb_last_collection_timestamp` - Timestamp of the last successful collection
+- `slzb_collection_errors_total` - Total number of collection errors
+
+### Exporter Information
+- `slzb_exporter_version_info` - Version information about the SLZB exporter
+
 ## Quick Start
 
 ### Using Docker
@@ -86,33 +113,6 @@ export SLZB_EXPORTER_SERVER_PORT="9110"
 export SLZB_EXPORTER_LOG_LEVEL="info"
 export SLZB_EXPORTER_LOG_FORMAT="json"
 ```
-
-## Metrics
-
-The exporter provides the following Prometheus metrics:
-
-### Device Status Metrics
-- `slzb_device_connected` - Overall connection status
-- `slzb_device_scan_done` - WiFi scan completion status
-- `slzb_device_wifi_rssi_dbm` - WiFi RSSI in dBm
-- `slzb_device_temperature_celsius` - Device temperature in Celsius
-- `slzb_device_uptime_seconds` - Device uptime in seconds
-- `slzb_device_heap_free_kb` - Free heap memory in KB
-- `slzb_device_heap_size_kb` - Total heap memory in KB
-- `slzb_device_ethernet_speed_mbps` - Ethernet connection speed in Mbps
-
-### HTTP Request Metrics
-- `slzb_http_requests_total` - Total number of HTTP requests made by exporter to SLZB-06 device
-- `slzb_http_request_duration_seconds` - Duration of HTTP requests made by exporter to SLZB-06 device
-- `slzb_http_errors_total` - Total number of HTTP errors when making requests to SLZB-06 device
-
-### Device Health and Availability Metrics
-- `slzb_device_reachable` - Device reachability status (1=reachable, 0=unreachable)
-- `slzb_last_collection_timestamp` - Timestamp of the last successful collection
-- `slzb_collection_errors_total` - Total number of collection errors
-
-### Exporter Information
-- `slzb_exporter_version_info` - Version information about the SLZB exporter
 
 ## API Endpoints
 
