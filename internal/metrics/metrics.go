@@ -32,14 +32,6 @@ type Registry struct {
 	SLZBLastCollectionTime *prometheus.GaugeVec
 	SLZBCollectionErrors   *prometheus.CounterVec
 
-	// NEW: Zigbee Network Statistics
-	SLZBZigbeePacketsReceived    *prometheus.CounterVec
-	SLZBZigbeePacketsSent        *prometheus.CounterVec
-	SLZBZigbeeErrorsTotal        *prometheus.CounterVec
-	SLZBZigbeeNetworkDevices     *prometheus.GaugeVec
-	SLZBZigbeeChannelUtilization *prometheus.GaugeVec
-	SLZBZigbeeInterferenceLevel  *prometheus.GaugeVec
-
 	// NEW: Firmware Update Status
 	SLZBFirmwareCurrentVersion  *prometheus.GaugeVec
 	SLZBFirmwareUpdateAvailable *prometheus.GaugeVec
@@ -49,12 +41,6 @@ type Registry struct {
 	SLZBConfigBackupStatus   *prometheus.GaugeVec
 	SLZBConfigLastBackupTime *prometheus.GaugeVec
 	SLZBConfigFileCount      *prometheus.GaugeVec
-	SLZBConfigTotalSizeBytes *prometheus.GaugeVec
-
-	// NEW: Network Security Metrics
-	SLZBSecurityKeyRotationTime *prometheus.GaugeVec
-	SLZBEncryptionStatus        *prometheus.GaugeVec
-	SLZBSecurityEventsTotal     *prometheus.CounterVec
 
 	// NEW: Performance Benchmarks
 	SLZBAPIResponseTimeSeconds    *prometheus.HistogramVec
@@ -201,55 +187,6 @@ func NewRegistry() *Registry {
 			[]string{"device", "error_type"},
 		),
 
-		// NEW: Zigbee Network Statistics
-		SLZBZigbeePacketsReceived: promauto.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "slzb_zigbee_packets_received_total",
-				Help: "Total number of Zigbee packets received",
-			},
-			[]string{"device", "packet_type"},
-		),
-
-		SLZBZigbeePacketsSent: promauto.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "slzb_zigbee_packets_sent_total",
-				Help: "Total number of Zigbee packets sent",
-			},
-			[]string{"device", "packet_type"},
-		),
-
-		SLZBZigbeeErrorsTotal: promauto.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "slzb_zigbee_errors_total",
-				Help: "Total number of Zigbee communication errors",
-			},
-			[]string{"device", "error_type"},
-		),
-
-		SLZBZigbeeNetworkDevices: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_zigbee_network_devices",
-				Help: "Number of devices in the Zigbee network",
-			},
-			[]string{"device", "device_type"},
-		),
-
-		SLZBZigbeeChannelUtilization: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_zigbee_channel_utilization_percent",
-				Help: "Zigbee channel utilization as percentage",
-			},
-			[]string{"device", "channel"},
-		),
-
-		SLZBZigbeeInterferenceLevel: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_zigbee_interference_level",
-				Help: "Zigbee interference level (0-255, higher is more interference)",
-			},
-			[]string{"device", "channel"},
-		),
-
 		// NEW: Firmware Update Status
 		SLZBFirmwareCurrentVersion: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
@@ -279,7 +216,7 @@ func NewRegistry() *Registry {
 		SLZBConfigBackupStatus: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "slzb_config_backup_status",
-				Help: "Configuration backup status (1=success, 0=failed)",
+				Help: "Status of the last configuration backup (1=success, 0=failure)",
 			},
 			[]string{"device", "backup_type"},
 		),
@@ -287,7 +224,7 @@ func NewRegistry() *Registry {
 		SLZBConfigLastBackupTime: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "slzb_config_last_backup_timestamp",
-				Help: "Unix timestamp of last configuration backup",
+				Help: "Unix timestamp of the last successful configuration backup",
 			},
 			[]string{"device", "backup_type"},
 		),
@@ -295,50 +232,17 @@ func NewRegistry() *Registry {
 		SLZBConfigFileCount: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "slzb_config_file_count",
-				Help: "Number of configuration files",
+				Help: "Number of configuration files on the device",
 			},
 			[]string{"device", "file_type"},
-		),
-
-		SLZBConfigTotalSizeBytes: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_config_total_size_bytes",
-				Help: "Total size of configuration files in bytes",
-			},
-			[]string{"device", "file_type"},
-		),
-
-		// NEW: Network Security Metrics
-		SLZBSecurityKeyRotationTime: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_security_key_rotation_timestamp",
-				Help: "Unix timestamp of last security key rotation",
-			},
-			[]string{"device", "key_type"},
-		),
-
-		SLZBEncryptionStatus: promauto.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "slzb_encryption_status",
-				Help: "Encryption status (1=enabled, 0=disabled)",
-			},
-			[]string{"device", "encryption_type"},
-		),
-
-		SLZBSecurityEventsTotal: promauto.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "slzb_security_events_total",
-				Help: "Total number of security events",
-			},
-			[]string{"device", "event_type", "severity"},
 		),
 
 		// NEW: Performance Benchmarks
 		SLZBAPIResponseTimeSeconds: promauto.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Name:    "slzb_api_response_time_seconds",
-				Help:    "API response time in seconds",
-				Buckets: prometheus.DefBuckets,
+				Help:    "Histogram of API response times in seconds",
+				Buckets: []float64{0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 30, 60, 120, 300, 600, 1800, 3600},
 			},
 			[]string{"device", "action"},
 		),
@@ -354,8 +258,8 @@ func NewRegistry() *Registry {
 		SLZBCollectionDurationSeconds: promauto.NewHistogramVec(
 			prometheus.HistogramOpts{
 				Name:    "slzb_collection_duration_seconds",
-				Help:    "Duration of collection cycles in seconds",
-				Buckets: prometheus.DefBuckets,
+				Help:    "Histogram of collection durations in seconds",
+				Buckets: []float64{0.1, 0.5, 1, 2, 5, 10, 30, 60, 120, 300, 600, 1800, 3600},
 			},
 			[]string{"device"},
 		),
