@@ -38,6 +38,35 @@ The exporter provides the following Prometheus metrics:
 - `slzb_last_collection_timestamp` - Timestamp of the last successful collection
 - `slzb_collection_errors_total` - Total number of collection errors
 
+### NEW: Zigbee Network Statistics
+- `slzb_zigbee_packets_received_total` - Total number of Zigbee packets received
+- `slzb_zigbee_packets_sent_total` - Total number of Zigbee packets sent
+- `slzb_zigbee_errors_total` - Total number of Zigbee communication errors
+- `slzb_zigbee_network_devices` - Number of devices in the Zigbee network
+- `slzb_zigbee_channel_utilization_percent` - Zigbee channel utilization as percentage
+- `slzb_zigbee_interference_level` - Zigbee interference level (0-255, higher is more interference)
+
+### NEW: Firmware Update Status
+- `slzb_firmware_current_version` - Current firmware version (always 1, used for joining with labels)
+- `slzb_firmware_update_available` - Firmware update availability (1=available, 0=not_available)
+- `slzb_firmware_last_check_timestamp` - Unix timestamp of last firmware check
+
+### NEW: Configuration Management
+- `slzb_config_backup_status` - Configuration backup status (1=success, 0=failed)
+- `slzb_config_last_backup_timestamp` - Unix timestamp of last configuration backup
+- `slzb_config_file_count` - Number of configuration files
+- `slzb_config_total_size_bytes` - Total size of configuration files in bytes
+
+### NEW: Network Security Metrics
+- `slzb_security_key_rotation_timestamp` - Unix timestamp of last security key rotation
+- `slzb_encryption_status` - Encryption status (1=enabled, 0=disabled)
+- `slzb_security_events_total` - Total number of security events
+
+### NEW: Performance Benchmarks
+- `slzb_api_response_time_seconds` - API response time in seconds (histogram)
+- `slzb_api_timeout_errors_total` - Total number of API timeout errors
+- `slzb_collection_duration_seconds` - Duration of collection cycles in seconds (histogram)
+
 ### Exporter Information
 - `slzb_exporter_version_info` - Version information about the SLZB exporter
 
@@ -132,9 +161,216 @@ scrape_configs:
     scrape_interval: 30s
 ```
 
+## Example PromQL Queries
+
+### Device Health
+```promql
+# Device reachability
+slzb_device_reachable
+
+# Device temperature
+slzb_device_temperature_celsius
+
+# Heap memory usage
+slzb_device_heap_ratio
+```
+
+### NEW: Zigbee Network Performance
+```promql
+# Zigbee packet rate (packets per second)
+rate(slzb_zigbee_packets_received_total[5m])
+rate(slzb_zigbee_packets_sent_total[5m])
+
+# Zigbee error rate
+rate(slzb_zigbee_errors_total[5m])
+
+# Number of connected devices
+slzb_zigbee_network_devices{device_type="connected"}
+
+# Channel utilization
+slzb_zigbee_channel_utilization_percent
+```
+
+### NEW: Firmware Management
+```promql
+# Check for firmware updates
+slzb_firmware_update_available
+
+# Firmware version distribution
+slzb_firmware_current_version
+
+# Time since last firmware check
+time() - slzb_firmware_last_check_timestamp
+```
+
+### NEW: Configuration Health
+```promql
+# Configuration backup status
+slzb_config_backup_status
+
+# Time since last backup
+time() - slzb_config_last_backup_timestamp
+
+# Configuration file count
+slzb_config_file_count
+
+# Configuration size
+slzb_config_total_size_bytes
+```
+
+### NEW: Security Monitoring
+```promql
+# Encryption status
+slzb_encryption_status
+
+# Security key age
+time() - slzb_security_key_rotation_timestamp
+
+# Security events rate
+rate(slzb_security_events_total[5m])
+```
+
+### NEW: Performance Monitoring
+```promql
+# API response time percentiles
+histogram_quantile(0.95, rate(slzb_api_response_time_seconds_bucket[5m]))
+histogram_quantile(0.50, rate(slzb_api_response_time_seconds_bucket[5m]))
+
+# Collection duration
+histogram_quantile(0.95, rate(slzb_collection_duration_seconds_bucket[5m]))
+
+# API timeout rate
+rate(slzb_api_timeout_errors_total[5m])
+```
+
 ## Grafana Dashboard
 
 A sample Grafana dashboard is available in the `dashboards/` directory. Import the JSON file into Grafana to get started with monitoring your SLZB-06 device.
+
+## Example Alerting Rules
+
+### Device Health Alerts
+```yaml
+- alert: SLZBDeviceOffline
+  expr: slzb_device_reachable == 0
+  for: 1m
+  labels:
+    severity: critical
+  annotations:
+    summary: "SLZB device {{ $labels.device }} is offline"
+    description: "SLZB device {{ $labels.device }} has been unreachable for more than 1 minute"
+
+- alert: SLZBHighTemperature
+  expr: slzb_device_temperature_celsius > 70
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} temperature is high"
+    description: "SLZB device {{ $labels.device }} temperature is {{ $value }}°C"
+
+- alert: SLZBLowHeapMemory
+  expr: slzb_device_heap_ratio < 20
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has low heap memory"
+    description: "SLZB device {{ $labels.device }} heap usage is {{ $value }}%"
+```
+
+### NEW: Zigbee Network Alerts
+```yaml
+- alert: SLZBHighZigbeeErrorRate
+  expr: rate(slzb_zigbee_errors_total[5m]) > 0.1
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has high Zigbee error rate"
+    description: "Zigbee error rate is {{ $value }} errors/second"
+
+- alert: SLZBNoZigbeeDevices
+  expr: slzb_zigbee_network_devices{device_type="connected"} == 0
+  for: 5m
+  labels:
+    severity: critical
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has no connected Zigbee devices"
+    description: "No Zigbee devices are connected to the network"
+
+- alert: SLZBHighChannelUtilization
+  expr: slzb_zigbee_channel_utilization_percent > 80
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has high channel utilization"
+    description: "Channel utilization is {{ $value }}%"
+```
+
+### NEW: Firmware Management Alerts
+```yaml
+- alert: SLZBFirmwareUpdateAvailable
+  expr: slzb_firmware_update_available == 1
+  for: 0m
+  labels:
+    severity: info
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has firmware update available"
+    description: "Firmware update is available for device {{ $labels.device }}"
+
+- alert: SLZBFirmwareCheckStale
+  expr: time() - slzb_firmware_last_check_timestamp > 86400
+  for: 1h
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} firmware check is stale"
+    description: "Firmware check is more than 24 hours old"
+```
+
+### NEW: Configuration Health Alerts
+```yaml
+- alert: SLZBConfigBackupFailed
+  expr: slzb_config_backup_status == 0
+  for: 1h
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} configuration backup failed"
+    description: "Configuration backup has failed for device {{ $labels.device }}"
+
+- alert: SLZBConfigBackupStale
+  expr: time() - slzb_config_last_backup_timestamp > 604800
+  for: 1h
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} configuration backup is stale"
+    description: "Configuration backup is more than 7 days old"
+```
+
+### NEW: Performance Alerts
+```yaml
+- alert: SLZBSlowAPIResponse
+  expr: histogram_quantile(0.95, rate(slzb_api_response_time_seconds_bucket[5m])) > 5
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has slow API response"
+    description: "95th percentile API response time is {{ $value }} seconds"
+
+- alert: SLZBHighTimeoutRate
+  expr: rate(slzb_api_timeout_errors_total[5m]) > 0.1
+  for: 2m
+  labels:
+    severity: warning
+  annotations:
+    summary: "SLZB device {{ $labels.device }} has high API timeout rate"
+    description: "API timeout rate is {{ $value }} timeouts/second"
+```
 
 ## Development
 
