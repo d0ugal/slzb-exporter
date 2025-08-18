@@ -57,3 +57,4 @@ temp/
 # Configuration files (environment variables are used instead of config files)
 # config.yaml
 # !config.example.yaml
+coverage.txt
