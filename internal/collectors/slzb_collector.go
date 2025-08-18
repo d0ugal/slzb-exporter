@@ -165,7 +165,7 @@ func (sc *SLZBCollector) collectMetrics() {
 // collectDeviceInfo collects device information and caches it
 func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	startTime := time.Now()
-	
+
 	// Get device information from action 0
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=0&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
@@ -332,7 +332,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 // NEW: collectZigbeeNetworkStats collects Zigbee network statistics from device logs
 func (sc *SLZBCollector) collectZigbeeNetworkStats(deviceName string) bool {
 	startTime := time.Now()
-	
+
 	// Get Zigbee log data from action 9
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=9&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
@@ -364,10 +364,10 @@ func (sc *SLZBCollector) collectZigbeeNetworkStats(deviceName string) bool {
 	}
 
 	logData := string(body)
-	
+
 	// Parse Zigbee statistics from log data
 	sc.parseZigbeeLogData(deviceName, logData)
-	
+
 	slog.Debug("Zigbee network stats collected", "device", deviceName, "response_time", responseTime)
 	return true
 }
@@ -411,21 +411,21 @@ func (sc *SLZBCollector) parseZigbeeLogData(deviceName, logData string) {
 // NEW: collectFirmwareStatus collects firmware version and update status
 func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 	startTime := time.Now()
-	
+
 	// Get firmware information from device info (already collected)
 	if deviceInfo, ok := sc.deviceInfo["VERSION"]; ok {
 		sc.metrics.SLZBFirmwareCurrentVersion.WithLabelValues(deviceName, deviceInfo, "unknown").Set(1)
 	}
-	
+
 	// Check for firmware updates (this would require additional API calls)
 	// For now, we'll set a default value
 	sc.metrics.SLZBFirmwareUpdateAvailable.WithLabelValues(deviceName, "unknown").Set(0)
 	sc.metrics.SLZBFirmwareLastCheckTime.WithLabelValues(deviceName).Set(float64(time.Now().Unix()))
-	
+
 	// Record API response time (using device info collection time)
 	responseTime := time.Since(startTime).Seconds()
 	sc.metrics.SLZBAPIResponseTimeSeconds.WithLabelValues(deviceName, "firmware").Observe(responseTime)
-	
+
 	slog.Debug("Firmware status collected", "device", deviceName, "response_time", responseTime)
 	return true
 }
@@ -433,7 +433,7 @@ func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 // NEW: collectConfigurationMetrics collects configuration file metrics
 func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	startTime := time.Now()
-	
+
 	// Get file list from action 4
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=4&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
@@ -484,7 +484,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 
 	for _, file := range fileList.Files {
 		totalSize += file.Size
-		
+
 		if strings.Contains(file.Filename, "config") {
 			configFiles++
 		}
@@ -497,7 +497,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	sc.metrics.SLZBConfigFileCount.WithLabelValues(deviceName, "config").Set(float64(configFiles))
 	sc.metrics.SLZBConfigFileCount.WithLabelValues(deviceName, "backup").Set(float64(backupFiles))
 	sc.metrics.SLZBConfigTotalSizeBytes.WithLabelValues(deviceName, "config").Set(float64(totalSize))
-	
+
 	// Set backup status (assuming success if backup files exist)
 	if backupFiles > 0 {
 		sc.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceName, "auto").Set(1)
@@ -505,7 +505,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	} else {
 		sc.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceName, "auto").Set(0)
 	}
-	
+
 	slog.Debug("Configuration metrics collected", "device", deviceName, "files", len(fileList.Files), "response_time", responseTime)
 	return true
 }
@@ -513,23 +513,23 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 // NEW: collectSecurityMetrics collects security-related metrics
 func (sc *SLZBCollector) collectSecurityMetrics(deviceName string) bool {
 	startTime := time.Now()
-	
+
 	// Security metrics collection would depend on available API endpoints
 	// For now, we'll set default values and log that this needs implementation
-	
+
 	// Set default encryption status (assuming enabled)
 	sc.metrics.SLZBEncryptionStatus.WithLabelValues(deviceName, "zigbee").Set(1)
-	
+
 	// Set default security key rotation time (would need actual implementation)
 	sc.metrics.SLZBSecurityKeyRotationTime.WithLabelValues(deviceName, "network_key").Set(float64(time.Now().Unix()))
-	
+
 	// Set default security events (no events for now)
 	sc.metrics.SLZBSecurityEventsTotal.WithLabelValues(deviceName, "authentication", "info").Add(0)
-	
+
 	// Record API response time
 	responseTime := time.Since(startTime).Seconds()
 	sc.metrics.SLZBAPIResponseTimeSeconds.WithLabelValues(deviceName, "security").Observe(responseTime)
-	
+
 	slog.Debug("Security metrics collected", "device", deviceName, "response_time", responseTime)
 	return true
 }

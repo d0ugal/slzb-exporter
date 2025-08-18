@@ -33,12 +33,12 @@ type Registry struct {
 	SLZBCollectionErrors   *prometheus.CounterVec
 
 	// NEW: Zigbee Network Statistics
-	SLZBZigbeePacketsReceived   *prometheus.CounterVec
-	SLZBZigbeePacketsSent       *prometheus.CounterVec
-	SLZBZigbeeErrorsTotal       *prometheus.CounterVec
-	SLZBZigbeeNetworkDevices    *prometheus.GaugeVec
+	SLZBZigbeePacketsReceived    *prometheus.CounterVec
+	SLZBZigbeePacketsSent        *prometheus.CounterVec
+	SLZBZigbeeErrorsTotal        *prometheus.CounterVec
+	SLZBZigbeeNetworkDevices     *prometheus.GaugeVec
 	SLZBZigbeeChannelUtilization *prometheus.GaugeVec
-	SLZBZigbeeInterferenceLevel *prometheus.GaugeVec
+	SLZBZigbeeInterferenceLevel  *prometheus.GaugeVec
 
 	// NEW: Firmware Update Status
 	SLZBFirmwareCurrentVersion  *prometheus.GaugeVec
@@ -46,10 +46,10 @@ type Registry struct {
 	SLZBFirmwareLastCheckTime   *prometheus.GaugeVec
 
 	// NEW: Configuration Management
-	SLZBConfigBackupStatus      *prometheus.GaugeVec
-	SLZBConfigLastBackupTime    *prometheus.GaugeVec
-	SLZBConfigFileCount         *prometheus.GaugeVec
-	SLZBConfigTotalSizeBytes    *prometheus.GaugeVec
+	SLZBConfigBackupStatus   *prometheus.GaugeVec
+	SLZBConfigLastBackupTime *prometheus.GaugeVec
+	SLZBConfigFileCount      *prometheus.GaugeVec
+	SLZBConfigTotalSizeBytes *prometheus.GaugeVec
 
 	// NEW: Network Security Metrics
 	SLZBSecurityKeyRotationTime *prometheus.GaugeVec
@@ -57,8 +57,8 @@ type Registry struct {
 	SLZBSecurityEventsTotal     *prometheus.CounterVec
 
 	// NEW: Performance Benchmarks
-	SLZBAPIResponseTimeSeconds  *prometheus.HistogramVec
-	SLZBAPITimeoutErrorsTotal   *prometheus.CounterVec
+	SLZBAPIResponseTimeSeconds    *prometheus.HistogramVec
+	SLZBAPITimeoutErrorsTotal     *prometheus.CounterVec
 	SLZBCollectionDurationSeconds *prometheus.HistogramVec
 }
 
