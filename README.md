@@ -19,19 +19,21 @@ A Prometheus exporter for SLZB-06 Zigbee 3.0 PoE Ethernet USB Adapters. This exp
 The SLZB Exporter exposes the following metrics:
 
 ### Device Information
-- `slzb_device_info` - Device information (always 1, used for joining with labels)
-- `slzb_device_uptime_seconds` - Device uptime in seconds
-- `slzb_device_memory_usage_percent` - Memory usage percentage
+- `slzb_device_connected` - Device connection status (1=connected, 0=disconnected)
 - `slzb_device_temperature_celsius` - Device temperature in Celsius
-- `slzb_device_signal_strength_dbm` - WiFi signal strength in dBm
-- `slzb_device_voltage_volts` - Device voltage in volts
-- `slzb_device_current_ma` - Device current in milliamps
-- `slzb_device_power_mw` - Device power consumption in milliwatts
+- `slzb_device_uptime_seconds` - Device uptime in seconds
+- `slzb_device_heap_free_kb` - Free heap memory in kilobytes
+- `slzb_device_heap_size_kb` - Total heap memory in kilobytes
+- `slzb_device_heap_ratio` - Heap usage ratio as percentage
+- `slzb_device_ethernet_connected` - Ethernet connection status with network details
+- `slzb_device_wifi_connected` - WiFi connection status with network details
+- `slzb_device_operational_mode` - Device operational mode
+- `slzb_device_reachable` - Device reachability status
 
 ### HTTP Request Metrics
 - `slzb_http_requests_total` - Total number of HTTP requests
 - `slzb_http_errors_total` - Total number of HTTP errors
-- `slzb_last_collection_time` - Unix timestamp of last successful collection
+- `slzb_last_collection_timestamp` - Unix timestamp of last successful collection
 - `slzb_collection_errors_total` - Total number of collection errors
 
 ### NEW: Firmware Update Status
