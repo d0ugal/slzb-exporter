@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/d0ugal/slzb-exporter/compare/v1.1.2...v1.2.0) (2025-08-18)
+
+
+### Features
+
+* add comprehensive monitoring features to SLZB exporter ([caa8f0b](https://github.com/d0ugal/slzb-exporter/commit/caa8f0b61c08869860b960c8e4cb829426ff1146))
+* add comprehensive SLZB monitoring metrics ([da9ff58](https://github.com/d0ugal/slzb-exporter/commit/da9ff5840bdb9bb8866f7d2f625d45f515701c9d))
+
+
+### Bug Fixes
+
+* linting issue ([f5bd7dc](https://github.com/d0ugal/slzb-exporter/commit/f5bd7dcbe336c07cd6c368830a5f40be12175f9a))
+
 ## [1.1.2](https://github.com/d0ugal/slzb-exporter/compare/v1.1.1...v1.1.2) (2025-08-16)
 
 
