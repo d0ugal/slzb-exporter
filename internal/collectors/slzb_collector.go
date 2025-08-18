@@ -354,6 +354,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 
 		return false
 	}
+
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			slog.Error("Failed to close response body", "error", err)
