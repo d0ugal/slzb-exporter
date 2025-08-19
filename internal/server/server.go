@@ -33,7 +33,7 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	versionInfo := version.Get()
 	metricsInfo := s.getMetricsInfo()
 
-		// Generate metrics HTML dynamically
+	// Generate metrics HTML dynamically
 	metricsHTML := ""
 	for i, metric := range metricsInfo {
 		labelsStr := ""
@@ -44,7 +44,7 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 			}
 			labelsStr = "{" + strings.Join(labelPairs, ", ") + "}"
 		}
-		
+
 		// Create clickable metric with hidden details
 		metricsHTML += fmt.Sprintf(`
             <div class="metric-item" onclick="toggleMetricDetails(%d)">
@@ -57,9 +57,9 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
                     <div class="metric-example"><strong>Example:</strong> %s = %s</div>
                     <div class="metric-labels"><strong>Labels:</strong> %s</div>
                 </div>
-            </div>`, 
+            </div>`,
 			i,
-			metric.Name, 
+			metric.Name,
 			i,
 			metric.Help,
 			metric.Name,
