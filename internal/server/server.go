@@ -368,7 +368,7 @@ func (s *Server) handleMetricsInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) generateMetricsJSON(metricsInfo []MetricInfo) string {
-	var jsonParts []string
+	jsonParts := make([]string, 0, len(metricsInfo))
 
 	for _, metric := range metricsInfo {
 		labelsJSON := "{"
@@ -423,7 +423,7 @@ func (s *Server) Shutdown() error {
 }
 
 func (s *Server) getMetricsInfo() []MetricInfo {
-	var metricsInfo []MetricInfo
+	metricsInfo := make([]MetricInfo, 0, 25)
 
 	// Define all metrics manually since reflection approach is complex with Prometheus metrics
 	metrics := []struct {
