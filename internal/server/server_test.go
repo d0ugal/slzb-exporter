@@ -27,9 +27,11 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 		if metric.Name == "" {
 			t.Errorf("Metric %d has empty name", i)
 		}
+
 		if metric.Help == "" {
 			t.Errorf("Metric %d has empty help text", i)
 		}
+
 		if metric.ExampleValue == "" {
 			t.Errorf("Metric %d has empty example value", i)
 		}
@@ -38,10 +40,12 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 	// Check for specific metrics we expect
 	foundConnected := false
 	foundTemp := false
+
 	for _, metric := range metricsInfo {
 		if metric.Name == "slzb_device_connected" {
 			foundConnected = true
 		}
+
 		if metric.Name == "slzb_device_temperature_celsius" {
 			foundTemp = true
 		}
@@ -50,6 +54,7 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 	if !foundConnected {
 		t.Error("Expected to find slzb_device_connected metric")
 	}
+
 	if !foundTemp {
 		t.Error("Expected to find slzb_device_temperature_celsius metric")
 	}
@@ -62,7 +67,7 @@ func TestServer_HandleMetricsInfo(t *testing.T) {
 	server := New(cfg, metricsRegistry)
 
 	// Create a test request
-	req := httptest.NewRequest("GET", "/metrics-info", nil)
+	req := httptest.NewRequest(http.MethodGet, "/metrics-info", nil)
 	w := httptest.NewRecorder()
 
 	// Call the handler
@@ -89,9 +94,11 @@ func TestServer_HandleMetricsInfo(t *testing.T) {
 	if _, ok := response["metrics"]; !ok {
 		t.Error("Expected 'metrics' field in response")
 	}
+
 	if _, ok := response["total_count"]; !ok {
 		t.Error("Expected 'total_count' field in response")
 	}
+
 	if _, ok := response["generated_at"]; !ok {
 		t.Error("Expected 'generated_at' field in response")
 	}
@@ -145,6 +152,7 @@ func TestServer_GetExampleLabels(t *testing.T) {
 			if len(labels) != len(tt.expected) {
 				t.Errorf("Expected %d labels, got %d", len(tt.expected), len(labels))
 			}
+
 			for k, v := range tt.expected {
 				if labels[k] != v {
 					t.Errorf("Expected label %s=%s, got %s", k, v, labels[k])

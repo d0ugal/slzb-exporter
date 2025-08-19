@@ -35,13 +35,16 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 
 	// Generate metrics HTML dynamically
 	metricsHTML := ""
+
 	for i, metric := range metricsInfo {
 		labelsStr := ""
+
 		if len(metric.Labels) > 0 {
 			var labelPairs []string
 			for k, v := range metric.Labels {
 				labelPairs = append(labelPairs, fmt.Sprintf(`%s="%s"`, k, v))
 			}
+
 			labelsStr = "{" + strings.Join(labelPairs, ", ") + "}"
 		}
 
@@ -369,10 +372,12 @@ func (s *Server) generateMetricsJSON(metricsInfo []MetricInfo) string {
 
 	for _, metric := range metricsInfo {
 		labelsJSON := "{"
+
 		var labelPairs []string
 		for k, v := range metric.Labels {
 			labelPairs = append(labelPairs, fmt.Sprintf(`"%s": "%s"`, k, v))
 		}
+
 		labelsJSON += strings.Join(labelPairs, ", ") + "}"
 
 		metricJSON := fmt.Sprintf(`{
