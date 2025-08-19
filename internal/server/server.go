@@ -33,9 +33,9 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	versionInfo := version.Get()
 	metricsInfo := s.getMetricsInfo()
 
-	// Generate metrics HTML dynamically
+		// Generate metrics HTML dynamically
 	metricsHTML := ""
-	for _, metric := range metricsInfo {
+	for i, metric := range metricsInfo {
 		labelsStr := ""
 		if len(metric.Labels) > 0 {
 			var labelPairs []string
@@ -44,12 +44,27 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 			}
 			labelsStr = "{" + strings.Join(labelPairs, ", ") + "}"
 		}
-
+		
+		// Create clickable metric with hidden details
 		metricsHTML += fmt.Sprintf(`
-            <li><strong>%s%s:</strong> %s</li>`,
+            <div class="metric-item" onclick="toggleMetricDetails(%d)">
+                <div class="metric-header">
+                    <span class="metric-name">%s</span>
+                    <span class="metric-toggle">▼</span>
+                </div>
+                <div class="metric-details" id="metric-%d">
+                    <div class="metric-help"><strong>Description:</strong> %s</div>
+                    <div class="metric-example"><strong>Example:</strong> %s = %s</div>
+                    <div class="metric-labels"><strong>Labels:</strong> %s</div>
+                </div>
+            </div>`, 
+			i,
+			metric.Name, 
+			i,
+			metric.Help,
 			metric.Name,
-			labelsStr,
-			metric.Help)
+			metric.ExampleValue,
+			labelsStr)
 	}
 
 	html := `<!DOCTYPE html>
@@ -177,7 +192,75 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
         .footer a:hover {
             text-decoration: underline;
         }
+        .metrics-list {
+            margin: 0.5rem 0;
+        }
+        .metric-item {
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .metric-item:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        .metric-header {
+            padding: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: #495057;
+        }
+        .metric-name {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .metric-toggle {
+            font-size: 0.8rem;
+            color: #6c757d;
+            transition: transform 0.2s ease;
+        }
+        .metric-details {
+            display: none;
+            padding: 0.75rem;
+            border-top: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .metric-details.show {
+            display: block;
+        }
+        .metric-help, .metric-example, .metric-labels {
+            margin: 0.5rem 0;
+        }
+        .metric-example {
+            font-family: 'Courier New', monospace;
+            background-color: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+        }
+        .metric-labels {
+            color: #6c757d;
+        }
     </style>
+    <script>
+        function toggleMetricDetails(id) {
+            const details = document.getElementById('metric-' + id);
+            const toggle = details.previousElementSibling.querySelector('.metric-toggle');
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                toggle.textContent = '▼';
+            } else {
+                details.classList.add('show');
+                toggle.textContent = '▲';
+            }
+        }
+    </script>
 </head>
 <body>
     		<h1>SLZB Exporter<span class="version">` + versionInfo.Version + `</span></h1>
@@ -226,8 +309,8 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 
     <div class="metrics-info">
         <h3>Available Metrics</h3>
-        <ul>` + metricsHTML + `
-        </ul>
+        <div class="metrics-list">` + metricsHTML + `
+        </div>
     </div>
 
     <div class="footer">
