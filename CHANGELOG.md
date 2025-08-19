@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/d0ugal/slzb-exporter/compare/v1.2.0...v1.3.0) (2025-08-19)
+
+
+### Features
+
+* **server:** add dynamic metrics information with examples ([5a48e1d](https://github.com/d0ugal/slzb-exporter/commit/5a48e1d3758e0f7affa459362e733caf40a94d96))
+* **server:** make metrics list collapsible for better UX ([492d18d](https://github.com/d0ugal/slzb-exporter/commit/492d18d2172809712a0aabf192189e3e70995e9e))
+
+
+### Bug Fixes
+
+* **lint:** pre-allocate slices to resolve golangci-lint prealloc warnings ([de62003](https://github.com/d0ugal/slzb-exporter/commit/de62003aea7e2ee56731e360df8d926e2431fe76))
+
 ## [1.2.0](https://github.com/d0ugal/slzb-exporter/compare/v1.1.2...v1.2.0) (2025-08-18)
 
 
