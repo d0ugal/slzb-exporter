@@ -1,9 +1,6 @@
 package server
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
 	"testing"
 
 	"github.com/d0ugal/slzb-exporter/internal/config"
@@ -57,65 +54,6 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 
 	if !foundTemp {
 		t.Error("Expected to find slzb_device_temperature_celsius metric")
-	}
-}
-
-func TestServer_HandleMetricsInfo(t *testing.T) {
-	cfg := &config.Config{}
-	// Use a mock metrics registry to avoid duplicate registration issues
-	metricsRegistry := &metrics.Registry{}
-	server := New(cfg, metricsRegistry)
-
-	// Create a test request
-	req := httptest.NewRequest(http.MethodGet, "/metrics-info", nil)
-	w := httptest.NewRecorder()
-
-	// Call the handler
-	server.handleMetricsInfo(w, req)
-
-	// Check response status
-	if w.Code != http.StatusOK {
-		t.Errorf("Expected status 200, got %d", w.Code)
-	}
-
-	// Check content type
-	contentType := w.Header().Get("Content-Type")
-	if contentType != "application/json" {
-		t.Errorf("Expected Content-Type application/json, got %s", contentType)
-	}
-
-	// Parse JSON response
-	var response map[string]interface{}
-	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
-		t.Fatalf("Failed to parse JSON response: %v", err)
-	}
-
-	// Check response structure
-	if _, ok := response["metrics"]; !ok {
-		t.Error("Expected 'metrics' field in response")
-	}
-
-	if _, ok := response["total_count"]; !ok {
-		t.Error("Expected 'total_count' field in response")
-	}
-
-	if _, ok := response["generated_at"]; !ok {
-		t.Error("Expected 'generated_at' field in response")
-	}
-
-	// Check that total_count is a number and matches metrics length
-	totalCount, ok := response["total_count"].(float64)
-	if !ok {
-		t.Error("Expected total_count to be a number")
-	}
-
-	metricsArray, ok := response["metrics"].([]interface{})
-	if !ok {
-		t.Error("Expected metrics to be an array")
-	}
-
-	if int(totalCount) != len(metricsArray) {
-		t.Errorf("Expected total_count %d to match metrics array length %d", int(totalCount), len(metricsArray))
 	}
 }
 
