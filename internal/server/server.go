@@ -96,12 +96,23 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
             font-weight: normal;
             margin-left: 0.5rem;
         }
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
         .endpoint {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
             padding: 1rem;
-            margin: 1rem 0;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .endpoint:hover {
+            border-color: #007bff;
+            background-color: #e3f2fd;
         }
         .endpoint h3 {
             margin: 0 0 0.5rem 0;
@@ -118,6 +129,7 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
         .description {
             color: #6c757d;
             font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
         .status {
             display: inline-block;
@@ -268,22 +280,18 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 <body>
     		<h1>SLZB Exporter<span class="version">` + versionInfo.Version + `</span></h1>
     
-    <div class="endpoint">
-        <h3><a href="/metrics">📊 Metrics</a></h3>
-        <p class="description">Prometheus metrics endpoint</p>
-        <span class="status metrics">Available</span>
-    </div>
+    <div class="endpoints-grid">
+        <div class="endpoint">
+            <h3><a href="/metrics">📊 Metrics</a></h3>
+            <p class="description">Prometheus metrics endpoint</p>
+            <span class="status metrics">Available</span>
+        </div>
 
-    <div class="endpoint">
-        <h3><a href="/metrics-info">📋 Metrics Info</a></h3>
-        <p class="description">Detailed metrics information with examples</p>
-        <span class="status metrics">Available</span>
-    </div>
-
-    <div class="endpoint">
-        <h3><a href="/health">❤️ Health Check</a></h3>
-        <p class="description">Service health status</p>
-        <span class="status healthy">Healthy</span>
+        <div class="endpoint">
+            <h3><a href="/health">❤️ Health Check</a></h3>
+            <p class="description">Service health status</p>
+            <span class="status healthy">Healthy</span>
+        </div>
     </div>
 
     <div class="service-status">
@@ -291,6 +299,12 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
         <p><strong>Status:</strong> <span class="status ready">Ready</span></p>
         		<p><strong>SLZB Connection:</strong> <span class="status connected">Connected</span></p>
         <p><strong>Metrics Collection:</strong> <span class="status ready">Active</span></p>
+    </div>
+
+    <div class="metrics-info">
+        <h3>Available Metrics</h3>
+        <div class="metrics-list">` + metricsHTML + `
+        </div>
     </div>
 
     <div class="metrics-info">
@@ -308,12 +322,6 @@ func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
             			<li><strong>SLZB API URL:</strong> ` + s.config.SLZB.APIURL + `</li>
             <li><strong>Collection Interval:</strong> ` + s.config.SLZB.Interval.String() + `</li>
         </ul>
-    </div>
-
-    <div class="metrics-info">
-        <h3>Available Metrics</h3>
-        <div class="metrics-list">` + metricsHTML + `
-        </div>
     </div>
 
     <div class="footer">
@@ -348,51 +356,6 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s *Server) handleMetricsInfo(w http.ResponseWriter, r *http.Request) {
-	metricsInfo := s.getMetricsInfo()
-
-	// Convert to JSON
-	jsonResponse := fmt.Sprintf(`{
-		"metrics": [
-			%s
-		],
-		"total_count": %d,
-		"generated_at": %d
-	}`, s.generateMetricsJSON(metricsInfo), len(metricsInfo), time.Now().Unix())
-
-	w.Header().Set("Content-Type", "application/json")
-
-	if _, err := w.Write([]byte(jsonResponse)); err != nil {
-		slog.Error("Failed to write metrics info response", "error", err)
-	}
-}
-
-func (s *Server) generateMetricsJSON(metricsInfo []MetricInfo) string {
-	jsonParts := make([]string, 0, len(metricsInfo))
-
-	for _, metric := range metricsInfo {
-		labelsJSON := "{"
-
-		var labelPairs []string
-		for k, v := range metric.Labels {
-			labelPairs = append(labelPairs, fmt.Sprintf(`"%s": "%s"`, k, v))
-		}
-
-		labelsJSON += strings.Join(labelPairs, ", ") + "}"
-
-		metricJSON := fmt.Sprintf(`{
-			"name": "%s",
-			"help": "%s",
-			"example_value": "%s",
-			"labels": %s
-		}`, metric.Name, metric.Help, metric.ExampleValue, labelsJSON)
-
-		jsonParts = append(jsonParts, metricJSON)
-	}
-
-	return strings.Join(jsonParts, ",\n			")
-}
-
 func (s *Server) Start() error {
 	addr := fmt.Sprintf("%s:%d", s.config.Server.Host, s.config.Server.Port)
 
@@ -401,7 +364,6 @@ func (s *Server) Start() error {
 	mux.HandleFunc("/", s.handleRoot)
 	mux.Handle("/metrics", promhttp.Handler())
 	mux.HandleFunc("/health", s.handleHealth)
-	mux.HandleFunc("/metrics-info", s.handleMetricsInfo)
 
 	s.server = &http.Server{
 		Addr:    addr,
