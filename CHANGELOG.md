@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/d0ugal/slzb-exporter/compare/v2.0.0...v2.0.1) (2025-08-20)
+
+
+### Bug Fixes
+
+* remove redundant Service Information section from UI ([cac2dd3](https://github.com/d0ugal/slzb-exporter/commit/cac2dd3126e82a7550888c32788105a6dfa00334))
+
 ## [2.0.0](https://github.com/d0ugal/slzb-exporter/compare/v1.4.0...v2.0.0) (2025-08-20)
 
 
