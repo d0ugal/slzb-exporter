@@ -5,6 +5,7 @@ import (
 
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 func TestServer_GetMetricsInfo(t *testing.T) {
@@ -57,9 +58,18 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 	}
 }
 
-func TestServer_GetExampleLabels(t *testing.T) {
+func TestServer_GetMetricLabels(t *testing.T) {
 	cfg := &config.Config{}
-	metricsRegistry := &metrics.Registry{}
+	// Create a test registry to avoid registration conflicts
+	testRegistry := prometheus.NewRegistry()
+	originalRegistry := prometheus.DefaultRegisterer
+	prometheus.DefaultRegisterer = testRegistry
+
+	defer func() {
+		prometheus.DefaultRegisterer = originalRegistry
+	}()
+
+	metricsRegistry := metrics.NewRegistry()
 	server := New(cfg, metricsRegistry)
 
 	tests := []struct {
@@ -68,25 +78,25 @@ func TestServer_GetExampleLabels(t *testing.T) {
 	}{
 		{
 			metricName: "SLZBConnected",
-			expected:   map[string]string{"device": "slzb-01"},
+			expected:   map[string]string{"device": ""}, // Device ID will be empty in test
 		},
 		{
 			metricName: "SLZBEthernetConnected",
 			expected: map[string]string{
-				"device":      "slzb-01",
-				"ip_address":  "192.168.1.100",
-				"mac_address": "00:11:22:33:44:55",
-				"gateway":     "192.168.1.1",
-				"subnet_mask": "255.255.255.0",
-				"dns_server":  "8.8.8.8",
-				"speed_mbps":  "1000",
+				"device":      "",
+				"ip_address":  "unknown",
+				"mac_address": "unknown",
+				"gateway":     "unknown",
+				"subnet_mask": "unknown",
+				"dns_server":  "unknown",
+				"speed_mbps":  "unknown",
 			},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.metricName, func(t *testing.T) {
-			labels := server.getExampleLabels(tt.metricName)
+			labels := server.getMetricLabels(tt.metricName)
 			if len(labels) != len(tt.expected) {
 				t.Errorf("Expected %d labels, got %d", len(tt.expected), len(labels))
 			}
@@ -100,25 +110,34 @@ func TestServer_GetExampleLabels(t *testing.T) {
 	}
 }
 
-func TestServer_GetExampleValue(t *testing.T) {
+func TestServer_GetMetricValue(t *testing.T) {
 	cfg := &config.Config{}
-	metricsRegistry := &metrics.Registry{}
+	// Create a test registry to avoid registration conflicts
+	testRegistry := prometheus.NewRegistry()
+	originalRegistry := prometheus.DefaultRegisterer
+	prometheus.DefaultRegisterer = testRegistry
+
+	defer func() {
+		prometheus.DefaultRegisterer = originalRegistry
+	}()
+
+	metricsRegistry := metrics.NewRegistry()
 	server := New(cfg, metricsRegistry)
 
 	tests := []struct {
 		metricName string
 		expected   string
 	}{
-		{"SLZBConnected", "1"},
-		{"SLZBDeviceTemp", "45.2"},
-		{"SLZBUptime", "86400"},
-		{"SLZBHeapFree", "512"},
-		{"SLZBHTTPRequestsTotal", "42"},
+		{"SLZBConnected", "0"},         // Will be 0 since no real data in test
+		{"SLZBDeviceTemp", "0.0"},      // Will be 0.0 since no real data in test
+		{"SLZBUptime", "0"},            // Will be 0 since no real data in test
+		{"SLZBHeapFree", "0"},          // Will be 0 since no real data in test
+		{"SLZBHTTPRequestsTotal", "0"}, // Will be 0 since no real data in test
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.metricName, func(t *testing.T) {
-			value := server.getExampleValue(tt.metricName)
+			value := server.getMetricValue(tt.metricName)
 			if value != tt.expected {
 				t.Errorf("Expected %s, got %s", tt.expected, value)
 			}

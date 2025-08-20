@@ -46,11 +46,37 @@ type Registry struct {
 	SLZBAPIResponseTimeSeconds    *prometheus.HistogramVec
 	SLZBAPITimeoutErrorsTotal     *prometheus.CounterVec
 	SLZBCollectionDurationSeconds *prometheus.HistogramVec
+
+	// metricInfo holds metric metadata for the UI
+	metricInfo []MetricInfo
+}
+
+// MetricInfo contains information about a metric for the UI
+type MetricInfo struct {
+	Name         string
+	Help         string
+	ExampleValue string
+	Labels       []string
+}
+
+// addMetricInfo adds metric information to the slice
+func (r *Registry) addMetricInfo(name, help string, labels []string) {
+	r.metricInfo = append(r.metricInfo, MetricInfo{
+		Name:         name,
+		Help:         help,
+		Labels:       labels,
+		ExampleValue: "",
+	})
+}
+
+// GetMetricsInfo returns information about all metrics for the UI
+func (r *Registry) GetMetricsInfo() []MetricInfo {
+	return r.metricInfo
 }
 
 // NewRegistry creates a new metrics registry
 func NewRegistry() *Registry {
-	return &Registry{
+	r := &Registry{
 		VersionInfo: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Name: "slzb_exporter_version_info",
@@ -264,4 +290,34 @@ func NewRegistry() *Registry {
 			[]string{"device"},
 		),
 	}
+
+	// Add metric info for UI
+	r.addMetricInfo("slzb_exporter_version_info", "Version information about the SLZB exporter", []string{"version", "commit", "build_date"})
+	r.addMetricInfo("slzb_device_connected", "SLZB device connection status (1=connected, 0=disconnected)", []string{"device"})
+	r.addMetricInfo("slzb_device_temperature_celsius", "SLZB device temperature in degrees Celsius", []string{"device"})
+	r.addMetricInfo("slzb_device_uptime_seconds", "SLZB device uptime in seconds since last boot", []string{"device"})
+	r.addMetricInfo("slzb_socket_uptime_seconds", "SLZB socket connection uptime in seconds since connection established", []string{"device"})
+	r.addMetricInfo("slzb_socket_connected", "SLZB socket connection status (1=connected, 0=disconnected)", []string{"device", "connections"})
+	r.addMetricInfo("slzb_device_operational_mode", "SLZB device operational mode (1=active, 0=inactive) with mode label", []string{"device", "mode"})
+	r.addMetricInfo("slzb_device_heap_free_kb", "SLZB device free heap memory in kilobytes", []string{"device"})
+	r.addMetricInfo("slzb_device_heap_size_kb", "SLZB device total heap memory in kilobytes", []string{"device"})
+	r.addMetricInfo("slzb_device_heap_ratio", "SLZB device heap usage ratio as percentage (free heap / total heap * 100)", []string{"device"})
+	r.addMetricInfo("slzb_device_ethernet_connected", "SLZB device Ethernet connection status (1=connected, 0=disconnected)", []string{"device", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server", "speed_mbps"})
+	r.addMetricInfo("slzb_device_wifi_connected", "SLZB device WiFi connection status (1=connected, 0=disconnected)", []string{"device", "ssid", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server"})
+	r.addMetricInfo("slzb_http_requests_total", "Total number of HTTP requests made by exporter to SLZB device API", []string{"device", "action", "status"})
+	r.addMetricInfo("slzb_http_errors_total", "Total number of HTTP errors when making requests to SLZB device API", []string{"device", "action", "error_type"})
+	r.addMetricInfo("slzb_device_reachable", "SLZB device reachability status (1=reachable, 0=unreachable)", []string{"device"})
+	r.addMetricInfo("slzb_last_collection_timestamp", "Unix timestamp of the last successful collection from SLZB device", []string{"device"})
+	r.addMetricInfo("slzb_collection_errors_total", "Total number of collection errors for SLZB device by error type", []string{"device", "error_type"})
+	r.addMetricInfo("slzb_firmware_current_version", "Current firmware version (always 1, used for joining with labels)", []string{"device", "version", "build_date"})
+	r.addMetricInfo("slzb_firmware_update_available", "Firmware update availability (1=available, 0=not_available)", []string{"device", "available_version"})
+	r.addMetricInfo("slzb_firmware_last_check_timestamp", "Unix timestamp of last firmware check", []string{"device"})
+	r.addMetricInfo("slzb_config_backup_status", "Status of the last configuration backup (1=success, 0=failure)", []string{"device", "backup_type"})
+	r.addMetricInfo("slzb_config_last_backup_timestamp", "Unix timestamp of the last successful configuration backup", []string{"device", "backup_type"})
+	r.addMetricInfo("slzb_config_file_count", "Number of configuration files on the device", []string{"device", "file_type"})
+	r.addMetricInfo("slzb_api_response_time_seconds", "Histogram of API response times in seconds", []string{"device", "action"})
+	r.addMetricInfo("slzb_api_timeout_errors_total", "Total number of API timeout errors", []string{"device", "action"})
+	r.addMetricInfo("slzb_collection_duration_seconds", "Histogram of collection durations in seconds", []string{"device"})
+
+	return r
 }

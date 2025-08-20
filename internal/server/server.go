@@ -11,7 +11,9 @@ import (
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
 	"github.com/d0ugal/slzb-exporter/internal/version"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/prometheus/client_golang/prometheus/testutil"
 )
 
 type Server struct {
@@ -31,310 +33,38 @@ func New(cfg *config.Config, metricsRegistry *metrics.Registry) *Server {
 
 func (s *Server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	versionInfo := version.Get()
-	metricsInfo := s.getMetricsInfo()
+	metricsInfo := s.metrics.GetMetricsInfo()
 
-	// Generate metrics HTML dynamically
-	metricsHTML := ""
-
-	for i, metric := range metricsInfo {
-		labelsStr := ""
-
-		if len(metric.Labels) > 0 {
-			var labelPairs []string
-			for k, v := range metric.Labels {
-				labelPairs = append(labelPairs, fmt.Sprintf(`%s="%s"`, k, v))
-			}
-
-			labelsStr = "{" + strings.Join(labelPairs, ", ") + "}"
-		}
-
-		// Create clickable metric with hidden details
-		metricsHTML += fmt.Sprintf(`
-            <div class="metric-item" onclick="toggleMetricDetails(%d)">
-                <div class="metric-header">
-                    <span class="metric-name">%s</span>
-                    <span class="metric-toggle">▼</span>
-                </div>
-                <div class="metric-details" id="metric-%d">
-                    <div class="metric-help"><strong>Description:</strong> %s</div>
-                    <div class="metric-example"><strong>Example:</strong> %s = %s</div>
-                    <div class="metric-labels"><strong>Labels:</strong> %s</div>
-                </div>
-            </div>`,
-			i,
-			metric.Name,
-			i,
-			metric.Help,
-			metric.Name,
-			metric.ExampleValue,
-			labelsStr)
+	// Convert metrics to template data
+	metrics := make([]MetricData, 0, len(metricsInfo))
+	for _, metric := range metricsInfo {
+		metrics = append(metrics, MetricData{
+			Name:         metric.Name,
+			Help:         metric.Help,
+			Labels:       metric.Labels,
+			ExampleValue: metric.ExampleValue,
+		})
 	}
 
-	html := `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    		<title>SLZB Exporter ` + versionInfo.Version + `</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            line-height: 1.6;
-            color: #333;
-        }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-        h1 .version {
-            font-size: 0.6em;
-            color: #6c757d;
-            font-weight: normal;
-            margin-left: 0.5rem;
-        }
-        .endpoints-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-        .endpoint {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-        .endpoint:hover {
-            border-color: #007bff;
-            background-color: #e3f2fd;
-        }
-        .endpoint h3 {
-            margin: 0 0 0.5rem 0;
-            color: #495057;
-        }
-        .endpoint a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .endpoint a:hover {
-            text-decoration: underline;
-        }
-        .description {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-        .status {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .status.healthy {
-            background: #d4edda;
-            color: #155724;
-        }
-        .status.metrics {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        .status.ready {
-            background: #d4edda;
-            color: #155724;
-        }
-        .status.connected {
-            background: #d4edda;
-            color: #155724;
-        }
-        .status.disconnected {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        .service-status {
-            background: #e9ecef;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        .service-status h3 {
-            margin: 0 0 0.5rem 0;
-            color: #495057;
-        }
-        .service-status p {
-            margin: 0.25rem 0;
-            color: #6c757d;
-        }
-        .metrics-info {
-            background: #e9ecef;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        .metrics-info h3 {
-            margin: 0 0 0.5rem 0;
-            color: #495057;
-        }
-        .metrics-info ul {
-            margin: 0.5rem 0;
-            padding-left: 1.5rem;
-        }
-        .metrics-info li {
-            margin: 0.25rem 0;
-            color: #6c757d;
-        }
-        .footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #dee2e6;
-            text-align: center;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .metrics-list {
-            margin: 0.5rem 0;
-        }
-        .metric-item {
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .metric-item:hover {
-            border-color: #007bff;
-            background-color: #f8f9fa;
-        }
-        .metric-header {
-            padding: 0.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
-            color: #495057;
-        }
-        .metric-name {
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-        }
-        .metric-toggle {
-            font-size: 0.8rem;
-            color: #6c757d;
-            transition: transform 0.2s ease;
-        }
-        .metric-details {
-            display: none;
-            padding: 0.75rem;
-            border-top: 1px solid #dee2e6;
-            background-color: #f8f9fa;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        .metric-details.show {
-            display: block;
-        }
-        .metric-help, .metric-example, .metric-labels {
-            margin: 0.5rem 0;
-        }
-        .metric-example {
-            font-family: 'Courier New', monospace;
-            background-color: #e9ecef;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-        }
-        .metric-labels {
-            color: #6c757d;
-        }
-    </style>
-    <script>
-        function toggleMetricDetails(id) {
-            const details = document.getElementById('metric-' + id);
-            const toggle = details.previousElementSibling.querySelector('.metric-toggle');
-            
-            if (details.classList.contains('show')) {
-                details.classList.remove('show');
-                toggle.textContent = '▼';
-            } else {
-                details.classList.add('show');
-                toggle.textContent = '▲';
-            }
-        }
-    </script>
-</head>
-<body>
-    		<h1>SLZB Exporter<span class="version">` + versionInfo.Version + `</span></h1>
-    
-    <div class="endpoints-grid">
-        <div class="endpoint">
-            <h3><a href="/metrics">📊 Metrics</a></h3>
-            <p class="description">Prometheus metrics endpoint</p>
-            <span class="status metrics">Available</span>
-        </div>
-
-        <div class="endpoint">
-            <h3><a href="/health">❤️ Health Check</a></h3>
-            <p class="description">Service health status</p>
-            <span class="status healthy">Healthy</span>
-        </div>
-    </div>
-
-    <div class="service-status">
-        <h3>Service Status</h3>
-        <p><strong>Status:</strong> <span class="status ready">Ready</span></p>
-        		<p><strong>SLZB Connection:</strong> <span class="status connected">Connected</span></p>
-        <p><strong>Metrics Collection:</strong> <span class="status ready">Active</span></p>
-    </div>
-
-    <div class="metrics-info">
-        <h3>Available Metrics</h3>
-        <div class="metrics-list">` + metricsHTML + `
-        </div>
-    </div>
-
-    <div class="metrics-info">
-        <h3>Version Information</h3>
-        <ul>
-            <li><strong>Version:</strong> ` + versionInfo.Version + `</li>
-            <li><strong>Commit:</strong> ` + versionInfo.Commit + `</li>
-            <li><strong>Build Date:</strong> ` + versionInfo.BuildDate + `</li>
-        </ul>
-    </div>
-
-    <div class="metrics-info">
-        <h3>Configuration</h3>
-        <ul>
-            			<li><strong>SLZB API URL:</strong> ` + s.config.SLZB.APIURL + `</li>
-            <li><strong>Collection Interval:</strong> ` + s.config.SLZB.Interval.String() + `</li>
-        </ul>
-    </div>
-
-    <div class="footer">
-        <p>Copyright © 2025 Dougal Matthews. Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.</p>
-        <p><a href="https://github.com/d0ugal/slzb-exporter" target="_blank">GitHub Repository</a> | <a href="https://github.com/d0ugal/slzb-exporter/issues" target="_blank">Report Issues</a></p>
-    </div>
-</body>
-</html>`
+	data := TemplateData{
+		Version:    versionInfo.Version,
+		Commit:     versionInfo.Commit,
+		BuildDate:  versionInfo.BuildDate,
+		MQTTStatus: "connected", // Hardcoded for now - would need SLZB client reference to get actual status
+		Metrics:    metrics,
+		Config: ConfigData{
+			Broker:     s.config.SLZB.APIURL,
+			ClientID:   s.config.SLZB.APIURL,
+			TopicCount: int(s.config.SLZB.Interval.Seconds()),
+			QoS:        30, // Default timeout
+		},
+	}
 
 	w.Header().Set("Content-Type", "text/html")
 
-	if _, err := w.Write([]byte(html)); err != nil {
-		slog.Error("Failed to write HTML response", "error", err)
+	if err := mainTemplate.Execute(w, data); err != nil {
+		slog.Error("Failed to execute template", "error", err)
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 	}
 }
 
@@ -422,152 +152,370 @@ func (s *Server) getMetricsInfo() []MetricInfo {
 	for _, metric := range metrics {
 		metricsInfo = append(metricsInfo, MetricInfo{
 			Name:         metric.name,
-			Help:         s.getMetricHelp(metric.field),
-			ExampleValue: s.getExampleValue(metric.field),
-			Labels:       s.getExampleLabels(metric.field),
+			Help:         s.getMetricHelp(metric.name),
+			ExampleValue: s.getMetricValue(metric.field),
+			Labels:       s.getMetricLabels(metric.field),
 		})
 	}
 
 	return metricsInfo
 }
 
-func (s *Server) getExampleLabels(metricName string) map[string]string {
-	switch metricName {
-	case "SLZBConnected", "SLZBDeviceTemp", "SLZBUptime", "SLZBHeapFree", "SLZBHeapSize", "SLZBHeapRatio":
-		return map[string]string{"device": "slzb-01"}
-	case "SLZBSocketConnected":
-		return map[string]string{"device": "slzb-01", "connections": "5"}
-	case "SLZBDeviceMode":
-		return map[string]string{"device": "slzb-01", "mode": "coordinator"}
-	case "SLZBEthernetConnected":
-		return map[string]string{
-			"device":      "slzb-01",
-			"ip_address":  "192.168.1.100",
-			"mac_address": "00:11:22:33:44:55",
-			"gateway":     "192.168.1.1",
-			"subnet_mask": "255.255.255.0",
-			"dns_server":  "8.8.8.8",
-			"speed_mbps":  "1000",
-		}
-	case "SLZBWifiConnected":
-		return map[string]string{
-			"device":      "slzb-01",
-			"ssid":        "MyWiFi",
-			"ip_address":  "192.168.1.101",
-			"mac_address": "00:11:22:33:44:56",
-			"gateway":     "192.168.1.1",
-			"subnet_mask": "255.255.255.0",
-			"dns_server":  "8.8.8.8",
-		}
-	case "SLZBHTTPRequestsTotal", "SLZBHTTPErrorsTotal":
-		return map[string]string{"device": "slzb-01", "action": "get_status", "status": "200"}
-	case "SLZBDeviceReachable", "SLZBLastCollectionTime":
-		return map[string]string{"device": "slzb-01"}
-	case "SLZBCollectionErrors":
-		return map[string]string{"device": "slzb-01", "error_type": "timeout"}
-	case "SLZBFirmwareCurrentVersion":
-		return map[string]string{"device": "slzb-01", "version": "1.0.0", "build_date": "2024-01-01"}
-	case "SLZBFirmwareUpdateAvailable":
-		return map[string]string{"device": "slzb-01", "available_version": "1.0.1"}
-	case "SLZBFirmwareLastCheckTime":
-		return map[string]string{"device": "slzb-01"}
-	case "SLZBConfigBackupStatus":
-		return map[string]string{"device": "slzb-01", "backup_type": "full"}
-	case "SLZBConfigLastBackupTime":
-		return map[string]string{"device": "slzb-01", "backup_type": "full"}
-	case "SLZBConfigFileCount":
-		return map[string]string{"device": "slzb-01", "file_type": "configuration"}
-	case "SLZBAPIResponseTimeSeconds":
-		return map[string]string{"device": "slzb-01", "action": "get_status"}
-	case "SLZBAPITimeoutErrorsTotal":
-		return map[string]string{"device": "slzb-01", "action": "get_status"}
-	case "SLZBCollectionDurationSeconds":
-		return map[string]string{"device": "slzb-01"}
-	default:
-		return map[string]string{"device": "slzb-01"}
-	}
-}
+// getMetricValue gets the current value of a metric from the registry
+func (s *Server) getMetricValue(metricName string) string {
+	deviceID := s.getDeviceID()
 
-func (s *Server) getExampleValue(metricName string) string {
 	switch metricName {
-	case "SLZBConnected", "SLZBSocketConnected", "SLZBDeviceMode", "SLZBEthernetConnected", "SLZBWifiConnected", "SLZBDeviceReachable", "SLZBFirmwareUpdateAvailable", "SLZBConfigBackupStatus":
-		return "1"
+	case "SLZBConnected":
+		value := testutil.ToFloat64(s.metrics.SLZBConnected.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBDeviceTemp":
-		return "45.2"
-	case "SLZBUptime", "SLZBSocketUptime":
-		return "86400"
+		value := testutil.ToFloat64(s.metrics.SLZBDeviceTemp.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.1f", value)
+	case "SLZBUptime":
+		value := testutil.ToFloat64(s.metrics.SLZBUptime.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBSocketUptime":
+		value := testutil.ToFloat64(s.metrics.SLZBSocketUptime.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBSocketConnected":
+		// Try to get a connected socket value
+		value := testutil.ToFloat64(s.metrics.SLZBSocketConnected.WithLabelValues(deviceID, "1"))
+		if value == 0 {
+			value = testutil.ToFloat64(s.metrics.SLZBSocketConnected.WithLabelValues(deviceID, "0"))
+		}
+
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBDeviceMode":
+		// Try to get a mode value (coordinator is common)
+		value := testutil.ToFloat64(s.metrics.SLZBDeviceMode.WithLabelValues(deviceID, "coordinator"))
+		if value == 0 {
+			value = testutil.ToFloat64(s.metrics.SLZBDeviceMode.WithLabelValues(deviceID, "router"))
+		}
+
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBHeapFree":
-		return "512"
+		value := testutil.ToFloat64(s.metrics.SLZBHeapFree.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBHeapSize":
-		return "1024"
+		value := testutil.ToFloat64(s.metrics.SLZBHeapSize.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBHeapRatio":
-		return "50.0"
-	case "SLZBHTTPRequestsTotal", "SLZBHTTPErrorsTotal", "SLZBCollectionErrors", "SLZBAPITimeoutErrorsTotal":
-		return "42"
-	case "SLZBLastCollectionTime", "SLZBFirmwareLastCheckTime", "SLZBConfigLastBackupTime":
-		return "1704067200"
+		value := testutil.ToFloat64(s.metrics.SLZBHeapRatio.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.1f", value)
+	case "SLZBEthernetConnected":
+		// Try to get ethernet connection value
+		value := testutil.ToFloat64(s.metrics.SLZBEthernetConnected.WithLabelValues(deviceID, "192.168.1.100", "00:11:22:33:44:55", "192.168.1.1", "255.255.255.0", "8.8.8.8", "1000"))
+		if value == 0 {
+			value = testutil.ToFloat64(s.metrics.SLZBEthernetConnected.WithLabelValues(deviceID, "unknown", "unknown", "unknown", "unknown", "unknown", "unknown"))
+		}
+
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBWifiConnected":
+		// Try to get wifi connection value
+		value := testutil.ToFloat64(s.metrics.SLZBWifiConnected.WithLabelValues(deviceID, "MyWiFi", "192.168.1.101", "00:11:22:33:44:56", "192.168.1.1", "255.255.255.0", "8.8.8.8"))
+		if value == 0 {
+			value = testutil.ToFloat64(s.metrics.SLZBWifiConnected.WithLabelValues(deviceID, "none", "none", "none", "none", "none", "none"))
+		}
+
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBHTTPRequestsTotal":
+		value := testutil.ToFloat64(s.metrics.SLZBHTTPRequestsTotal.WithLabelValues(deviceID, "0", "200"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBHTTPErrorsTotal":
+		value := testutil.ToFloat64(s.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceID, "0", "timeout"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBDeviceReachable":
+		value := testutil.ToFloat64(s.metrics.SLZBDeviceReachable.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBLastCollectionTime":
+		value := testutil.ToFloat64(s.metrics.SLZBLastCollectionTime.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBCollectionErrors":
+		value := testutil.ToFloat64(s.metrics.SLZBCollectionErrors.WithLabelValues(deviceID, "timeout"))
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBFirmwareCurrentVersion":
-		return "1"
+		value := testutil.ToFloat64(s.metrics.SLZBFirmwareCurrentVersion.WithLabelValues(deviceID, "1.0.0", "2024-01-01"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBFirmwareUpdateAvailable":
+		value := testutil.ToFloat64(s.metrics.SLZBFirmwareUpdateAvailable.WithLabelValues(deviceID, "unknown"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBFirmwareLastCheckTime":
+		value := testutil.ToFloat64(s.metrics.SLZBFirmwareLastCheckTime.WithLabelValues(deviceID))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBConfigBackupStatus":
+		value := testutil.ToFloat64(s.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceID, "auto"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBConfigLastBackupTime":
+		value := testutil.ToFloat64(s.metrics.SLZBConfigLastBackupTime.WithLabelValues(deviceID, "auto"))
+		return fmt.Sprintf("%.0f", value)
 	case "SLZBConfigFileCount":
-		return "5"
-	case "SLZBAPIResponseTimeSeconds", "SLZBCollectionDurationSeconds":
+		value := testutil.ToFloat64(s.metrics.SLZBConfigFileCount.WithLabelValues(deviceID, "config"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBAPIResponseTimeSeconds":
+		// For histograms, we'll show a default value since we can't easily read the current value
+		return "0.125"
+	case "SLZBAPITimeoutErrorsTotal":
+		value := testutil.ToFloat64(s.metrics.SLZBAPITimeoutErrorsTotal.WithLabelValues(deviceID, "0"))
+		return fmt.Sprintf("%.0f", value)
+	case "SLZBCollectionDurationSeconds":
+		// For histograms, we'll show a default value since we can't easily read the current value
 		return "0.125"
 	default:
 		return "0"
 	}
 }
 
-func (s *Server) getMetricHelp(metricName string) string {
+// getMetricLabels gets the labels from the registry for a metric
+func (s *Server) getMetricLabels(metricName string) map[string]string {
+	deviceID := s.getDeviceID()
+
 	switch metricName {
-	case "SLZBConnected":
-		return "SLZB device connection status (1=connected, 0=disconnected)"
-	case "SLZBDeviceTemp":
-		return "SLZB device temperature in degrees Celsius"
-	case "SLZBUptime":
-		return "SLZB device uptime in seconds since last boot"
-	case "SLZBSocketUptime":
-		return "SLZB socket connection uptime in seconds since connection established"
+	case "SLZBConnected", "SLZBDeviceTemp", "SLZBUptime", "SLZBHeapFree", "SLZBHeapSize", "SLZBHeapRatio":
+		return map[string]string{"device": deviceID}
 	case "SLZBSocketConnected":
-		return "SLZB socket connection status (1=connected, 0=disconnected)"
+		// Check if we have any socket connection data
+		if testutil.ToFloat64(s.metrics.SLZBSocketConnected.WithLabelValues(deviceID, "1")) > 0 {
+			return map[string]string{"device": deviceID, "connections": "1"}
+		}
+
+		return map[string]string{"device": deviceID, "connections": "0"}
 	case "SLZBDeviceMode":
-		return "SLZB device operational mode (1=active, 0=inactive) with mode label"
-	case "SLZBHeapFree":
-		return "SLZB device free heap memory in kilobytes"
-	case "SLZBHeapSize":
-		return "SLZB device total heap memory in kilobytes"
-	case "SLZBHeapRatio":
-		return "SLZB device heap usage ratio as percentage (free heap / total heap * 100)"
+		// Check for common modes
+		if testutil.ToFloat64(s.metrics.SLZBDeviceMode.WithLabelValues(deviceID, "coordinator")) > 0 {
+			return map[string]string{"device": deviceID, "mode": "coordinator"}
+		}
+
+		if testutil.ToFloat64(s.metrics.SLZBDeviceMode.WithLabelValues(deviceID, "router")) > 0 {
+			return map[string]string{"device": deviceID, "mode": "router"}
+		}
+
+		return map[string]string{"device": deviceID, "mode": "unknown"}
 	case "SLZBEthernetConnected":
-		return "SLZB device Ethernet connection status (1=connected, 0=disconnected)"
+		// Try to get real ethernet connection data
+		value := testutil.ToFloat64(s.metrics.SLZBEthernetConnected.WithLabelValues(deviceID, "192.168.1.100", "00:11:22:33:44:55", "192.168.1.1", "255.255.255.0", "8.8.8.8", "1000"))
+		if value > 0 {
+			return map[string]string{
+				"device":      deviceID,
+				"ip_address":  "192.168.1.100",
+				"mac_address": "00:11:22:33:44:55",
+				"gateway":     "192.168.1.1",
+				"subnet_mask": "255.255.255.0",
+				"dns_server":  "8.8.8.8",
+				"speed_mbps":  "1000",
+			}
+		}
+
+		return map[string]string{
+			"device":      deviceID,
+			"ip_address":  "unknown",
+			"mac_address": "unknown",
+			"gateway":     "unknown",
+			"subnet_mask": "unknown",
+			"dns_server":  "unknown",
+			"speed_mbps":  "unknown",
+		}
 	case "SLZBWifiConnected":
-		return "SLZB device WiFi connection status (1=connected, 0=disconnected)"
+		// Try to get real wifi connection data
+		value := testutil.ToFloat64(s.metrics.SLZBWifiConnected.WithLabelValues(deviceID, "MyWiFi", "192.168.1.101", "00:11:22:33:44:56", "192.168.1.1", "255.255.255.0", "8.8.8.8"))
+		if value > 0 {
+			return map[string]string{
+				"device":      deviceID,
+				"ssid":        "MyWiFi",
+				"ip_address":  "192.168.1.101",
+				"mac_address": "00:11:22:33:44:56",
+				"gateway":     "192.168.1.1",
+				"subnet_mask": "255.255.255.0",
+				"dns_server":  "8.8.8.8",
+			}
+		}
+
+		return map[string]string{
+			"device":      deviceID,
+			"ssid":        "none",
+			"ip_address":  "none",
+			"mac_address": "none",
+			"gateway":     "none",
+			"subnet_mask": "none",
+			"dns_server":  "none",
+		}
 	case "SLZBHTTPRequestsTotal":
-		return "Total number of HTTP requests made by exporter to SLZB device API"
+		// Check for real HTTP request data
+		value := testutil.ToFloat64(s.metrics.SLZBHTTPRequestsTotal.WithLabelValues(deviceID, "0", "200"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "action": "0", "status": "200"}
+		}
+
+		return map[string]string{"device": deviceID, "action": "get_status", "status": "200"}
 	case "SLZBHTTPErrorsTotal":
-		return "Total number of HTTP errors when making requests to SLZB device API"
-	case "SLZBDeviceReachable":
-		return "SLZB device reachability status (1=reachable, 0=unreachable)"
-	case "SLZBLastCollectionTime":
-		return "Unix timestamp of the last successful collection from SLZB device"
+		// Check for real HTTP error data
+		value := testutil.ToFloat64(s.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceID, "0", "timeout"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "action": "0", "error_type": "timeout"}
+		}
+
+		return map[string]string{"device": deviceID, "action": "get_status", "error_type": "timeout"}
+	case "SLZBDeviceReachable", "SLZBLastCollectionTime":
+		return map[string]string{"device": deviceID}
 	case "SLZBCollectionErrors":
-		return "Total number of collection errors for SLZB device by error type"
+		// Check for real collection error data
+		value := testutil.ToFloat64(s.metrics.SLZBCollectionErrors.WithLabelValues(deviceID, "timeout"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "error_type": "timeout"}
+		}
+
+		return map[string]string{"device": deviceID, "error_type": "timeout"}
 	case "SLZBFirmwareCurrentVersion":
-		return "Current firmware version (always 1, used for joining with labels)"
+		// Check for real firmware data
+		value := testutil.ToFloat64(s.metrics.SLZBFirmwareCurrentVersion.WithLabelValues(deviceID, "1.0.0", "2024-01-01"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "version": "1.0.0", "build_date": "2024-01-01"}
+		}
+
+		return map[string]string{"device": deviceID, "version": "unknown", "build_date": "unknown"}
 	case "SLZBFirmwareUpdateAvailable":
-		return "Firmware update availability (1=available, 0=not_available)"
+		// Check for real firmware update data
+		value := testutil.ToFloat64(s.metrics.SLZBFirmwareUpdateAvailable.WithLabelValues(deviceID, "unknown"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "available_version": "unknown"}
+		}
+
+		return map[string]string{"device": deviceID, "available_version": "none"}
 	case "SLZBFirmwareLastCheckTime":
-		return "Unix timestamp of last firmware check"
+		return map[string]string{"device": deviceID}
 	case "SLZBConfigBackupStatus":
-		return "Status of the last configuration backup (1=success, 0=failure)"
+		// Check for real backup status data
+		value := testutil.ToFloat64(s.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceID, "auto"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "backup_type": "auto"}
+		}
+
+		return map[string]string{"device": deviceID, "backup_type": "manual"}
 	case "SLZBConfigLastBackupTime":
-		return "Unix timestamp of the last successful configuration backup"
+		// Check for real backup time data
+		value := testutil.ToFloat64(s.metrics.SLZBConfigLastBackupTime.WithLabelValues(deviceID, "auto"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "backup_type": "auto"}
+		}
+
+		return map[string]string{"device": deviceID, "backup_type": "manual"}
 	case "SLZBConfigFileCount":
-		return "Number of configuration files on the device"
+		// Check for real file count data
+		value := testutil.ToFloat64(s.metrics.SLZBConfigFileCount.WithLabelValues(deviceID, "config"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "file_type": "config"}
+		}
+
+		return map[string]string{"device": deviceID, "file_type": "configuration"}
 	case "SLZBAPIResponseTimeSeconds":
-		return "Histogram of API response times in seconds"
+		// For histograms, we'll show a default label since we can't easily read the current value
+		return map[string]string{"device": deviceID, "action": "get_status"}
 	case "SLZBAPITimeoutErrorsTotal":
-		return "Total number of API timeout errors"
+		// Check for real timeout error data
+		value := testutil.ToFloat64(s.metrics.SLZBAPITimeoutErrorsTotal.WithLabelValues(deviceID, "0"))
+		if value > 0 {
+			return map[string]string{"device": deviceID, "action": "0"}
+		}
+
+		return map[string]string{"device": deviceID, "action": "get_status"}
 	case "SLZBCollectionDurationSeconds":
+		return map[string]string{"device": deviceID}
+	default:
+		return map[string]string{"device": deviceID}
+	}
+}
+
+// getDeviceID derives the device ID from the configuration
+func (s *Server) getDeviceID() string {
+	// Extract hostname/IP from API URL
+	apiURL := s.config.SLZB.APIURL
+	if strings.HasPrefix(apiURL, "http://") {
+		apiURL = strings.TrimPrefix(apiURL, "http://")
+	} else if strings.HasPrefix(apiURL, "https://") {
+		apiURL = strings.TrimPrefix(apiURL, "https://")
+	}
+
+	// Remove port if present
+	if idx := strings.Index(apiURL, ":"); idx != -1 {
+		apiURL = apiURL[:idx]
+	}
+
+	// Use the hostname/IP as device ID
+	return apiURL
+}
+
+// getMetricHelp gets the help text from the Prometheus registry
+func (s *Server) getMetricHelp(metricName string) string {
+	// Get all metric families from the default registry
+	metricFamilies, err := prometheus.DefaultGatherer.Gather()
+	if err != nil {
+		slog.Warn("Failed to gather metrics for help text", "error", err)
+		return s.getFallbackMetricHelp(metricName)
+	}
+
+	// Search for the metric by name
+	for _, family := range metricFamilies {
+		if family.GetName() == metricName {
+			return family.GetHelp()
+		}
+	}
+
+	// If not found in default registry, fall back to hardcoded help
+	return s.getFallbackMetricHelp(metricName)
+}
+
+// getFallbackMetricHelp provides fallback help text when dynamic extraction fails
+func (s *Server) getFallbackMetricHelp(metricName string) string {
+	switch metricName {
+	case "slzb_device_connected":
+		return "SLZB device connection status (1=connected, 0=disconnected)"
+	case "slzb_device_temperature_celsius":
+		return "SLZB device temperature in degrees Celsius"
+	case "slzb_device_uptime_seconds":
+		return "SLZB device uptime in seconds since last boot"
+	case "slzb_socket_uptime_seconds":
+		return "SLZB socket connection uptime in seconds since connection established"
+	case "slzb_socket_connected":
+		return "SLZB socket connection status (1=connected, 0=disconnected)"
+	case "slzb_device_operational_mode":
+		return "SLZB device operational mode (1=active, 0=inactive) with mode label"
+	case "slzb_device_heap_free_kb":
+		return "SLZB device free heap memory in kilobytes"
+	case "slzb_device_heap_size_kb":
+		return "SLZB device total heap memory in kilobytes"
+	case "slzb_device_heap_ratio":
+		return "SLZB device heap usage ratio as percentage (free heap / total heap * 100)"
+	case "slzb_device_ethernet_connected":
+		return "SLZB device Ethernet connection status (1=connected, 0=disconnected)"
+	case "slzb_device_wifi_connected":
+		return "SLZB device WiFi connection status (1=connected, 0=disconnected)"
+	case "slzb_http_requests_total":
+		return "Total number of HTTP requests made by exporter to SLZB device API"
+	case "slzb_http_errors_total":
+		return "Total number of HTTP errors when making requests to SLZB device API"
+	case "slzb_device_reachable":
+		return "SLZB device reachability status (1=reachable, 0=unreachable)"
+	case "slzb_last_collection_timestamp":
+		return "Unix timestamp of the last successful collection from SLZB device"
+	case "slzb_collection_errors_total":
+		return "Total number of collection errors for SLZB device by error type"
+	case "slzb_firmware_current_version":
+		return "Current firmware version (always 1, used for joining with labels)"
+	case "slzb_firmware_update_available":
+		return "Firmware update availability (1=available, 0=not_available)"
+	case "slzb_firmware_last_check_timestamp":
+		return "Unix timestamp of last firmware check"
+	case "slzb_config_backup_status":
+		return "Status of the last configuration backup (1=success, 0=failure)"
+	case "slzb_config_last_backup_timestamp":
+		return "Unix timestamp of the last successful configuration backup"
+	case "slzb_config_file_count":
+		return "Number of configuration files on the device"
+	case "slzb_api_response_time_seconds":
+		return "Histogram of API response times in seconds"
+	case "slzb_api_timeout_errors_total":
+		return "Total number of API timeout errors"
+	case "slzb_collection_duration_seconds":
 		return "Histogram of collection durations in seconds"
 	default:
 		return "SLZB device metric"
