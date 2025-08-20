@@ -135,16 +135,16 @@ func NewRegistry() *Registry {
 
 		SLZBHeapFree: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "slzb_device_heap_free_kb",
-				Help: "SLZB device free heap memory in kilobytes",
+				Name: "slzb_device_heap_free_bytes",
+				Help: "SLZB device free heap memory in bytes",
 			},
 			[]string{"device"},
 		),
 
 		SLZBHeapSize: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "slzb_device_heap_size_kb",
-				Help: "SLZB device total heap memory in kilobytes",
+				Name: "slzb_device_heap_size_bytes",
+				Help: "SLZB device total heap memory in bytes",
 			},
 			[]string{"device"},
 		),
@@ -257,7 +257,7 @@ func NewRegistry() *Registry {
 
 		SLZBConfigFileCount: promauto.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "slzb_config_file_count",
+				Name: "slzb_config_files",
 				Help: "Number of configuration files on the device",
 			},
 			[]string{"device", "file_type"},
@@ -299,8 +299,8 @@ func NewRegistry() *Registry {
 	r.addMetricInfo("slzb_socket_uptime_seconds", "SLZB socket connection uptime in seconds since connection established", []string{"device"})
 	r.addMetricInfo("slzb_socket_connected", "SLZB socket connection status (1=connected, 0=disconnected)", []string{"device", "connections"})
 	r.addMetricInfo("slzb_device_operational_mode", "SLZB device operational mode (1=active, 0=inactive) with mode label", []string{"device", "mode"})
-	r.addMetricInfo("slzb_device_heap_free_kb", "SLZB device free heap memory in kilobytes", []string{"device"})
-	r.addMetricInfo("slzb_device_heap_size_kb", "SLZB device total heap memory in kilobytes", []string{"device"})
+	r.addMetricInfo("slzb_device_heap_free_bytes", "SLZB device free heap memory in bytes", []string{"device"})
+	r.addMetricInfo("slzb_device_heap_size_bytes", "SLZB device total heap memory in bytes", []string{"device"})
 	r.addMetricInfo("slzb_device_heap_ratio", "SLZB device heap usage ratio as percentage (free heap / total heap * 100)", []string{"device"})
 	r.addMetricInfo("slzb_device_ethernet_connected", "SLZB device Ethernet connection status (1=connected, 0=disconnected)", []string{"device", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server", "speed_mbps"})
 	r.addMetricInfo("slzb_device_wifi_connected", "SLZB device WiFi connection status (1=connected, 0=disconnected)", []string{"device", "ssid", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server"})
@@ -314,7 +314,7 @@ func NewRegistry() *Registry {
 	r.addMetricInfo("slzb_firmware_last_check_timestamp", "Unix timestamp of last firmware check", []string{"device"})
 	r.addMetricInfo("slzb_config_backup_status", "Status of the last configuration backup (1=success, 0=failure)", []string{"device", "backup_type"})
 	r.addMetricInfo("slzb_config_last_backup_timestamp", "Unix timestamp of the last successful configuration backup", []string{"device", "backup_type"})
-	r.addMetricInfo("slzb_config_file_count", "Number of configuration files on the device", []string{"device", "file_type"})
+	r.addMetricInfo("slzb_config_files", "Number of configuration files on the device", []string{"device", "file_type"})
 	r.addMetricInfo("slzb_api_response_time_seconds", "Histogram of API response times in seconds", []string{"device", "action"})
 	r.addMetricInfo("slzb_api_timeout_errors_total", "Total number of API timeout errors", []string{"device", "action"})
 	r.addMetricInfo("slzb_collection_duration_seconds", "Histogram of collection durations in seconds", []string{"device"})

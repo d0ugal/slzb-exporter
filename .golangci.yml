@@ -43,8 +43,6 @@ linters:
     - varnamelen  # Variable names fine
     - wsl  # Use wsl_v5 instead
     - gosec  # Security warnings are false positives for this codebase
-    - gocyclo  # Allow complex functions
-    - promlinter  # Allow abbreviated units in metric names
 
   settings:
     gosec:
