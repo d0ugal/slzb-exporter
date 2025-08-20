@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/d0ugal/slzb-exporter/compare/v1.4.0...v2.0.0) (2025-08-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Metric names have been updated to comply with Prometheus naming conventions:
+    - slzb_device_heap_free_kb → slzb_device_heap_free_bytes
+    - slzb_device_heap_size_kb → slzb_device_heap_size_bytes
+    - slzb_config_file_count → slzb_config_files
+
+### Features
+
+* optimize linting performance with caching and fix metric naming ([a0397b2](https://github.com/d0ugal/slzb-exporter/commit/a0397b2f9721889c50a637ef92d5a2797cbe19a7))
+
+
+### Bug Fixes
+
+* run Docker containers as current user to prevent permission issues ([59ce761](https://github.com/d0ugal/slzb-exporter/commit/59ce76138a3ff26e781a037f0b3e7e1722b6ebd6))
+* temporarily disable gocyclo to allow commit to proceed ([34ae928](https://github.com/d0ugal/slzb-exporter/commit/34ae9282fccd359df879608f562eb33ae17e4493))
+
 ## [1.4.0](https://github.com/d0ugal/slzb-exporter/compare/v1.3.1...v1.4.0) (2025-08-20)
 
 
