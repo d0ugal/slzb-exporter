@@ -75,7 +75,7 @@ func TestServer_HandleRoot(t *testing.T) {
 
 	cfg := &config.Config{
 		SLZB: config.SLZBConfig{
-			APIURL:  "http://localhost:8080",
+			APIURL:   "http://localhost:8080",
 			Interval: 30,
 		},
 		Server: config.ServerConfig{
