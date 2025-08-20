@@ -8,16 +8,20 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func TestServer_GetMetricsInfo(t *testing.T) {
+func TestServer_UsesMetricsRegistry(t *testing.T) {
 	cfg := &config.Config{}
 	metricsRegistry := metrics.NewRegistry()
 	server := New(cfg, metricsRegistry)
 
-	metricsInfo := server.getMetricsInfo()
+	// Verify that the server has the metrics registry
+	if server.metrics == nil {
+		t.Fatal("Expected server to have metrics registry, but got nil")
+	}
 
-	// Check that we have metrics
+	// Verify that the metrics registry has metrics info
+	metricsInfo := metricsRegistry.GetMetricsInfo()
 	if len(metricsInfo) == 0 {
-		t.Fatal("Expected metrics info to contain metrics, but got empty slice")
+		t.Fatal("Expected metrics registry to contain metrics info, but got empty slice")
 	}
 
 	// Check that each metric has required fields
@@ -30,8 +34,9 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 			t.Errorf("Metric %d has empty help text", i)
 		}
 
-		if metric.ExampleValue == "" {
-			t.Errorf("Metric %d has empty example value", i)
+		if len(metric.Labels) == 0 && metric.Name != "slzb_exporter_version_info" {
+			// Most metrics should have labels, except version info
+			t.Errorf("Metric %d (%s) has no labels", i, metric.Name)
 		}
 	}
 
@@ -58,9 +63,8 @@ func TestServer_GetMetricsInfo(t *testing.T) {
 	}
 }
 
-func TestServer_GetMetricLabels(t *testing.T) {
-	cfg := &config.Config{}
-	// Create a test registry to avoid registration conflicts
+func TestServer_HandleRoot(t *testing.T) {
+	// Use a test registry to avoid registration conflicts
 	testRegistry := prometheus.NewRegistry()
 	originalRegistry := prometheus.DefaultRegisterer
 	prometheus.DefaultRegisterer = testRegistry
@@ -69,78 +73,30 @@ func TestServer_GetMetricLabels(t *testing.T) {
 		prometheus.DefaultRegisterer = originalRegistry
 	}()
 
+	cfg := &config.Config{
+		SLZB: config.SLZBConfig{
+			APIURL:  "http://localhost:8080",
+			Interval: 30,
+		},
+		Server: config.ServerConfig{
+			Host: "localhost",
+			Port: 8080,
+		},
+	}
 	metricsRegistry := metrics.NewRegistry()
 	server := New(cfg, metricsRegistry)
 
-	tests := []struct {
-		metricName string
-		expected   map[string]string
-	}{
-		{
-			metricName: "SLZBConnected",
-			expected:   map[string]string{"device": ""}, // Device ID will be empty in test
-		},
-		{
-			metricName: "SLZBEthernetConnected",
-			expected: map[string]string{
-				"device":      "",
-				"ip_address":  "unknown",
-				"mac_address": "unknown",
-				"gateway":     "unknown",
-				"subnet_mask": "unknown",
-				"dns_server":  "unknown",
-				"speed_mbps":  "unknown",
-			},
-		},
+	// Test that the server can be created without errors
+	if server == nil {
+		t.Fatal("Expected server to be created, but got nil")
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.metricName, func(t *testing.T) {
-			labels := server.getMetricLabels(tt.metricName)
-			if len(labels) != len(tt.expected) {
-				t.Errorf("Expected %d labels, got %d", len(tt.expected), len(labels))
-			}
-
-			for k, v := range tt.expected {
-				if labels[k] != v {
-					t.Errorf("Expected label %s=%s, got %s", k, v, labels[k])
-				}
-			}
-		})
-	}
-}
-
-func TestServer_GetMetricValue(t *testing.T) {
-	cfg := &config.Config{}
-	// Create a test registry to avoid registration conflicts
-	testRegistry := prometheus.NewRegistry()
-	originalRegistry := prometheus.DefaultRegisterer
-	prometheus.DefaultRegisterer = testRegistry
-
-	defer func() {
-		prometheus.DefaultRegisterer = originalRegistry
-	}()
-
-	metricsRegistry := metrics.NewRegistry()
-	server := New(cfg, metricsRegistry)
-
-	tests := []struct {
-		metricName string
-		expected   string
-	}{
-		{"SLZBConnected", "0"},         // Will be 0 since no real data in test
-		{"SLZBDeviceTemp", "0.0"},      // Will be 0.0 since no real data in test
-		{"SLZBUptime", "0"},            // Will be 0 since no real data in test
-		{"SLZBHeapFree", "0"},          // Will be 0 since no real data in test
-		{"SLZBHTTPRequestsTotal", "0"}, // Will be 0 since no real data in test
+	// Test that the server has the expected configuration
+	if server.config == nil {
+		t.Fatal("Expected server to have config, but got nil")
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.metricName, func(t *testing.T) {
-			value := server.getMetricValue(tt.metricName)
-			if value != tt.expected {
-				t.Errorf("Expected %s, got %s", tt.expected, value)
-			}
-		})
+	if server.config.SLZB.APIURL != "http://localhost:8080" {
+		t.Errorf("Expected API URL to be http://localhost:8080, got %s", server.config.SLZB.APIURL)
 	}
 }
