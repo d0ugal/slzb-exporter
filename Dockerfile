@@ -31,7 +31,7 @@ RUN VERSION=${VERSION:-$(git describe --tags --always --dirty 2>/dev/null || ech
     -o slzb-exporter ./cmd
 
 # Final stage
-FROM alpine:latest
+FROM alpine:3.22.1
 
 RUN apk --no-cache add ca-certificates
 
