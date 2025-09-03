@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1](https://github.com/d0ugal/slzb-exporter/compare/v2.1.0...v2.1.1) (2025-09-03)
+
+
+### Bug Fixes
+
+* pin Alpine version to 3.22.1 for consistency ([2c65ff9](https://github.com/d0ugal/slzb-exporter/commit/2c65ff9f4c846648e8503efa5da29e1f51279e2f))
+
 ## [2.1.0](https://github.com/d0ugal/slzb-exporter/compare/v2.0.2...v2.1.0) (2025-08-26)
 
 
