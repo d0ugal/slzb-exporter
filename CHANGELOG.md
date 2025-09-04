@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1](https://github.com/d0ugal/slzb-exporter/compare/v2.3.0...v2.3.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/prometheus/client_golang to v1.23.1 ([8d6d7d8](https://github.com/d0ugal/slzb-exporter/commit/8d6d7d8ceb448d88a206a10765df485e42918d1a))
+* **deps:** update module github.com/prometheus/client_golang to v1.23.1 ([f66e810](https://github.com/d0ugal/slzb-exporter/commit/f66e810fa20dda0b6ebb2b71d8e7a10028aad574))
+
 ## [2.3.0](https://github.com/d0ugal/slzb-exporter/compare/v2.2.0...v2.3.0) (2025-09-04)
 
 
