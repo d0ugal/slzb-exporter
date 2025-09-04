@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0](https://github.com/d0ugal/slzb-exporter/compare/v2.2.0...v2.3.0) (2025-09-04)
+
+
+### Features
+
+* update dev build versioning to use semver-compatible pre-release tags ([8aab899](https://github.com/d0ugal/slzb-exporter/commit/8aab8993a7f3c7741866c5658267b7c80bc96012))
+
+
+### Bug Fixes
+
+* **ci:** add v prefix to dev tags for consistent versioning ([0793607](https://github.com/d0ugal/slzb-exporter/commit/0793607d6e5cbd83f3b82b9d535824758b5ed8e9))
+* use actual release version as base for dev tags instead of hardcoded 0.0.0 ([3924cf2](https://github.com/d0ugal/slzb-exporter/commit/3924cf27665a516ddfdbb533392de68b9870fe2e))
+* use fetch-depth: 0 instead of fetch-tags for full git history ([bc9a10d](https://github.com/d0ugal/slzb-exporter/commit/bc9a10d74ebc3b24b10a02bce5ed1f455091ffc3))
+* use fetch-tags instead of fetch-depth for GitHub Actions ([ae87d7e](https://github.com/d0ugal/slzb-exporter/commit/ae87d7e71282d5c9fdc97e748e1206124f7bcb6e))
+
 ## [2.2.0](https://github.com/d0ugal/slzb-exporter/compare/v2.1.1...v2.2.0) (2025-09-04)
 
 
