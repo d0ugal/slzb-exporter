@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0](https://github.com/d0ugal/slzb-exporter/compare/v2.3.2...v2.4.0) (2025-09-12)
+
+
+### Features
+
+* replace latest docker tags with versioned variables for Renovate compatibility ([2dadba9](https://github.com/d0ugal/slzb-exporter/commit/2dadba9534273c4962294b32b8e2b34bdf14d050))
+
 ## [2.3.2](https://github.com/d0ugal/slzb-exporter/compare/v2.3.1...v2.3.2) (2025-09-05)
 
 
