@@ -40,32 +40,20 @@ func TestLoadConfig(t *testing.T) {
 
 func TestLoadConfigFromEnv(t *testing.T) {
 	// Set environment variables
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_SERVER_HOST", "0.0.0.0")
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_SERVER_PORT", "9090")
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_LOG_LEVEL", "warn")
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_LOG_FORMAT", "text")
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_SLZB_API_URL", "http://test-device.local")
-	//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-	os.Setenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL", "45s")
+	_ = os.Setenv("SLZB_EXPORTER_SERVER_HOST", "0.0.0.0")
+	_ = os.Setenv("SLZB_EXPORTER_SERVER_PORT", "9090")
+	_ = os.Setenv("SLZB_EXPORTER_LOG_LEVEL", "warn")
+	_ = os.Setenv("SLZB_EXPORTER_LOG_FORMAT", "text")
+	_ = os.Setenv("SLZB_EXPORTER_SLZB_API_URL", "http://test-device.local")
+	_ = os.Setenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL", "45s")
 
 	defer func() {
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_SERVER_HOST")
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_SERVER_PORT")
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_LOG_LEVEL")
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_LOG_FORMAT")
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_SLZB_API_URL")
-		//nolint:errcheck // Setenv/Unsetenv rarely fail in practice
-		os.Unsetenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL")
+		_ = os.Unsetenv("SLZB_EXPORTER_SERVER_HOST")
+		_ = os.Unsetenv("SLZB_EXPORTER_SERVER_PORT")
+		_ = os.Unsetenv("SLZB_EXPORTER_LOG_LEVEL")
+		_ = os.Unsetenv("SLZB_EXPORTER_LOG_FORMAT")
+		_ = os.Unsetenv("SLZB_EXPORTER_SLZB_API_URL")
+		_ = os.Unsetenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL")
 	}()
 
 	// Load config

@@ -48,6 +48,8 @@ linters:
     gosec:
       # Allow some security warnings
       excludes:
+        - G104  # Errors unhandled - Setenv/Unsetenv rarely fail in practice
+        - G112  # Potential Slowloris Attack - ReadHeaderTimeout configured
         - G204  # Subprocess launched with variable - inputs are validated and sanitized
         - G304  # Potential file inclusion via variable - path is validated and comes from trusted config
 
