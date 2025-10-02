@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0](https://github.com/d0ugal/slzb-exporter/compare/v2.4.4...v2.5.0) (2025-10-02)
+
+
+### Features
+
+* **deps:** migrate to YAML v3 ([8dcd0f9](https://github.com/d0ugal/slzb-exporter/commit/8dcd0f9a245af6ed48c37488a376060b3257f52f))
+* **renovate:** add gomodTidy post-update option for Go modules ([8cf2ecb](https://github.com/d0ugal/slzb-exporter/commit/8cf2ecb8d0c8a0e998176fcaaac37b9ac50d03f1))
+
+
+### Reverts
+
+* remove unnecessary renovate config changes ([d1fe352](https://github.com/d0ugal/slzb-exporter/commit/d1fe352be40c15384fd1a40bac98bd6b8bd41496))
+* remove unnecessary renovate config changes ([d5d9d42](https://github.com/d0ugal/slzb-exporter/commit/d5d9d4283c385721a1326c3a7074d52e2df2096b))
+
 ## [2.4.4](https://github.com/d0ugal/slzb-exporter/compare/v2.4.3...v2.4.4) (2025-10-02)
 
 
