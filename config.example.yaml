@@ -14,8 +14,3 @@ SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL=10s
 SLZB_EXPORTER_LOG_LEVEL=info  # debug, info, warn, error
 SLZB_EXPORTER_LOG_FORMAT=json # json, text
 
-# Example Docker run command:
-# docker run -p 9110:9110 \
-#   -e SLZB_EXPORTER_SLZB_API_URL=http://your-slzb-device.local \
-#   -e SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL=60s \
-#   ghcr.io/d0ugal/slzb-exporter:latest
