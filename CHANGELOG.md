@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0](https://github.com/d0ugal/slzb-exporter/compare/v2.5.0...v2.6.0) (2025-10-03)
+
+
+### Features
+
+* pin versions in documentation and examples ([9931284](https://github.com/d0ugal/slzb-exporter/commit/9931284213bfc471a533ed69e3f5ad6e4624bb9d))
+* **renovate:** add docs commit message format for documentation updates ([08f512c](https://github.com/d0ugal/slzb-exporter/commit/08f512cd5149676d70d40caf8ddac804d8c65adb))
+
+
+### Reverts
+
+* remove unnecessary renovate config changes ([019cdb1](https://github.com/d0ugal/slzb-exporter/commit/019cdb1f094719bce4e9c9e80c1346a2f86c59b3))
+
 ## [2.5.0](https://github.com/d0ugal/slzb-exporter/compare/v2.4.4...v2.5.0) (2025-10-02)
 
 
