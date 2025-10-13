@@ -2,7 +2,7 @@ module github.com/d0ugal/slzb-exporter
 
 go 1.25
 
-toolchain go1.25.2
+toolchain go1.25.3
 
 require github.com/prometheus/client_golang v1.23.2
 
