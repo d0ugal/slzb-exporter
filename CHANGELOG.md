@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.0](https://github.com/d0ugal/slzb-exporter/compare/v2.9.1...v2.10.0) (2025-10-14)
+
+
+### Features
+
+* convert to Gin framework and set release mode unless debug logging ([03b9253](https://github.com/d0ugal/slzb-exporter/commit/03b92532f3e0e4641bfdcab46c7ddf6382342d90))
+
+
+### Bug Fixes
+
+* auto-fix import ordering and update dependencies ([d7f04af](https://github.com/d0ugal/slzb-exporter/commit/d7f04aff33a417dc570e7dd2966ad68d2bf18c34))
+* correct import ordering and update dependencies ([901f1d5](https://github.com/d0ugal/slzb-exporter/commit/901f1d5a36212bc928b2de157b92a906ae64001e))
+* Update module github.com/bytedance/sonic to v1.14.1 ([22c7fa7](https://github.com/d0ugal/slzb-exporter/commit/22c7fa761cea779b32f7cfb98d938d1f8c8a798c))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.10 ([659d52e](https://github.com/d0ugal/slzb-exporter/commit/659d52e3ba28f3d477aa11cbbe5ba93eeed2ca64))
+* Update module github.com/goccy/go-json to v0.10.5 ([8ba0181](https://github.com/d0ugal/slzb-exporter/commit/8ba0181bf94d10c28354c43ed66a6b8e728af0ce))
+
 ## [2.9.1](https://github.com/d0ugal/slzb-exporter/compare/v2.9.0...v2.9.1) (2025-10-14)
 
 
