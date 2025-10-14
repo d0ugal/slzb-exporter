@@ -7,12 +7,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
 	"github.com/d0ugal/slzb-exporter/internal/version"
+	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Server struct {
@@ -27,7 +26,7 @@ func New(cfg *config.Config, metricsRegistry *metrics.Registry) *Server {
 	if cfg.Logging.Level != "debug" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	
+
 	router := gin.New()
 	router.Use(gin.Recovery())
 
