@@ -1,20 +1,18 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log/slog"
 	"os"
-	"os/signal"
-	"syscall"
 
+	"github.com/d0ugal/promexporter/app"
+	"github.com/d0ugal/promexporter/logging"
+	promexporter_metrics "github.com/d0ugal/promexporter/metrics"
+	"github.com/d0ugal/promexporter/version"
 	"github.com/d0ugal/slzb-exporter/internal/collectors"
 	"github.com/d0ugal/slzb-exporter/internal/config"
-	"github.com/d0ugal/slzb-exporter/internal/logging"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
-	"github.com/d0ugal/slzb-exporter/internal/server"
-	"github.com/d0ugal/slzb-exporter/internal/version"
 )
 
 func main() {
@@ -41,45 +39,30 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Configure logging
-	logging.Configure(&cfg.Logging)
+	// Configure logging using promexporter
+	logging.Configure(&logging.Config{
+		Level:  cfg.Logging.Level,
+		Format: cfg.Logging.Format,
+	})
 
-	// Initialize metrics
-	metricsRegistry := metrics.NewRegistry()
+	// Initialize metrics registry using promexporter
+	metricsRegistry := promexporter_metrics.NewRegistry()
 
-	// Set version info metric
-	versionInfo := version.Get()
-	metricsRegistry.VersionInfo.WithLabelValues(versionInfo.Version, versionInfo.Commit, versionInfo.BuildDate).Set(1)
+	// Add custom metrics to the registry
+	slzbRegistry := metrics.NewSLZBRegistry(metricsRegistry)
 
-	// Create collectors
-	slzbCollector := collectors.NewSLZBCollector(cfg, metricsRegistry)
+	// Create collector
+	slzbCollector := collectors.NewSLZBCollector(cfg, slzbRegistry)
 
-	// Start collectors
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	// Create and run application using promexporter
+	application := app.New("slzb-exporter").
+		WithConfig(&cfg.BaseConfig).
+		WithMetrics(metricsRegistry).
+		WithCollector(slzbCollector).
+		Build()
 
-	slzbCollector.Start(ctx)
-
-	// Create and start server
-	srv := server.New(cfg, metricsRegistry)
-
-	// Handle graceful shutdown
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-
-	go func() {
-		<-sigChan
-		slog.Info("Shutting down gracefully...")
-		cancel()
-
-		if err := srv.Shutdown(); err != nil {
-			slog.Error("Failed to shutdown server gracefully", "error", err)
-		}
-	}()
-
-	// Start server
-	if err := srv.Start(); err != nil {
-		slog.Error("Server failed", "error", err)
+	if err := application.Run(); err != nil {
+		slog.Error("Application failed", "error", err)
 		os.Exit(1)
 	}
 }
