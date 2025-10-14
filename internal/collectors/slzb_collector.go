@@ -18,7 +18,7 @@ import (
 // SLZBCollector collects metrics from SLZB devices
 type SLZBCollector struct {
 	config  *config.Config
-	metrics *metrics.Registry
+	metrics *metrics.SLZBRegistry
 	client  *http.Client
 
 	deviceInfo map[string]string // Cache for device information
@@ -26,7 +26,7 @@ type SLZBCollector struct {
 }
 
 // NewSLZBCollector creates a new SLZB collector
-func NewSLZBCollector(cfg *config.Config, metricsRegistry *metrics.Registry) *SLZBCollector {
+func NewSLZBCollector(cfg *config.Config, metricsRegistry *metrics.SLZBRegistry) *SLZBCollector {
 	// Derive device ID from API URL
 	deviceID := deriveDeviceID(cfg.SLZB.APIURL)
 
@@ -553,4 +553,10 @@ func (sc *SLZBCollector) parseEthernetSpeed(speedStr string) float64 {
 		slog.Warn("Unknown speed unit", "speed", speedStr, "unit", parts[1])
 		return 100.0
 	}
+}
+
+// Stop stops the collector
+func (sc *SLZBCollector) Stop() {
+	slog.Info("Stopping SLZB collector...")
+	// No cleanup needed for HTTP client
 }

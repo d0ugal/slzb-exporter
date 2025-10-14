@@ -5,81 +5,80 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/d0ugal/slzb-exporter/internal/logging"
+	"github.com/d0ugal/promexporter/config"
 )
 
 // Config represents the application configuration
 type Config struct {
-	Server  ServerConfig          `yaml:"server"`
-	Logging logging.LoggingConfig `yaml:"logging"`
-	SLZB    SLZBConfig            `yaml:"slzb"`
-}
-
-// ServerConfig represents the HTTP server configuration
-type ServerConfig struct {
-	Host string `env:"SLZB_EXPORTER_SERVER_HOST" yaml:"host"`
-	Port int    `env:"SLZB_EXPORTER_SERVER_PORT" yaml:"port"`
+	config.BaseConfig
+	SLZB SLZBConfig `yaml:"slzb"`
 }
 
 // SLZBConfig represents the SLZB device configuration
 type SLZBConfig struct {
-	APIURL   string        `env:"SLZB_EXPORTER_SLZB_API_URL"             yaml:"api_url"`
-	Interval time.Duration `env:"SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL" yaml:"interval"`
+	APIURL   string        `yaml:"api_url"`
+	Interval time.Duration `yaml:"interval"`
 }
 
 // LoadConfig loads configuration from environment variables with defaults
 func LoadConfig() (*Config, error) {
-	cfg := &Config{
-		Server: ServerConfig{
-			Host: "0.0.0.0",
-			Port: 9110,
-		},
-		Logging: logging.LoggingConfig{
-			Level:  "info",
-			Format: "json",
-		},
-		SLZB: SLZBConfig{
-			APIURL:   "http://slzb-device.local",
-			Interval: 10 * time.Second, // 10 seconds
-		},
-	}
+	cfg := &Config{}
 
-	// Always load from environment variables when available
-	loadFromEnv(cfg)
-
-	return cfg, nil
-}
-
-// loadFromEnv loads configuration from environment variables
-func loadFromEnv(cfg *Config) {
-	// Server config
+	// Load base configuration from environment
+	baseConfig := &config.BaseConfig{}
+	
+	// Server configuration
 	if host := os.Getenv("SLZB_EXPORTER_SERVER_HOST"); host != "" {
-		cfg.Server.Host = host
+		baseConfig.Server.Host = host
+	} else {
+		baseConfig.Server.Host = "0.0.0.0"
 	}
 
 	if portStr := os.Getenv("SLZB_EXPORTER_SERVER_PORT"); portStr != "" {
 		if port, err := strconv.Atoi(portStr); err == nil {
-			cfg.Server.Port = port
+			baseConfig.Server.Port = port
+		} else {
+			baseConfig.Server.Port = 9110
 		}
+	} else {
+		baseConfig.Server.Port = 9110
 	}
 
-	// Logging config
+	// Logging configuration
 	if level := os.Getenv("SLZB_EXPORTER_LOG_LEVEL"); level != "" {
-		cfg.Logging.Level = level
+		baseConfig.Logging.Level = level
+	} else {
+		baseConfig.Logging.Level = "info"
 	}
 
 	if format := os.Getenv("SLZB_EXPORTER_LOG_FORMAT"); format != "" {
-		cfg.Logging.Format = format
+		baseConfig.Logging.Format = format
+	} else {
+		baseConfig.Logging.Format = "json"
 	}
 
-	// SLZB config
+	// Metrics configuration
+	baseConfig.Metrics.Collection.DefaultInterval = config.Duration{}
+	baseConfig.Metrics.Collection.DefaultIntervalSet = false
+
+	cfg.BaseConfig = *baseConfig
+
+	// SLZB configuration
 	if apiURL := os.Getenv("SLZB_EXPORTER_SLZB_API_URL"); apiURL != "" {
 		cfg.SLZB.APIURL = apiURL
+	} else {
+		cfg.SLZB.APIURL = "http://slzb-device.local"
 	}
 
 	if intervalStr := os.Getenv("SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL"); intervalStr != "" {
 		if interval, err := time.ParseDuration(intervalStr); err == nil {
 			cfg.SLZB.Interval = interval
+		} else {
+			cfg.SLZB.Interval = 10 * time.Second
 		}
+	} else {
+		cfg.SLZB.Interval = 10 * time.Second
 	}
+
+	return cfg, nil
 }
