@@ -46,7 +46,7 @@ func main() {
 	})
 
 	// Initialize metrics registry using promexporter
-	metricsRegistry := promexporter_metrics.NewRegistry()
+	metricsRegistry := promexporter_metrics.NewRegistry("slzb_exporter_info")
 
 	// Add custom metrics to the registry
 	slzbRegistry := metrics.NewSLZBRegistry(metricsRegistry)
@@ -55,7 +55,7 @@ func main() {
 	slzbCollector := collectors.NewSLZBCollector(cfg, slzbRegistry)
 
 	// Create and run application using promexporter
-	application := app.New("slzb-exporter").
+	application := app.New("SLZB Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
 		WithCollector(slzbCollector).
