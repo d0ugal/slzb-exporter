@@ -11,6 +11,7 @@ import (
 // Config represents the application configuration
 type Config struct {
 	config.BaseConfig
+
 	SLZB SLZBConfig `yaml:"slzb"`
 }
 
@@ -26,7 +27,7 @@ func LoadConfig() (*Config, error) {
 
 	// Load base configuration from environment
 	baseConfig := &config.BaseConfig{}
-	
+
 	// Server configuration
 	if host := os.Getenv("SLZB_EXPORTER_SERVER_HOST"); host != "" {
 		baseConfig.Server.Host = host
