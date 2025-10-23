@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.0](https://github.com/d0ugal/slzb-exporter/compare/v2.10.1...v2.11.0) (2025-10-23)
+
+
+### Features
+
+* migrate slzb-exporter to promexporter library ([be9eac7](https://github.com/d0ugal/slzb-exporter/commit/be9eac7409e8e54523d845181b59b801d22043ea))
+* update to promexporter v1.0.0 ([4ee43c7](https://github.com/d0ugal/slzb-exporter/commit/4ee43c70db414e6341d679b5eec2458784619ec2))
+
+
+### Bug Fixes
+
+* update config tests for promexporter v1.0.0 migration ([152f912](https://github.com/d0ugal/slzb-exporter/commit/152f912b25a5ab1efd7ed9fff9eaab9ac588066b))
+* Update module github.com/d0ugal/promexporter to v1.0.1 ([ee0d64c](https://github.com/d0ugal/slzb-exporter/commit/ee0d64c4227d625c9e28cf3ef763347dfb37872c))
+* Update module github.com/prometheus/procfs to v0.18.0 ([502167f](https://github.com/d0ugal/slzb-exporter/commit/502167f61d2d348d17c07c12b08ace5054d07bde))
+* update to latest promexporter changes ([62e1231](https://github.com/d0ugal/slzb-exporter/commit/62e123167446f2bbc6c94ab2cefcdfb1e9b8761d))
+
 ## [2.10.1](https://github.com/d0ugal/slzb-exporter/compare/v2.10.0...v2.10.1) (2025-10-14)
 
 
