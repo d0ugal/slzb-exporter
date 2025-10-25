@@ -75,7 +75,7 @@ jobs:
         go build -v -ldflags="-s -w" -o slzb-exporter ./cmd
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: slzb-exporter
         path: slzb-exporter
