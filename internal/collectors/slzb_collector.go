@@ -96,7 +96,7 @@ func (sc *SLZBCollector) collectMetrics() {
 		// Update last collection timestamp if we had any successful collections
 		if successfulCollections > 0 {
 			sc.metrics.SLZBLastCollectionTime.With(prometheus.Labels{
-				"device_id": deviceID,
+				"device": deviceID,
 			}).Set(float64(time.Now().Unix()))
 		}
 
