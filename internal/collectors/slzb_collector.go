@@ -13,6 +13,7 @@ import (
 
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 // SLZBCollector collects metrics from SLZB devices
@@ -94,12 +95,16 @@ func (sc *SLZBCollector) collectMetrics() {
 	defer func() {
 		// Update last collection timestamp if we had any successful collections
 		if successfulCollections > 0 {
-			sc.metrics.SLZBLastCollectionTime.WithLabelValues(deviceID).Set(float64(time.Now().Unix()))
+			sc.metrics.SLZBLastCollectionTime.With(prometheus.Labels{
+				"device_id": deviceID,
+			}).Set(float64(time.Now().Unix()))
 		}
 
 		// Record collection duration
 		duration := time.Since(collectionStart).Seconds()
-		sc.metrics.SLZBCollectionDurationSeconds.WithLabelValues(deviceID).Observe(duration)
+		sc.metrics.SLZBCollectionDurationSeconds.With(prometheus.Labels{
+			"device_id": deviceID,
+		}).Observe(duration)
 
 		// Log collection summary
 		slog.Info("Collection cycle completed",
@@ -111,14 +116,25 @@ func (sc *SLZBCollector) collectMetrics() {
 
 	// Get device information and test reachability in one request
 	if sc.collectDeviceInfo(deviceID) {
-		sc.metrics.SLZBDeviceReachable.WithLabelValues(deviceID).Set(1)
-		sc.metrics.SLZBConnected.WithLabelValues(deviceID).Set(1)
+		sc.metrics.SLZBDeviceReachable.With(prometheus.Labels{
+			"device_id": deviceID,
+		}).Set(1)
+		sc.metrics.SLZBConnected.With(prometheus.Labels{
+			"device_id": deviceID,
+		}).Set(1)
 
 		successfulCollections++
 	} else {
-		sc.metrics.SLZBDeviceReachable.WithLabelValues(deviceID).Set(0)
-		sc.metrics.SLZBConnected.WithLabelValues(deviceID).Set(0)
-		sc.metrics.SLZBCollectionErrors.WithLabelValues(deviceID, "device_unreachable").Inc()
+		sc.metrics.SLZBDeviceReachable.With(prometheus.Labels{
+			"device_id": deviceID,
+		}).Set(0)
+		sc.metrics.SLZBConnected.With(prometheus.Labels{
+			"device_id": deviceID,
+		}).Set(0)
+		sc.metrics.SLZBCollectionErrors.With(prometheus.Labels{
+			"device_id":  deviceID,
+			"error_type": "device_unreachable",
+		}).Inc()
 		slog.Error("Device unreachable", "device", deviceID)
 
 		return
@@ -158,8 +174,15 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	// Get device information from action 0
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=0&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "0", "request_error").Inc()
-		sc.metrics.SLZBAPITimeoutErrorsTotal.WithLabelValues(deviceName, "0").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "0",
+			"error_type":  "request_error",
+		}).Inc()
+		sc.metrics.SLZBAPITimeoutErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "0",
+		}).Inc()
 		slog.Error("Failed to get device info", "error", err)
 
 		return false
@@ -173,12 +196,23 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 
 	// Record API response time
 	responseTime := time.Since(startTime).Seconds()
-	sc.metrics.SLZBAPIResponseTimeSeconds.WithLabelValues(deviceName, "0").Observe(responseTime)
+	sc.metrics.SLZBAPIResponseTimeSeconds.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "0",
+	}).Observe(responseTime)
 
-	sc.metrics.SLZBHTTPRequestsTotal.WithLabelValues(deviceName, "0", strconv.Itoa(resp.StatusCode)).Inc()
+	sc.metrics.SLZBHTTPRequestsTotal.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "0",
+		"status_code": strconv.Itoa(resp.StatusCode),
+	}).Inc()
 
 	if resp.StatusCode != http.StatusOK {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "0", "http_error").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "0",
+			"error_type":  "http_error",
+		}).Inc()
 		slog.Error("HTTP error getting device info", "status", resp.StatusCode)
 
 		return false
@@ -189,7 +223,11 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	if respValuesArr != "" {
 		var deviceData map[string]string
 		if err := json.Unmarshal([]byte(respValuesArr), &deviceData); err != nil {
-			sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "0", "json_error").Inc()
+			sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+				"device_name": deviceName,
+				"endpoint":    "0",
+				"error_type":  "json_error",
+			}).Inc()
 			slog.Error("Failed to parse respValuesArr header", "error", err)
 		} else {
 			// Cache the device information
@@ -198,30 +236,45 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 			// Update metrics with real device data
 			if tempStr, ok := deviceData["deviceTemp"]; ok {
 				if temp, err := strconv.ParseFloat(tempStr, 64); err == nil {
-					sc.metrics.SLZBDeviceTemp.WithLabelValues(deviceName).Set(temp)
+					sc.metrics.SLZBDeviceTemp.With(prometheus.Labels{
+						"device_name": deviceName,
+					}).Set(temp)
 				}
 			}
 
 			if uptimeStr, ok := deviceData["uptime"]; ok {
 				// Parse uptime like "7 d 15:23:25" to seconds
 				if uptimeSeconds := sc.parseUptime(uptimeStr); uptimeSeconds > 0 {
-					sc.metrics.SLZBUptime.WithLabelValues(deviceName).Set(float64(uptimeSeconds))
+					sc.metrics.SLZBUptime.With(prometheus.Labels{
+						"device_name": deviceName,
+					}).Set(float64(uptimeSeconds))
 				}
 			}
 
 			if socketUptimeStr, ok := deviceData["connectedSocket"]; ok {
 				// Parse socket uptime like "7 d 18:28:12" to seconds
 				if socketUptimeSeconds := sc.parseUptime(socketUptimeStr); socketUptimeSeconds > 0 {
-					sc.metrics.SLZBSocketUptime.WithLabelValues(deviceName).Set(float64(socketUptimeSeconds))
-					sc.metrics.SLZBSocketConnected.WithLabelValues(deviceName, "1").Set(1)
+					sc.metrics.SLZBSocketUptime.With(prometheus.Labels{
+						"device_name": deviceName,
+					}).Set(float64(socketUptimeSeconds))
+					sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
+						"device_name": deviceName,
+						"status":      "1",
+					}).Set(1)
 				}
 			} else {
-				sc.metrics.SLZBSocketConnected.WithLabelValues(deviceName, "0").Set(0)
+				sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
+					"device_name": deviceName,
+					"status":      "0",
+				}).Set(0)
 			}
 
 			// Extract device operational mode
 			if operationalMode, ok := deviceData["operationalMode"]; ok {
-				sc.metrics.SLZBDeviceMode.WithLabelValues(deviceName, operationalMode).Set(1)
+				sc.metrics.SLZBDeviceMode.With(prometheus.Labels{
+					"device_name": deviceName,
+					"mode":        operationalMode,
+				}).Set(1)
 			}
 
 			var heapFree, heapSize float64
@@ -232,7 +285,9 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 			if heapFreeStr, ok := deviceData["espHeapFree"]; ok {
 				if parsedHeapFree, err := strconv.ParseFloat(heapFreeStr, 64); err == nil {
 					heapFree = parsedHeapFree
-					sc.metrics.SLZBHeapFree.WithLabelValues(deviceName).Set(heapFree)
+					sc.metrics.SLZBHeapFree.With(prometheus.Labels{
+						"device_name": deviceName,
+					}).Set(heapFree)
 
 					heapFreeValid = true
 				}
@@ -241,7 +296,9 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 			if heapSizeStr, ok := deviceData["espHeapSize"]; ok {
 				if parsedHeapSize, err := strconv.ParseFloat(heapSizeStr, 64); err == nil {
 					heapSize = parsedHeapSize
-					sc.metrics.SLZBHeapSize.WithLabelValues(deviceName).Set(heapSize)
+					sc.metrics.SLZBHeapSize.With(prometheus.Labels{
+						"device_name": deviceName,
+					}).Set(heapSize)
 
 					heapSizeValid = true
 				}
@@ -250,7 +307,9 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 			// Calculate heap ratio if both values are valid
 			if heapFreeValid && heapSizeValid && heapSize > 0 {
 				heapRatio := (heapFree / heapSize) * 100.0 // Convert to percentage
-				sc.metrics.SLZBHeapRatio.WithLabelValues(deviceName).Set(heapRatio)
+				sc.metrics.SLZBHeapRatio.With(prometheus.Labels{
+					"device_name": deviceName,
+				}).Set(heapRatio)
 				slog.Debug("Heap ratio calculated", "device", deviceName, "free", heapFree, "size", heapSize, "ratio", heapRatio)
 			}
 
@@ -296,12 +355,44 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 
 			// Set ethernet connection metrics based on device info
 			if ethConnected {
-				sc.metrics.SLZBEthernetConnected.WithLabelValues(deviceName, ipAddr, macAddr, gateway, subnet, dns, speedMbps).Set(1)
-				sc.metrics.SLZBWifiConnected.WithLabelValues(deviceName, "none", "none", "none", "none", "none", "none").Set(0)
+				sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
+					"device_name": deviceName,
+					"ip_addr":     ipAddr,
+					"mac_addr":    macAddr,
+					"gateway":     gateway,
+					"subnet":      subnet,
+					"dns":         dns,
+					"speed_mbps":  speedMbps,
+				}).Set(1)
+				sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
+					"device_name": deviceName,
+					"ssid":        "none",
+					"ip_addr":     "none",
+					"mac_addr":    "none",
+					"gateway":     "none",
+					"subnet":      "none",
+					"dns":         "none",
+				}).Set(0)
 				slog.Info("Ethernet connected from device info", "device", deviceName, "ip", ipAddr, "mac", macAddr, "gateway", gateway, "subnet", subnet, "dns", dns, "speed", speedMbps)
 			} else {
-				sc.metrics.SLZBEthernetConnected.WithLabelValues(deviceName, "unknown", "unknown", "unknown", "unknown", "unknown", "unknown", "unknown").Set(0)
-				sc.metrics.SLZBWifiConnected.WithLabelValues(deviceName, "unknown", "unknown", "unknown", "unknown", "unknown", "unknown").Set(0)
+				sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
+					"device_name": deviceName,
+					"ip_addr":     "unknown",
+					"mac_addr":    "unknown",
+					"gateway":     "unknown",
+					"subnet":      "unknown",
+					"dns":         "unknown",
+					"speed_mbps":  "unknown",
+				}).Set(0)
+				sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
+					"device_name": deviceName,
+					"ssid":        "unknown",
+					"ip_addr":     "unknown",
+					"mac_addr":    "unknown",
+					"gateway":     "unknown",
+					"subnet":      "unknown",
+					"dns":         "unknown",
+				}).Set(0)
 				slog.Info("Ethernet disconnected from device info", "device", deviceName)
 			}
 
@@ -324,17 +415,29 @@ func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 
 	// Get firmware information from device info (already collected)
 	if deviceInfo, ok := sc.deviceInfo["VERSION"]; ok {
-		sc.metrics.SLZBFirmwareCurrentVersion.WithLabelValues(deviceName, deviceInfo, "unknown").Set(1)
+		sc.metrics.SLZBFirmwareCurrentVersion.With(prometheus.Labels{
+			"device_name": deviceName,
+			"device_info": deviceInfo,
+			"version":     "unknown",
+		}).Set(1)
 	}
 
 	// Check for firmware updates (this would require additional API calls)
 	// For now, we'll set a default value
-	sc.metrics.SLZBFirmwareUpdateAvailable.WithLabelValues(deviceName, "unknown").Set(0)
-	sc.metrics.SLZBFirmwareLastCheckTime.WithLabelValues(deviceName).Set(float64(time.Now().Unix()))
+	sc.metrics.SLZBFirmwareUpdateAvailable.With(prometheus.Labels{
+		"device_name": deviceName,
+		"status":      "unknown",
+	}).Set(0)
+	sc.metrics.SLZBFirmwareLastCheckTime.With(prometheus.Labels{
+		"device_name": deviceName,
+	}).Set(float64(time.Now().Unix()))
 
 	// Record API response time (using device info collection time)
 	responseTime := time.Since(startTime).Seconds()
-	sc.metrics.SLZBAPIResponseTimeSeconds.WithLabelValues(deviceName, "firmware").Observe(responseTime)
+	sc.metrics.SLZBAPIResponseTimeSeconds.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "firmware",
+	}).Observe(responseTime)
 
 	slog.Debug("Firmware status collected", "device", deviceName, "response_time", responseTime)
 
@@ -348,8 +451,15 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	// Get file list from action 4
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=4&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "4", "request_error").Inc()
-		sc.metrics.SLZBAPITimeoutErrorsTotal.WithLabelValues(deviceName, "4").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "4",
+			"error_type":  "request_error",
+		}).Inc()
+		sc.metrics.SLZBAPITimeoutErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "4",
+		}).Inc()
 		slog.Error("Failed to get configuration file list", "error", err)
 
 		return false
@@ -363,12 +473,23 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 
 	// Record API response time
 	responseTime := time.Since(startTime).Seconds()
-	sc.metrics.SLZBAPIResponseTimeSeconds.WithLabelValues(deviceName, "4").Observe(responseTime)
+	sc.metrics.SLZBAPIResponseTimeSeconds.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "4",
+	}).Observe(responseTime)
 
-	sc.metrics.SLZBHTTPRequestsTotal.WithLabelValues(deviceName, "4", strconv.Itoa(resp.StatusCode)).Inc()
+	sc.metrics.SLZBHTTPRequestsTotal.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "4",
+		"status_code": strconv.Itoa(resp.StatusCode),
+	}).Inc()
 
 	if resp.StatusCode != http.StatusOK {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "4", "http_error").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "4",
+			"error_type":  "http_error",
+		}).Inc()
 		slog.Error("HTTP error getting configuration file list", "status", resp.StatusCode)
 
 		return false
@@ -384,14 +505,22 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "4", "read_error").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "4",
+			"error_type":  "read_error",
+		}).Inc()
 		slog.Error("Failed to read configuration file list response", "error", err)
 
 		return false
 	}
 
 	if err := json.Unmarshal(body, &fileList); err != nil {
-		sc.metrics.SLZBHTTPErrorsTotal.WithLabelValues(deviceName, "4", "json_error").Inc()
+		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+			"device_name": deviceName,
+			"endpoint":    "4",
+			"error_type":  "json_error",
+		}).Inc()
 		slog.Error("Failed to parse configuration file list", "error", err)
 
 		return false
@@ -415,15 +544,30 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	}
 
 	// Update metrics
-	sc.metrics.SLZBConfigFileCount.WithLabelValues(deviceName, "config").Set(float64(configFiles))
-	sc.metrics.SLZBConfigFileCount.WithLabelValues(deviceName, "backup").Set(float64(backupFiles))
+	sc.metrics.SLZBConfigFileCount.With(prometheus.Labels{
+		"device_name": deviceName,
+		"file_type":   "config",
+	}).Set(float64(configFiles))
+	sc.metrics.SLZBConfigFileCount.With(prometheus.Labels{
+		"device_name": deviceName,
+		"file_type":   "backup",
+	}).Set(float64(backupFiles))
 
 	// Set backup status (assuming success if backup files exist)
 	if backupFiles > 0 {
-		sc.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceName, "auto").Set(1)
-		sc.metrics.SLZBConfigLastBackupTime.WithLabelValues(deviceName, "auto").Set(float64(time.Now().Unix()))
+		sc.metrics.SLZBConfigBackupStatus.With(prometheus.Labels{
+			"device_name": deviceName,
+			"backup_type": "auto",
+		}).Set(1)
+		sc.metrics.SLZBConfigLastBackupTime.With(prometheus.Labels{
+			"device_name": deviceName,
+			"backup_type": "auto",
+		}).Set(float64(time.Now().Unix()))
 	} else {
-		sc.metrics.SLZBConfigBackupStatus.WithLabelValues(deviceName, "auto").Set(0)
+		sc.metrics.SLZBConfigBackupStatus.With(prometheus.Labels{
+			"device_name": deviceName,
+			"backup_type": "auto",
+		}).Set(0)
 	}
 
 	slog.Debug("Configuration metrics collected", "device", deviceName, "files", len(fileList.Files), "response_time", responseTime)
