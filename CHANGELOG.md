@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.3](https://github.com/d0ugal/slzb-exporter/compare/v2.12.2...v2.12.3) (2025-10-27)
+
+
+### Bug Fixes
+
+* correct label mapping for SLZB device metrics ([aa45595](https://github.com/d0ugal/slzb-exporter/commit/aa4559509ba78028028033ffe810ee782eca39f2))
+
 ## [2.12.2](https://github.com/d0ugal/slzb-exporter/compare/v2.12.1...v2.12.2) (2025-10-26)
 
 
