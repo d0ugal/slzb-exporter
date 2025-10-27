@@ -174,17 +174,7 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	// Get device information from action 0
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=0&page=0", sc.config.SLZB.APIURL))
 	if err != nil {
-		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
-			"device_name": deviceName,
-			"endpoint":    "0",
-			"error_type":  "request_error",
-		}).Inc()
-		sc.metrics.SLZBAPITimeoutErrorsTotal.With(prometheus.Labels{
-			"device_name": deviceName,
-			"endpoint":    "0",
-		}).Inc()
-		slog.Error("Failed to get device info", "error", err)
-
+		sc.handleDeviceInfoRequestError(deviceName, err)
 		return false
 	}
 
@@ -194,8 +184,43 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 		}
 	}()
 
-	// Record API response time
+	// Record API response time and update metrics
 	responseTime := time.Since(startTime).Seconds()
+	sc.updateDeviceInfoMetrics(deviceName, resp, responseTime)
+
+	if resp.StatusCode != http.StatusOK {
+		sc.handleDeviceInfoHTTPError(deviceName, resp.StatusCode)
+		return false
+	}
+
+	// Parse and process device data
+	respValuesArr := resp.Header.Get("respValuesArr")
+	if respValuesArr != "" {
+		return sc.processDeviceData(deviceName, respValuesArr)
+	}
+
+	// Fallback to default values if header is not available
+	sc.setDefaultDeviceInfo(deviceName)
+
+	return true
+}
+
+// handleDeviceInfoRequestError handles request errors for device info collection
+func (sc *SLZBCollector) handleDeviceInfoRequestError(deviceName string, err error) {
+	sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "0",
+		"error_type":  "request_error",
+	}).Inc()
+	sc.metrics.SLZBAPITimeoutErrorsTotal.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "0",
+	}).Inc()
+	slog.Error("Failed to get device info", "error", err)
+}
+
+// updateDeviceInfoMetrics updates API metrics for device info collection
+func (sc *SLZBCollector) updateDeviceInfoMetrics(deviceName string, resp *http.Response, responseTime float64) {
 	sc.metrics.SLZBAPIResponseTimeSeconds.With(prometheus.Labels{
 		"device_name": deviceName,
 		"endpoint":    "0",
@@ -206,207 +231,229 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 		"endpoint":    "0",
 		"status_code": strconv.Itoa(resp.StatusCode),
 	}).Inc()
+}
 
-	if resp.StatusCode != http.StatusOK {
+// handleDeviceInfoHTTPError handles HTTP errors for device info collection
+func (sc *SLZBCollector) handleDeviceInfoHTTPError(deviceName string, statusCode int) {
+	sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
+		"device_name": deviceName,
+		"endpoint":    "0",
+		"error_type":  "http_error",
+	}).Inc()
+	slog.Error("HTTP error getting device info", "status", statusCode)
+}
+
+// processDeviceData processes the device data from the response header
+func (sc *SLZBCollector) processDeviceData(deviceName, respValuesArr string) bool {
+	var deviceData map[string]string
+	if err := json.Unmarshal([]byte(respValuesArr), &deviceData); err != nil {
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device_name": deviceName,
 			"endpoint":    "0",
-			"error_type":  "http_error",
+			"error_type":  "json_error",
 		}).Inc()
-		slog.Error("HTTP error getting device info", "status", resp.StatusCode)
+		slog.Error("Failed to parse respValuesArr header", "error", err)
 
 		return false
 	}
 
-	// Parse the respValuesArr header which contains device information
-	respValuesArr := resp.Header.Get("respValuesArr")
-	if respValuesArr != "" {
-		var deviceData map[string]string
-		if err := json.Unmarshal([]byte(respValuesArr), &deviceData); err != nil {
-			sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
-				"device_name": deviceName,
-				"endpoint":    "0",
-				"error_type":  "json_error",
-			}).Inc()
-			slog.Error("Failed to parse respValuesArr header", "error", err)
-		} else {
-			// Cache the device information
-			sc.deviceInfo = deviceData
+	// Cache the device information
+	sc.deviceInfo = deviceData
 
-			// Update metrics with real device data
-			if tempStr, ok := deviceData["deviceTemp"]; ok {
-				if temp, err := strconv.ParseFloat(tempStr, 64); err == nil {
-					sc.metrics.SLZBDeviceTemp.With(prometheus.Labels{
-						"device_name": deviceName,
-					}).Set(temp)
-				}
-			}
+	// Update various device metrics
+	sc.updateDeviceBasicMetrics(deviceName, deviceData)
+	sc.updateDeviceUptimeMetrics(deviceName, deviceData)
+	sc.updateDeviceHeapMetrics(deviceName, deviceData)
+	sc.updateDeviceNetworkMetrics(deviceName, deviceData)
 
-			if uptimeStr, ok := deviceData["uptime"]; ok {
-				// Parse uptime like "7 d 15:23:25" to seconds
-				if uptimeSeconds := sc.parseUptime(uptimeStr); uptimeSeconds > 0 {
-					sc.metrics.SLZBUptime.With(prometheus.Labels{
-						"device_name": deviceName,
-					}).Set(float64(uptimeSeconds))
-				}
-			}
-
-			if socketUptimeStr, ok := deviceData["connectedSocket"]; ok {
-				// Parse socket uptime like "7 d 18:28:12" to seconds
-				if socketUptimeSeconds := sc.parseUptime(socketUptimeStr); socketUptimeSeconds > 0 {
-					sc.metrics.SLZBSocketUptime.With(prometheus.Labels{
-						"device_name": deviceName,
-					}).Set(float64(socketUptimeSeconds))
-					sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
-						"device_name": deviceName,
-						"status":      "1",
-					}).Set(1)
-				}
-			} else {
-				sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
-					"device_name": deviceName,
-					"status":      "0",
-				}).Set(0)
-			}
-
-			// Extract device operational mode
-			if operationalMode, ok := deviceData["operationalMode"]; ok {
-				sc.metrics.SLZBDeviceMode.With(prometheus.Labels{
-					"device_name": deviceName,
-					"mode":        operationalMode,
-				}).Set(1)
-			}
-
-			var heapFree, heapSize float64
-
-			heapFreeValid := false
-			heapSizeValid := false
-
-			if heapFreeStr, ok := deviceData["espHeapFree"]; ok {
-				if parsedHeapFree, err := strconv.ParseFloat(heapFreeStr, 64); err == nil {
-					heapFree = parsedHeapFree
-					sc.metrics.SLZBHeapFree.With(prometheus.Labels{
-						"device_name": deviceName,
-					}).Set(heapFree)
-
-					heapFreeValid = true
-				}
-			}
-
-			if heapSizeStr, ok := deviceData["espHeapSize"]; ok {
-				if parsedHeapSize, err := strconv.ParseFloat(heapSizeStr, 64); err == nil {
-					heapSize = parsedHeapSize
-					sc.metrics.SLZBHeapSize.With(prometheus.Labels{
-						"device_name": deviceName,
-					}).Set(heapSize)
-
-					heapSizeValid = true
-				}
-			}
-
-			// Calculate heap ratio if both values are valid
-			if heapFreeValid && heapSizeValid && heapSize > 0 {
-				heapRatio := (heapFree / heapSize) * 100.0 // Convert to percentage
-				sc.metrics.SLZBHeapRatio.With(prometheus.Labels{
-					"device_name": deviceName,
-				}).Set(heapRatio)
-				slog.Debug("Heap ratio calculated", "device", deviceName, "free", heapFree, "size", heapSize, "ratio", heapRatio)
-			}
-
-			// Extract ethernet connection status from device info
-			ethConnected := false
-			ipAddr := "unknown"
-			macAddr := "unknown"
-			gateway := "unknown"
-			subnet := "unknown"
-			dns := "unknown"
-			speedMbps := "unknown"
-
-			if ethConnection, ok := deviceData["ethConnection"]; ok && ethConnection == "Connected" {
-				ethConnected = true
-
-				// Get network details from device info
-				if ip, ok := deviceData["ethIp"]; ok && ip != "" {
-					ipAddr = ip
-				}
-
-				if mac, ok := deviceData["ethMac"]; ok && mac != "" {
-					macAddr = mac
-				}
-
-				if gate, ok := deviceData["ethGate"]; ok && gate != "" {
-					gateway = gate
-				}
-
-				if mask, ok := deviceData["etchMask"]; ok && mask != "" {
-					subnet = mask
-				}
-				// DNS is not available in device info, so we'll use gateway as DNS
-				if gate, ok := deviceData["ethGate"]; ok && gate != "" {
-					dns = gate
-				}
-				// Get ethernet speed
-				if ethSpeedStr, ok := deviceData["ethSpd"]; ok {
-					if ethSpeed := sc.parseEthernetSpeed(ethSpeedStr); ethSpeed > 0 {
-						speedMbps = fmt.Sprintf("%.0f", ethSpeed)
-					}
-				}
-			}
-
-			// Set ethernet connection metrics based on device info
-			if ethConnected {
-				sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
-					"device_name": deviceName,
-					"ip_addr":     ipAddr,
-					"mac_addr":    macAddr,
-					"gateway":     gateway,
-					"subnet":      subnet,
-					"dns":         dns,
-					"speed_mbps":  speedMbps,
-				}).Set(1)
-				sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
-					"device_name": deviceName,
-					"ssid":        "none",
-					"ip_addr":     "none",
-					"mac_addr":    "none",
-					"gateway":     "none",
-					"subnet":      "none",
-					"dns":         "none",
-				}).Set(0)
-				slog.Info("Ethernet connected from device info", "device", deviceName, "ip", ipAddr, "mac", macAddr, "gateway", gateway, "subnet", subnet, "dns", dns, "speed", speedMbps)
-			} else {
-				sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
-					"device_name": deviceName,
-					"ip_addr":     "unknown",
-					"mac_addr":    "unknown",
-					"gateway":     "unknown",
-					"subnet":      "unknown",
-					"dns":         "unknown",
-					"speed_mbps":  "unknown",
-				}).Set(0)
-				sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
-					"device_name": deviceName,
-					"ssid":        "unknown",
-					"ip_addr":     "unknown",
-					"mac_addr":    "unknown",
-					"gateway":     "unknown",
-					"subnet":      "unknown",
-					"dns":         "unknown",
-				}).Set(0)
-				slog.Info("Ethernet disconnected from device info", "device", deviceName)
-			}
-
-			slog.Info("Device info collected from respValuesArr", "device", deviceName, "info", deviceData)
-		}
-	} else {
-		// Fallback to default values if header is not available
-		sc.deviceInfo["name"] = "SLZB"
-		sc.deviceInfo["model"] = "SLZB"
-		sc.deviceInfo["firmware"] = "unknown"
-		slog.Debug("Device info collected with defaults", "device", deviceName, "info", sc.deviceInfo)
-	}
+	slog.Info("Device info collected from respValuesArr", "device", deviceName, "info", deviceData)
 
 	return true
+}
+
+// updateDeviceBasicMetrics updates basic device metrics (temperature, mode)
+func (sc *SLZBCollector) updateDeviceBasicMetrics(deviceName string, deviceData map[string]string) {
+	// Update device temperature
+	if tempStr, ok := deviceData["deviceTemp"]; ok {
+		if temp, err := strconv.ParseFloat(tempStr, 64); err == nil {
+			sc.metrics.SLZBDeviceTemp.With(prometheus.Labels{
+				"device_name": deviceName,
+			}).Set(temp)
+		}
+	}
+
+	// Extract device operational mode
+	if operationalMode, ok := deviceData["operationalMode"]; ok {
+		sc.metrics.SLZBDeviceMode.With(prometheus.Labels{
+			"device_name": deviceName,
+			"mode":        operationalMode,
+		}).Set(1)
+	}
+}
+
+// updateDeviceUptimeMetrics updates uptime-related metrics
+func (sc *SLZBCollector) updateDeviceUptimeMetrics(deviceName string, deviceData map[string]string) {
+	// Update device uptime
+	if uptimeStr, ok := deviceData["uptime"]; ok {
+		if uptimeSeconds := sc.parseUptime(uptimeStr); uptimeSeconds > 0 {
+			sc.metrics.SLZBUptime.With(prometheus.Labels{
+				"device_name": deviceName,
+			}).Set(float64(uptimeSeconds))
+		}
+	}
+
+	// Update socket uptime and connection status
+	if socketUptimeStr, ok := deviceData["connectedSocket"]; ok {
+		if socketUptimeSeconds := sc.parseUptime(socketUptimeStr); socketUptimeSeconds > 0 {
+			sc.metrics.SLZBSocketUptime.With(prometheus.Labels{
+				"device_name": deviceName,
+			}).Set(float64(socketUptimeSeconds))
+			sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
+				"device_name": deviceName,
+				"status":      "1",
+			}).Set(1)
+		}
+	} else {
+		sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
+			"device_name": deviceName,
+			"status":      "0",
+		}).Set(0)
+	}
+}
+
+// updateDeviceHeapMetrics updates heap-related metrics
+func (sc *SLZBCollector) updateDeviceHeapMetrics(deviceName string, deviceData map[string]string) {
+	var heapFree, heapSize float64
+
+	heapFreeValid := false
+	heapSizeValid := false
+
+	// Parse heap free
+	if heapFreeStr, ok := deviceData["espHeapFree"]; ok {
+		if parsedHeapFree, err := strconv.ParseFloat(heapFreeStr, 64); err == nil {
+			heapFree = parsedHeapFree
+			sc.metrics.SLZBHeapFree.With(prometheus.Labels{
+				"device_name": deviceName,
+			}).Set(heapFree)
+
+			heapFreeValid = true
+		}
+	}
+
+	// Parse heap size
+	if heapSizeStr, ok := deviceData["espHeapSize"]; ok {
+		if parsedHeapSize, err := strconv.ParseFloat(heapSizeStr, 64); err == nil {
+			heapSize = parsedHeapSize
+			sc.metrics.SLZBHeapSize.With(prometheus.Labels{
+				"device_name": deviceName,
+			}).Set(heapSize)
+
+			heapSizeValid = true
+		}
+	}
+
+	// Calculate heap ratio if both values are valid
+	if heapFreeValid && heapSizeValid && heapSize > 0 {
+		heapRatio := (heapFree / heapSize) * 100.0 // Convert to percentage
+		sc.metrics.SLZBHeapRatio.With(prometheus.Labels{
+			"device_name": deviceName,
+		}).Set(heapRatio)
+		slog.Debug("Heap ratio calculated", "device", deviceName, "free", heapFree, "size", heapSize, "ratio", heapRatio)
+	}
+}
+
+// updateDeviceNetworkMetrics updates network connection metrics
+func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceData map[string]string) {
+	ethConnected := false
+	ipAddr := "unknown"
+	macAddr := "unknown"
+	gateway := "unknown"
+	subnet := "unknown"
+	dns := "unknown"
+	speedMbps := "unknown"
+
+	// Check ethernet connection status
+	if ethConnection, ok := deviceData["ethConnection"]; ok && ethConnection == "Connected" {
+		ethConnected = true
+
+		// Get network details from device info
+		if ip, ok := deviceData["ethIp"]; ok && ip != "" {
+			ipAddr = ip
+		}
+
+		if mac, ok := deviceData["ethMac"]; ok && mac != "" {
+			macAddr = mac
+		}
+
+		if gate, ok := deviceData["ethGate"]; ok && gate != "" {
+			gateway = gate
+		}
+
+		if mask, ok := deviceData["etchMask"]; ok && mask != "" {
+			subnet = mask
+		}
+		// DNS is not available in device info, so we'll use gateway as DNS
+		if gate, ok := deviceData["ethGate"]; ok && gate != "" {
+			dns = gate
+		}
+		// Get ethernet speed
+		if ethSpeedStr, ok := deviceData["ethSpd"]; ok {
+			if ethSpeed := sc.parseEthernetSpeed(ethSpeedStr); ethSpeed > 0 {
+				speedMbps = fmt.Sprintf("%.0f", ethSpeed)
+			}
+		}
+	}
+
+	// Set ethernet connection metrics
+	if ethConnected {
+		sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
+			"device_name": deviceName,
+			"ip_addr":     ipAddr,
+			"mac_addr":    macAddr,
+			"gateway":     gateway,
+			"subnet":      subnet,
+			"dns":         dns,
+			"speed_mbps":  speedMbps,
+		}).Set(1)
+		sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
+			"device_name": deviceName,
+			"ssid":        "none",
+			"ip_addr":     "none",
+			"mac_addr":    "none",
+			"gateway":     "none",
+			"subnet":      "none",
+			"dns":         "none",
+		}).Set(0)
+		slog.Info("Ethernet connected from device info", "device", deviceName, "ip", ipAddr, "mac", macAddr, "gateway", gateway, "subnet", subnet, "dns", dns, "speed", speedMbps)
+	} else {
+		sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
+			"device_name": deviceName,
+			"ip_addr":     "unknown",
+			"mac_addr":    "unknown",
+			"gateway":     "unknown",
+			"subnet":      "unknown",
+			"dns":         "unknown",
+			"speed_mbps":  "unknown",
+		}).Set(0)
+		sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
+			"device_name": deviceName,
+			"ssid":        "unknown",
+			"ip_addr":     "unknown",
+			"mac_addr":    "unknown",
+			"gateway":     "unknown",
+			"subnet":      "unknown",
+			"dns":         "unknown",
+		}).Set(0)
+		slog.Info("Ethernet disconnected from device info", "device", deviceName)
+	}
+}
+
+// setDefaultDeviceInfo sets default device information when header is not available
+func (sc *SLZBCollector) setDefaultDeviceInfo(deviceName string) {
+	sc.deviceInfo["name"] = "SLZB"
+	sc.deviceInfo["model"] = "SLZB"
+	sc.deviceInfo["firmware"] = "unknown"
+	slog.Debug("Device info collected with defaults", "device", deviceName, "info", sc.deviceInfo)
 }
 
 // NEW: collectFirmwareStatus collects firmware version and update status
