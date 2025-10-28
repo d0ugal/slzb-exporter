@@ -463,9 +463,9 @@ func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 	// Get firmware information from device info (already collected)
 	if deviceInfo, ok := sc.deviceInfo["VERSION"]; ok {
 		sc.metrics.SLZBFirmwareCurrentVersion.With(prometheus.Labels{
-			"device":      deviceName,
-			"device_info": deviceInfo,
-			"version":     "unknown",
+			"device":     deviceName,
+			"version":    deviceInfo,
+			"build_date": "unknown",
 		}).Set(1)
 	}
 
