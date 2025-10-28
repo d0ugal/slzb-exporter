@@ -407,42 +407,42 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 	// Set ethernet connection metrics
 	if ethConnected {
 		sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
-			"device":     deviceName,
-			"ip_addr":    ipAddr,
-			"mac_addr":   macAddr,
-			"gateway":    gateway,
-			"subnet":     subnet,
-			"dns":        dns,
-			"speed_mbps": speedMbps,
+			"device":      deviceName,
+			"ip_address":  ipAddr,
+			"mac_address": macAddr,
+			"gateway":     gateway,
+			"subnet_mask": subnet,
+			"dns_server":  dns,
+			"speed_mbps":  speedMbps,
 		}).Set(1)
 		sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
-			"device":   deviceName,
-			"ssid":     "none",
-			"ip_addr":  "none",
-			"mac_addr": "none",
-			"gateway":  "none",
-			"subnet":   "none",
-			"dns":      "none",
+			"device":      deviceName,
+			"ssid":        "none",
+			"ip_address":  "none",
+			"mac_address": "none",
+			"gateway":     "none",
+			"subnet_mask": "none",
+			"dns_server":  "none",
 		}).Set(0)
 		slog.Info("Ethernet connected from device info", "device", deviceName, "ip", ipAddr, "mac", macAddr, "gateway", gateway, "subnet", subnet, "dns", dns, "speed", speedMbps)
 	} else {
 		sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
-			"device":     deviceName,
-			"ip_addr":    "unknown",
-			"mac_addr":   "unknown",
-			"gateway":    "unknown",
-			"subnet":     "unknown",
-			"dns":        "unknown",
-			"speed_mbps": "unknown",
+			"device":      deviceName,
+			"ip_address":  "unknown",
+			"mac_address": "unknown",
+			"gateway":     "unknown",
+			"subnet_mask": "unknown",
+			"dns_server":  "unknown",
+			"speed_mbps":  "unknown",
 		}).Set(0)
 		sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
-			"device":   deviceName,
-			"ssid":     "unknown",
-			"ip_addr":  "unknown",
-			"mac_addr": "unknown",
-			"gateway":  "unknown",
-			"subnet":   "unknown",
-			"dns":      "unknown",
+			"device":      deviceName,
+			"ssid":        "unknown",
+			"ip_address":  "unknown",
+			"mac_address": "unknown",
+			"gateway":     "unknown",
+			"subnet_mask": "unknown",
+			"dns_server":  "unknown",
 		}).Set(0)
 		slog.Info("Ethernet disconnected from device info", "device", deviceName)
 	}
