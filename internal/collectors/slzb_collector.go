@@ -103,7 +103,7 @@ func (sc *SLZBCollector) collectMetrics() {
 		// Record collection duration
 		duration := time.Since(collectionStart).Seconds()
 		sc.metrics.SLZBCollectionDurationSeconds.With(prometheus.Labels{
-			"device_id": deviceID,
+			"device": deviceID,
 		}).Observe(duration)
 
 		// Log collection summary
@@ -117,22 +117,22 @@ func (sc *SLZBCollector) collectMetrics() {
 	// Get device information and test reachability in one request
 	if sc.collectDeviceInfo(deviceID) {
 		sc.metrics.SLZBDeviceReachable.With(prometheus.Labels{
-			"device_id": deviceID,
+			"device": deviceID,
 		}).Set(1)
 		sc.metrics.SLZBConnected.With(prometheus.Labels{
-			"device_id": deviceID,
+			"device": deviceID,
 		}).Set(1)
 
 		successfulCollections++
 	} else {
 		sc.metrics.SLZBDeviceReachable.With(prometheus.Labels{
-			"device_id": deviceID,
+			"device": deviceID,
 		}).Set(0)
 		sc.metrics.SLZBConnected.With(prometheus.Labels{
-			"device_id": deviceID,
+			"device": deviceID,
 		}).Set(0)
 		sc.metrics.SLZBCollectionErrors.With(prometheus.Labels{
-			"device_id":  deviceID,
+			"device":     deviceID,
 			"error_type": "device_unreachable",
 		}).Inc()
 		slog.Error("Device unreachable", "device", deviceID)
