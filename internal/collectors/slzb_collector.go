@@ -526,9 +526,9 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	}).Observe(responseTime)
 
 	sc.metrics.SLZBHTTPRequestsTotal.With(prometheus.Labels{
-		"device":      deviceName,
-		"action":      "4",
-		"status_code": strconv.Itoa(resp.StatusCode),
+		"device": deviceName,
+		"action": "4",
+		"status": strconv.Itoa(resp.StatusCode),
 	}).Inc()
 
 	if resp.StatusCode != http.StatusOK {
