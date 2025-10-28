@@ -472,8 +472,8 @@ func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 	// Check for firmware updates (this would require additional API calls)
 	// For now, we'll set a default value
 	sc.metrics.SLZBFirmwareUpdateAvailable.With(prometheus.Labels{
-		"device": deviceName,
-		"status": "unknown",
+		"device":            deviceName,
+		"available_version": "unknown",
 	}).Set(0)
 	sc.metrics.SLZBFirmwareLastCheckTime.With(prometheus.Labels{
 		"device": deviceName,
