@@ -309,14 +309,14 @@ func (sc *SLZBCollector) updateDeviceUptimeMetrics(deviceName string, deviceData
 				"device": deviceName,
 			}).Set(float64(socketUptimeSeconds))
 			sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
-				"device": deviceName,
-				"status": "1",
+				"device":      deviceName,
+				"connections": "1",
 			}).Set(1)
 		}
 	} else {
 		sc.metrics.SLZBSocketConnected.With(prometheus.Labels{
-			"device": deviceName,
-			"status": "0",
+			"device":      deviceName,
+			"connections": "0",
 		}).Set(0)
 	}
 }
