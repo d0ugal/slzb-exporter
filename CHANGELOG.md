@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.3](https://github.com/d0ugal/slzb-exporter/compare/v2.12.2...v2.12.3) (2025-10-28)
+
+
+### Bug Fixes
+
+* correct label mapping for SLZB device metrics ([aa45595](https://github.com/d0ugal/slzb-exporter/commit/aa4559509ba78028028033ffe810ee782eca39f2))
+* correct network metrics label mapping ([e54ebbb](https://github.com/d0ugal/slzb-exporter/commit/e54ebbb25734efce125b6a99a04f8ada9bad0c50))
+* correct remaining device label mappings ([076de00](https://github.com/d0ugal/slzb-exporter/commit/076de004563f70955dbf3c4292f5edeb1c092619))
+* correct remaining label mapping issues in SLZB collector ([a7414d1](https://github.com/d0ugal/slzb-exporter/commit/a7414d1f043c91561453d8632e88435eb802a535))
+* correct SLZBFirmwareCurrentVersion label mapping ([17dedae](https://github.com/d0ugal/slzb-exporter/commit/17dedae6b51c5363b1b5e13caae74b575d1fc13b))
+* correct SLZBFirmwareUpdateAvailable label mapping ([d3243b1](https://github.com/d0ugal/slzb-exporter/commit/d3243b13ce1a81e3a28514f52a07b0e88334380c))
+* correct SLZBHTTPRequestsTotal label mapping ([3826ef2](https://github.com/d0ugal/slzb-exporter/commit/3826ef2240809bc8b5eeaab00dc8e8eea10b530f))
+* lint ([0cd48a2](https://github.com/d0ugal/slzb-exporter/commit/0cd48a21fc15db9420deef96bfc0c32c94cc99f0))
+* Update module github.com/bytedance/sonic/loader to v0.4.0 ([cd6829f](https://github.com/d0ugal/slzb-exporter/commit/cd6829fdae4ee069bb2c9460d609e188df1872b5))
+
 ## [2.12.2](https://github.com/d0ugal/slzb-exporter/compare/v2.12.1...v2.12.2) (2025-10-26)
 
 
