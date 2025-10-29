@@ -20,8 +20,12 @@ go.work
 
 # Build artifacts
 slzb-exporter
+main
 coverage.out
 coverage.html
+
+# Linter cache
+.golangci-lint-cache/
 
 # IDE files
 .vscode/
