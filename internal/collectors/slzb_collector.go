@@ -13,13 +13,17 @@ import (
 
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
+	"github.com/d0ugal/promexporter/app"
+	"github.com/d0ugal/promexporter/tracing"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 // SLZBCollector collects metrics from SLZB devices
 type SLZBCollector struct {
 	config  *config.Config
 	metrics *metrics.SLZBRegistry
+	app     *app.App
 	client  *http.Client
 
 	deviceInfo map[string]string // Cache for device information
@@ -27,13 +31,14 @@ type SLZBCollector struct {
 }
 
 // NewSLZBCollector creates a new SLZB collector
-func NewSLZBCollector(cfg *config.Config, metricsRegistry *metrics.SLZBRegistry) *SLZBCollector {
+func NewSLZBCollector(cfg *config.Config, metricsRegistry *metrics.SLZBRegistry, app *app.App) *SLZBCollector {
 	// Derive device ID from API URL
 	deviceID := deriveDeviceID(cfg.SLZB.APIURL)
 
 	return &SLZBCollector{
 		config:  cfg,
 		metrics: metricsRegistry,
+		app:     app,
 		client: &http.Client{
 			Timeout: 15 * time.Second, // Longer timeout for low-power device
 		},
@@ -91,6 +96,19 @@ func (sc *SLZBCollector) collectMetrics() {
 	successfulCollections := 0
 	totalCollections := 0
 
+	// Create span for collection cycle
+	tracer := sc.app.GetTracer()
+	var collectorSpan *tracing.CollectorSpan
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(context.Background(), "slzb-collector", "collect-metrics")
+		collectorSpan.SetAttributes(
+			attribute.String("device.id", deviceID),
+			attribute.String("device.api_url", sc.config.SLZB.APIURL),
+		)
+		defer collectorSpan.End()
+	}
+
 	// Track collection success
 	defer func() {
 		// Update last collection timestamp if we had any successful collections
@@ -105,6 +123,19 @@ func (sc *SLZBCollector) collectMetrics() {
 		sc.metrics.SLZBCollectionDurationSeconds.With(prometheus.Labels{
 			"device": deviceID,
 		}).Observe(duration)
+
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("collection.duration_seconds", duration),
+				attribute.Int("collection.successful", successfulCollections),
+				attribute.Int("collection.total", totalCollections),
+			)
+			collectorSpan.AddEvent("collection_completed",
+				attribute.Int("successful", successfulCollections),
+				attribute.Int("total", totalCollections),
+				attribute.Float64("duration_seconds", duration),
+			)
+		}
 
 		// Log collection summary
 		slog.Info("Collection cycle completed",
@@ -135,6 +166,11 @@ func (sc *SLZBCollector) collectMetrics() {
 			"device":     deviceID,
 			"error_type": "device_unreachable",
 		}).Inc()
+
+		if collectorSpan != nil {
+			collectorSpan.RecordError(fmt.Errorf("device unreachable"), attribute.String("device.id", deviceID))
+		}
+
 		slog.Error("Device unreachable", "device", deviceID)
 
 		return
