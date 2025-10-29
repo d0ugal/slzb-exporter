@@ -62,6 +62,20 @@ func LoadConfig() (*Config, error) {
 	baseConfig.Metrics.Collection.DefaultInterval = config.Duration{}
 	baseConfig.Metrics.Collection.DefaultIntervalSet = false
 
+	// Tracing configuration
+	if enabledStr := os.Getenv("TRACING_ENABLED"); enabledStr != "" {
+		enabled := enabledStr == "true"
+		baseConfig.Tracing.Enabled = &enabled
+	}
+
+	if serviceName := os.Getenv("TRACING_SERVICE_NAME"); serviceName != "" {
+		baseConfig.Tracing.ServiceName = serviceName
+	}
+
+	if endpoint := os.Getenv("TRACING_ENDPOINT"); endpoint != "" {
+		baseConfig.Tracing.Endpoint = endpoint
+	}
+
 	cfg.BaseConfig = *baseConfig
 
 	// SLZB configuration
