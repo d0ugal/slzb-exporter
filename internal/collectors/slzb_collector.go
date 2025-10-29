@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/d0ugal/slzb-exporter/internal/config"
-	"github.com/d0ugal/slzb-exporter/internal/metrics"
 	"github.com/d0ugal/promexporter/app"
 	"github.com/d0ugal/promexporter/tracing"
+	"github.com/d0ugal/slzb-exporter/internal/config"
+	"github.com/d0ugal/slzb-exporter/internal/metrics"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.opentelemetry.io/otel/attribute"
 )
@@ -76,7 +76,7 @@ func (sc *SLZBCollector) collectLoop(ctx context.Context) {
 	defer ticker.Stop()
 
 	// Collect immediately on start
-	sc.collectMetrics()
+	sc.collectMetrics(ctx)
 
 	for {
 		select {
@@ -84,13 +84,13 @@ func (sc *SLZBCollector) collectLoop(ctx context.Context) {
 			slog.Info("Stopping SLZB collector")
 			return
 		case <-ticker.C:
-			sc.collectMetrics()
+			sc.collectMetrics(ctx)
 		}
 	}
 }
 
 // collectMetrics collects all metrics from the SLZB device
-func (sc *SLZBCollector) collectMetrics() {
+func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 	deviceID := sc.deviceID
 	collectionStart := time.Now()
 	successfulCollections := 0
@@ -98,10 +98,11 @@ func (sc *SLZBCollector) collectMetrics() {
 
 	// Create span for collection cycle
 	tracer := sc.app.GetTracer()
+
 	var collectorSpan *tracing.CollectorSpan
 
 	if tracer != nil && tracer.IsEnabled() {
-		collectorSpan = tracer.NewCollectorSpan(context.Background(), "slzb-collector", "collect-metrics")
+		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-metrics")
 		collectorSpan.SetAttributes(
 			attribute.String("device.id", deviceID),
 			attribute.String("device.api_url", sc.config.SLZB.APIURL),
