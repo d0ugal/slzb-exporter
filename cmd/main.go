@@ -49,16 +49,16 @@ func main() {
 	// Add custom metrics to the registry
 	slzbRegistry := metrics.NewSLZBRegistry(metricsRegistry)
 
-	// Create collector
-	slzbCollector := collectors.NewSLZBCollector(cfg, slzbRegistry)
-
-	// Create and run application using promexporter
+	// Create and build application using promexporter
 	application := app.New("SLZB Exporter").
 		WithConfig(&cfg.BaseConfig).
 		WithMetrics(metricsRegistry).
-		WithCollector(slzbCollector).
 		WithVersionInfo(version.Version, version.Commit, version.BuildDate).
 		Build()
+
+	// Create collector with app reference for tracing
+	slzbCollector := collectors.NewSLZBCollector(cfg, slzbRegistry, application)
+	application.WithCollector(slzbCollector)
 
 	if err := application.Run(); err != nil {
 		slog.Error("Application failed", "error", err)
