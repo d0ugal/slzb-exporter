@@ -103,6 +103,7 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-metrics")
+
 		collectorSpan.SetAttributes(
 			attribute.String("device.id", deviceID),
 			attribute.String("device.api_url", sc.config.SLZB.APIURL),
