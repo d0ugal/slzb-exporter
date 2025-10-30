@@ -66,6 +66,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_connected", "SLZB device connection status (1=connected, 0=disconnected)", []string{"device"})
 
 	slzb.SLZBDeviceTemp = factory.NewGaugeVec(
@@ -75,6 +76,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_temperature_celsius", "SLZB device temperature in degrees Celsius", []string{"device"})
 
 	slzb.SLZBUptime = factory.NewGaugeVec(
@@ -84,6 +86,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_uptime_seconds", "SLZB device uptime in seconds since last boot", []string{"device"})
 
 	slzb.SLZBSocketUptime = factory.NewGaugeVec(
@@ -93,6 +96,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_socket_uptime_seconds", "SLZB socket connection uptime in seconds since connection established", []string{"device"})
 
 	slzb.SLZBSocketConnected = factory.NewGaugeVec(
@@ -102,6 +106,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "connections"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_socket_connected", "SLZB socket connection status (1=connected, 0=disconnected)", []string{"device", "connections"})
 
 	slzb.SLZBDeviceMode = factory.NewGaugeVec(
@@ -111,6 +116,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "mode"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_operational_mode", "SLZB device operational mode (1=active, 0=inactive) with mode label", []string{"device", "mode"})
 
 	slzb.SLZBHeapFree = factory.NewGaugeVec(
@@ -120,6 +126,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_heap_free_bytes", "SLZB device free heap memory in bytes", []string{"device"})
 
 	slzb.SLZBHeapSize = factory.NewGaugeVec(
@@ -129,6 +136,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_heap_size_bytes", "SLZB device total heap memory in bytes", []string{"device"})
 
 	slzb.SLZBHeapRatio = factory.NewGaugeVec(
@@ -138,6 +146,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_heap_ratio", "SLZB device heap usage ratio as percentage (free heap / total heap * 100)", []string{"device"})
 
 	slzb.SLZBEthernetConnected = factory.NewGaugeVec(
@@ -147,6 +156,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server", "speed_mbps"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_ethernet_connected", "SLZB device Ethernet connection status (1=connected, 0=disconnected)", []string{"device", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server", "speed_mbps"})
 
 	slzb.SLZBWifiConnected = factory.NewGaugeVec(
@@ -156,6 +166,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "ssid", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_wifi_connected", "SLZB device WiFi connection status (1=connected, 0=disconnected)", []string{"device", "ssid", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server"})
 
 	slzb.SLZBHTTPRequestsTotal = factory.NewCounterVec(
@@ -165,6 +176,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "action", "status"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_http_requests_total", "Total number of HTTP requests made by exporter to SLZB device API", []string{"device", "action", "status"})
 
 	slzb.SLZBHTTPErrorsTotal = factory.NewCounterVec(
@@ -174,6 +186,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "action", "error_type"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_http_errors_total", "Total number of HTTP errors when making requests to SLZB device API", []string{"device", "action", "error_type"})
 
 	slzb.SLZBDeviceReachable = factory.NewGaugeVec(
@@ -183,6 +196,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_device_reachable", "SLZB device reachability status (1=reachable, 0=unreachable)", []string{"device"})
 
 	slzb.SLZBLastCollectionTime = factory.NewGaugeVec(
@@ -192,6 +206,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_last_collection_timestamp", "Unix timestamp of the last successful collection from SLZB device", []string{"device"})
 
 	slzb.SLZBCollectionErrors = factory.NewCounterVec(
@@ -201,6 +216,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "error_type"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_collection_errors_total", "Total number of collection errors for SLZB device by error type", []string{"device", "error_type"})
 
 	// Firmware Update Status
@@ -211,6 +227,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "version", "build_date"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_firmware_current_version", "Current firmware version (always 1, used for joining with labels)", []string{"device", "version", "build_date"})
 
 	slzb.SLZBFirmwareUpdateAvailable = factory.NewGaugeVec(
@@ -220,6 +237,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "available_version"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_firmware_update_available", "Firmware update availability (1=available, 0=not_available)", []string{"device", "available_version"})
 
 	slzb.SLZBFirmwareLastCheckTime = factory.NewGaugeVec(
@@ -229,6 +247,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_firmware_last_check_timestamp", "Unix timestamp of last firmware check", []string{"device"})
 
 	// Configuration Management
@@ -239,6 +258,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "backup_type"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_config_backup_status", "Status of the last configuration backup (1=success, 0=failure)", []string{"device", "backup_type"})
 
 	slzb.SLZBConfigLastBackupTime = factory.NewGaugeVec(
@@ -248,6 +268,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "backup_type"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_config_last_backup_timestamp", "Unix timestamp of the last successful configuration backup", []string{"device", "backup_type"})
 
 	slzb.SLZBConfigFileCount = factory.NewGaugeVec(
@@ -257,6 +278,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "file_type"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_config_files", "Number of configuration files on the device", []string{"device", "file_type"})
 
 	// Performance Benchmarks
@@ -268,6 +290,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "action"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_api_response_time_seconds", "Histogram of API response times in seconds", []string{"device", "action"})
 
 	slzb.SLZBAPITimeoutErrorsTotal = factory.NewCounterVec(
@@ -277,6 +300,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device", "action"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_api_timeout_errors_total", "Total number of API timeout errors when making requests to SLZB device", []string{"device", "action"})
 
 	slzb.SLZBCollectionDurationSeconds = factory.NewHistogramVec(
@@ -287,6 +311,7 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 		},
 		[]string{"device"},
 	)
+
 	baseRegistry.AddMetricInfo("slzb_collection_duration_seconds", "Histogram of collection duration in seconds", []string{"device"})
 
 	return slzb
