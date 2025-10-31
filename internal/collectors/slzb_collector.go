@@ -100,6 +100,7 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 	tracer := sc.app.GetTracer()
 
 	var collectorSpan *tracing.CollectorSpan
+	var spanCtx context.Context
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-metrics")
@@ -108,7 +109,16 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 			attribute.String("device.id", deviceID),
 			attribute.String("device.api_url", sc.config.SLZB.APIURL),
 		)
+		spanCtx = collectorSpan.Context()
 		defer collectorSpan.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	if collectorSpan != nil {
+		collectorSpan.AddEvent("collection_started",
+			attribute.String("device.id", deviceID),
+		)
 	}
 
 	// Track collection success
@@ -148,13 +158,27 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 	}()
 
 	// Get device information and test reachability in one request
-	if sc.collectDeviceInfo(deviceID) {
+	deviceInfoStart := time.Now()
+	deviceReachable := sc.collectDeviceInfo(spanCtx, deviceID)
+	deviceInfoDuration := time.Since(deviceInfoStart).Seconds()
+
+	if deviceReachable {
 		sc.metrics.SLZBDeviceReachable.With(prometheus.Labels{
 			"device": deviceID,
 		}).Set(1)
 		sc.metrics.SLZBConnected.With(prometheus.Labels{
 			"device": deviceID,
 		}).Set(1)
+
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("device_info.duration_seconds", deviceInfoDuration),
+				attribute.Bool("device.reachable", true),
+			)
+			collectorSpan.AddEvent("device_reachable",
+				attribute.Float64("duration_seconds", deviceInfoDuration),
+			)
+		}
 
 		successfulCollections++
 	} else {
@@ -170,7 +194,14 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 		}).Inc()
 
 		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("device_info.duration_seconds", deviceInfoDuration),
+				attribute.Bool("device.reachable", false),
+			)
 			collectorSpan.RecordError(fmt.Errorf("device unreachable"), attribute.String("device.id", deviceID))
+			collectorSpan.AddEvent("device_unreachable",
+				attribute.Float64("duration_seconds", deviceInfoDuration),
+			)
 		}
 
 		slog.Error("Device unreachable", "device", deviceID)
@@ -181,22 +212,76 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 	totalCollections++
 
 	// Collect device information
-	if sc.collectDeviceInfo(deviceID) {
+	deviceInfo2Start := time.Now()
+	if sc.collectDeviceInfo(spanCtx, deviceID) {
+		deviceInfo2Duration := time.Since(deviceInfo2Start).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("device_info_2.duration_seconds", deviceInfo2Duration),
+			)
+			collectorSpan.AddEvent("device_info_collected",
+				attribute.Float64("duration_seconds", deviceInfo2Duration),
+			)
+		}
 		successfulCollections++
+	} else {
+		deviceInfo2Duration := time.Since(deviceInfo2Start).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("device_info_2.duration_seconds", deviceInfo2Duration),
+			)
+			collectorSpan.RecordError(fmt.Errorf("device info collection failed"), attribute.String("device.id", deviceID))
+		}
 	}
 
 	totalCollections++
 
 	// NEW: Collect firmware update status
-	if sc.collectFirmwareStatus(deviceID) {
+	firmwareStart := time.Now()
+	if sc.collectFirmwareStatus(spanCtx, deviceID) {
+		firmwareDuration := time.Since(firmwareStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("firmware.duration_seconds", firmwareDuration),
+			)
+			collectorSpan.AddEvent("firmware_status_collected",
+				attribute.Float64("duration_seconds", firmwareDuration),
+			)
+		}
 		successfulCollections++
+	} else {
+		firmwareDuration := time.Since(firmwareStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("firmware.duration_seconds", firmwareDuration),
+			)
+			collectorSpan.RecordError(fmt.Errorf("firmware status collection failed"), attribute.String("device.id", deviceID))
+		}
 	}
 
 	totalCollections++
 
 	// NEW: Collect configuration management metrics
-	if sc.collectConfigurationMetrics(deviceID) {
+	configStart := time.Now()
+	if sc.collectConfigurationMetrics(spanCtx, deviceID) {
+		configDuration := time.Since(configStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("configuration.duration_seconds", configDuration),
+			)
+			collectorSpan.AddEvent("configuration_metrics_collected",
+				attribute.Float64("duration_seconds", configDuration),
+			)
+		}
 		successfulCollections++
+	} else {
+		configDuration := time.Since(configStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("configuration.duration_seconds", configDuration),
+			)
+			collectorSpan.RecordError(fmt.Errorf("configuration metrics collection failed"), attribute.String("device.id", deviceID))
+		}
 	}
 
 	totalCollections++
@@ -206,12 +291,38 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 }
 
 // collectDeviceInfo collects device information and caches it
-func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
+func (sc *SLZBCollector) collectDeviceInfo(ctx context.Context, deviceName string) bool {
+	tracer := sc.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+	var spanCtx context.Context
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-device-info")
+		collectorSpan.SetAttributes(
+			attribute.String("device.id", deviceName),
+			attribute.String("device.action", "0"),
+		)
+		spanCtx = collectorSpan.Context()
+		defer collectorSpan.End()
+	} else {
+		spanCtx = ctx
+	}
+
 	startTime := time.Now()
 
 	// Get device information from action 0
+	apiStart := time.Now()
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=0&page=0", sc.config.SLZB.APIURL))
+	apiDuration := time.Since(apiStart).Seconds()
+
 	if err != nil {
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("api_request.duration_seconds", apiDuration),
+			)
+			collectorSpan.RecordError(err, attribute.String("operation", "api-request"))
+		}
 		sc.handleDeviceInfoRequestError(deviceName, err)
 		return false
 	}
@@ -234,11 +345,45 @@ func (sc *SLZBCollector) collectDeviceInfo(deviceName string) bool {
 	// Parse and process device data
 	respValuesArr := resp.Header.Get("respValuesArr")
 	if respValuesArr != "" {
-		return sc.processDeviceData(deviceName, respValuesArr)
+		processStart := time.Now()
+		result := sc.processDeviceData(spanCtx, deviceName, respValuesArr)
+		processDuration := time.Since(processStart).Seconds()
+		totalDuration := time.Since(startTime).Seconds()
+
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("api_request.duration_seconds", apiDuration),
+				attribute.Float64("process_data.duration_seconds", processDuration),
+				attribute.Float64("total.duration_seconds", totalDuration),
+				attribute.Bool("processing.success", result),
+			)
+			if result {
+				collectorSpan.AddEvent("device_data_processed",
+					attribute.Float64("total_duration_seconds", totalDuration),
+				)
+			} else {
+				collectorSpan.AddEvent("device_data_processing_failed",
+					attribute.Float64("total_duration_seconds", totalDuration),
+				)
+			}
+		}
+
+		return result
 	}
 
 	// Fallback to default values if header is not available
 	sc.setDefaultDeviceInfo(deviceName)
+	totalDuration := time.Since(startTime).Seconds()
+
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.Float64("api_request.duration_seconds", apiDuration),
+			attribute.Float64("total.duration_seconds", totalDuration),
+		)
+		collectorSpan.AddEvent("device_info_defaults_set",
+			attribute.Float64("total_duration_seconds", totalDuration),
+		)
+	}
 
 	return true
 }
@@ -282,9 +427,34 @@ func (sc *SLZBCollector) handleDeviceInfoHTTPError(deviceName string, statusCode
 }
 
 // processDeviceData processes the device data from the response header
-func (sc *SLZBCollector) processDeviceData(deviceName, respValuesArr string) bool {
+func (sc *SLZBCollector) processDeviceData(ctx context.Context, deviceName, respValuesArr string) bool {
+	tracer := sc.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+	var spanCtx context.Context
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "process-device-data")
+		collectorSpan.SetAttributes(
+			attribute.String("device.id", deviceName),
+			attribute.Int("data.length", len(respValuesArr)),
+		)
+		spanCtx = collectorSpan.Context()
+		defer collectorSpan.End()
+	} else {
+		spanCtx = ctx
+	}
+
+	unmarshalStart := time.Now()
 	var deviceData map[string]string
 	if err := json.Unmarshal([]byte(respValuesArr), &deviceData); err != nil {
+		unmarshalDuration := time.Since(unmarshalStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("json_unmarshal.duration_seconds", unmarshalDuration),
+			)
+			collectorSpan.RecordError(err, attribute.String("operation", "json-unmarshal"))
+		}
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device":     deviceName,
 			"action":     "0",
@@ -294,15 +464,32 @@ func (sc *SLZBCollector) processDeviceData(deviceName, respValuesArr string) boo
 
 		return false
 	}
+	unmarshalDuration := time.Since(unmarshalStart).Seconds()
 
 	// Cache the device information
 	sc.deviceInfo = deviceData
 
 	// Update various device metrics
+	metricsStart := time.Now()
 	sc.updateDeviceBasicMetrics(deviceName, deviceData)
 	sc.updateDeviceUptimeMetrics(deviceName, deviceData)
 	sc.updateDeviceHeapMetrics(deviceName, deviceData)
 	sc.updateDeviceNetworkMetrics(deviceName, deviceData)
+	metricsDuration := time.Since(metricsStart).Seconds()
+	totalDuration := time.Since(unmarshalStart).Seconds()
+
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.Float64("json_unmarshal.duration_seconds", unmarshalDuration),
+			attribute.Float64("update_metrics.duration_seconds", metricsDuration),
+			attribute.Float64("total.duration_seconds", totalDuration),
+			attribute.Int("device_data.fields", len(deviceData)),
+		)
+		collectorSpan.AddEvent("device_data_processed",
+			attribute.Int("fields", len(deviceData)),
+			attribute.Float64("total_duration_seconds", totalDuration),
+		)
+	}
 
 	slog.Info("Device info collected from respValuesArr", "device", deviceName, "info", deviceData)
 
@@ -495,16 +682,38 @@ func (sc *SLZBCollector) setDefaultDeviceInfo(deviceName string) {
 }
 
 // NEW: collectFirmwareStatus collects firmware version and update status
-func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
+func (sc *SLZBCollector) collectFirmwareStatus(ctx context.Context, deviceName string) bool {
+	tracer := sc.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+	var spanCtx context.Context
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-firmware-status")
+		collectorSpan.SetAttributes(
+			attribute.String("device.id", deviceName),
+		)
+		spanCtx = collectorSpan.Context()
+		defer collectorSpan.End()
+	} else {
+		spanCtx = ctx
+	}
+
 	startTime := time.Now()
 
 	// Get firmware information from device info (already collected)
+	firmwareVersion := "unknown"
 	if deviceInfo, ok := sc.deviceInfo["VERSION"]; ok {
+		firmwareVersion = deviceInfo
 		sc.metrics.SLZBFirmwareCurrentVersion.With(prometheus.Labels{
 			"device":     deviceName,
 			"version":    deviceInfo,
 			"build_date": "unknown",
 		}).Set(1)
+	} else {
+		if collectorSpan != nil {
+			collectorSpan.AddEvent("firmware_version_not_found")
+		}
 	}
 
 	// Check for firmware updates (this would require additional API calls)
@@ -524,18 +733,55 @@ func (sc *SLZBCollector) collectFirmwareStatus(deviceName string) bool {
 		"action": "firmware",
 	}).Observe(responseTime)
 
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.Float64("collection.duration_seconds", responseTime),
+			attribute.String("firmware.version", firmwareVersion),
+		)
+		collectorSpan.AddEvent("firmware_status_collected",
+			attribute.String("version", firmwareVersion),
+			attribute.Float64("duration_seconds", responseTime),
+		)
+	}
+
 	slog.Debug("Firmware status collected", "device", deviceName, "response_time", responseTime)
 
 	return true
 }
 
 // NEW: collectConfigurationMetrics collects configuration file metrics
-func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
+func (sc *SLZBCollector) collectConfigurationMetrics(ctx context.Context, deviceName string) bool {
+	tracer := sc.app.GetTracer()
+
+	var collectorSpan *tracing.CollectorSpan
+	var spanCtx context.Context
+
+	if tracer != nil && tracer.IsEnabled() {
+		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-configuration-metrics")
+		collectorSpan.SetAttributes(
+			attribute.String("device.id", deviceName),
+			attribute.String("device.action", "4"),
+		)
+		spanCtx = collectorSpan.Context()
+		defer collectorSpan.End()
+	} else {
+		spanCtx = ctx
+	}
+
 	startTime := time.Now()
 
 	// Get file list from action 4
+	apiStart := time.Now()
 	resp, err := sc.client.Get(fmt.Sprintf("%s/api?action=4&page=0", sc.config.SLZB.APIURL))
+	apiDuration := time.Since(apiStart).Seconds()
+
 	if err != nil {
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("api_request.duration_seconds", apiDuration),
+			)
+			collectorSpan.RecordError(err, attribute.String("operation", "api-request"))
+		}
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device":     deviceName,
 			"action":     "4",
@@ -570,6 +816,13 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 	}).Inc()
 
 	if resp.StatusCode != http.StatusOK {
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("api_request.duration_seconds", apiDuration),
+				attribute.Int("http.status_code", resp.StatusCode),
+			)
+			collectorSpan.RecordError(fmt.Errorf("HTTP error: %d", resp.StatusCode), attribute.Int("status_code", resp.StatusCode))
+		}
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device":     deviceName,
 			"action":     "4",
@@ -588,8 +841,17 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 		} `json:"files"`
 	}
 
+	readStart := time.Now()
 	body, err := io.ReadAll(resp.Body)
+	readDuration := time.Since(readStart).Seconds()
+
 	if err != nil {
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("read_body.duration_seconds", readDuration),
+			)
+			collectorSpan.RecordError(err, attribute.String("operation", "read-body"))
+		}
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device":     deviceName,
 			"action":     "4",
@@ -600,7 +862,15 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 		return false
 	}
 
+	unmarshalStart := time.Now()
 	if err := json.Unmarshal(body, &fileList); err != nil {
+		unmarshalDuration := time.Since(unmarshalStart).Seconds()
+		if collectorSpan != nil {
+			collectorSpan.SetAttributes(
+				attribute.Float64("json_unmarshal.duration_seconds", unmarshalDuration),
+			)
+			collectorSpan.RecordError(err, attribute.String("operation", "json-unmarshal"))
+		}
 		sc.metrics.SLZBHTTPErrorsTotal.With(prometheus.Labels{
 			"device":     deviceName,
 			"action":     "4",
@@ -610,8 +880,10 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 
 		return false
 	}
+	unmarshalDuration := time.Since(unmarshalStart).Seconds()
 
 	// Process configuration files
+	processStart := time.Now()
 	totalSize := 0
 	configFiles := 0
 	backupFiles := 0
@@ -627,6 +899,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 			backupFiles++
 		}
 	}
+	processDuration := time.Since(processStart).Seconds()
 
 	// Update metrics
 	sc.metrics.SLZBConfigFileCount.With(prometheus.Labels{
@@ -653,6 +926,27 @@ func (sc *SLZBCollector) collectConfigurationMetrics(deviceName string) bool {
 			"device":      deviceName,
 			"backup_type": "auto",
 		}).Set(0)
+	}
+
+	totalDuration := time.Since(startTime).Seconds()
+
+	if collectorSpan != nil {
+		collectorSpan.SetAttributes(
+			attribute.Float64("api_request.duration_seconds", apiDuration),
+			attribute.Float64("read_body.duration_seconds", readDuration),
+			attribute.Float64("json_unmarshal.duration_seconds", unmarshalDuration),
+			attribute.Float64("process_files.duration_seconds", processDuration),
+			attribute.Float64("total.duration_seconds", totalDuration),
+			attribute.Int("files.total", len(fileList.Files)),
+			attribute.Int("files.config", configFiles),
+			attribute.Int("files.backup", backupFiles),
+			attribute.Int("files.total_size_bytes", totalSize),
+		)
+		collectorSpan.AddEvent("configuration_metrics_collected",
+			attribute.Int("total_files", len(fileList.Files)),
+			attribute.Int("config_files", configFiles),
+			attribute.Int("backup_files", backupFiles),
+		)
 	}
 
 	slog.Debug("Configuration metrics collected", "device", deviceName, "files", len(fileList.Files), "response_time", responseTime)
