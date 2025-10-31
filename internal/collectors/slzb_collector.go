@@ -754,7 +754,6 @@ func (sc *SLZBCollector) collectConfigurationMetrics(ctx context.Context, device
 	tracer := sc.app.GetTracer()
 
 	var collectorSpan *tracing.CollectorSpan
-	var spanCtx context.Context
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-configuration-metrics")
@@ -762,10 +761,7 @@ func (sc *SLZBCollector) collectConfigurationMetrics(ctx context.Context, device
 			attribute.String("device.id", deviceName),
 			attribute.String("device.action", "4"),
 		)
-		spanCtx = collectorSpan.Context()
 		defer collectorSpan.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	startTime := time.Now()
