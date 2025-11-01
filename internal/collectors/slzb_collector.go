@@ -431,7 +431,6 @@ func (sc *SLZBCollector) processDeviceData(ctx context.Context, deviceName, resp
 	tracer := sc.app.GetTracer()
 
 	var collectorSpan *tracing.CollectorSpan
-	var spanCtx context.Context
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "process-device-data")
@@ -439,10 +438,7 @@ func (sc *SLZBCollector) processDeviceData(ctx context.Context, deviceName, resp
 			attribute.String("device.id", deviceName),
 			attribute.Int("data.length", len(respValuesArr)),
 		)
-		spanCtx = collectorSpan.Context()
 		defer collectorSpan.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	unmarshalStart := time.Now()
@@ -686,17 +682,13 @@ func (sc *SLZBCollector) collectFirmwareStatus(ctx context.Context, deviceName s
 	tracer := sc.app.GetTracer()
 
 	var collectorSpan *tracing.CollectorSpan
-	var spanCtx context.Context
 
 	if tracer != nil && tracer.IsEnabled() {
 		collectorSpan = tracer.NewCollectorSpan(ctx, "slzb-collector", "collect-firmware-status")
 		collectorSpan.SetAttributes(
 			attribute.String("device.id", deviceName),
 		)
-		spanCtx = collectorSpan.Context()
 		defer collectorSpan.End()
-	} else {
-		spanCtx = ctx
 	}
 
 	startTime := time.Now()
