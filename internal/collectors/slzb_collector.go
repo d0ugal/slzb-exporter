@@ -16,6 +16,7 @@ import (
 	"github.com/d0ugal/slzb-exporter/internal/config"
 	"github.com/d0ugal/slzb-exporter/internal/metrics"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
 )
 
@@ -40,7 +41,8 @@ func NewSLZBCollector(cfg *config.Config, metricsRegistry *metrics.SLZBRegistry,
 		metrics: metricsRegistry,
 		app:     app,
 		client: &http.Client{
-			Timeout: 15 * time.Second, // Longer timeout for low-power device
+			Timeout:   15 * time.Second, // Longer timeout for low-power device
+			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},
 		deviceInfo: make(map[string]string),
 		deviceID:   deviceID,
