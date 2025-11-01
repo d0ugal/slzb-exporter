@@ -90,6 +90,7 @@ func (sc *SLZBCollector) collectLoop(ctx context.Context) {
 }
 
 // collectMetrics collects all metrics from the SLZB device
+//
 //nolint:contextcheck // Context is updated to include span for child operations
 func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 	deviceID := sc.deviceID
@@ -295,6 +296,7 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 }
 
 // collectDeviceInfo collects device information and caches it
+//
 //nolint:contextcheck // Context is updated to include span for child operations
 func (sc *SLZBCollector) collectDeviceInfo(ctx context.Context, deviceName string) bool {
 	tracer := sc.app.GetTracer()
