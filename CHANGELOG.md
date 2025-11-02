@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.0](https://github.com/d0ugal/slzb-exporter/compare/v2.12.2...v2.13.0) (2025-11-02)
+
+
+### Features
+
+* add dev-tag Makefile target and update CI workflow ([7f81876](https://github.com/d0ugal/slzb-exporter/commit/7f8187661ea5ae12665a937ecd739e38dfbcbe4d))
+* add duplication linter (dupl) to golangci configuration ([67daec6](https://github.com/d0ugal/slzb-exporter/commit/67daec69795577d32e1fc80cb9a27b120b7ef0dc))
+* add OpenTelemetry HTTP client instrumentation ([931263e](https://github.com/d0ugal/slzb-exporter/commit/931263e4993b650f5b8ac7393c88f1ae3348606c))
+* add tracing configuration support ([f499bb3](https://github.com/d0ugal/slzb-exporter/commit/f499bb347570b423b581752916e51c3825bf5f5d))
+* **ci:** add auto-format workflow ([940cd11](https://github.com/d0ugal/slzb-exporter/commit/940cd11f455d1ce0e844411398af7f8b17f5c671))
+* enhance tracing support with detailed spans ([befc016](https://github.com/d0ugal/slzb-exporter/commit/befc0165bff2dc17678e8cdc6e80b43210481d64))
+* integrate OpenTelemetry tracing into collector ([80e7c7f](https://github.com/d0ugal/slzb-exporter/commit/80e7c7f8f6958771c2067d9f60e8e06e5e1ba8b0))
+* trigger CI after auto-format workflow completes ([14029fe](https://github.com/d0ugal/slzb-exporter/commit/14029fea8c728486915f2598622e4fae5421eb4c))
+
+
+### Bug Fixes
+
+* correct label mapping for SLZB device metrics ([aa45595](https://github.com/d0ugal/slzb-exporter/commit/aa4559509ba78028028033ffe810ee782eca39f2))
+* correct network metrics label mapping ([e54ebbb](https://github.com/d0ugal/slzb-exporter/commit/e54ebbb25734efce125b6a99a04f8ada9bad0c50))
+* correct remaining device label mappings ([076de00](https://github.com/d0ugal/slzb-exporter/commit/076de004563f70955dbf3c4292f5edeb1c092619))
+* correct remaining label mapping issues in SLZB collector ([a7414d1](https://github.com/d0ugal/slzb-exporter/commit/a7414d1f043c91561453d8632e88435eb802a535))
+* correct SLZBFirmwareCurrentVersion label mapping ([17dedae](https://github.com/d0ugal/slzb-exporter/commit/17dedae6b51c5363b1b5e13caae74b575d1fc13b))
+* correct SLZBFirmwareUpdateAvailable label mapping ([d3243b1](https://github.com/d0ugal/slzb-exporter/commit/d3243b13ce1a81e3a28514f52a07b0e88334380c))
+* correct SLZBHTTPRequestsTotal label mapping ([3826ef2](https://github.com/d0ugal/slzb-exporter/commit/3826ef2240809bc8b5eeaab00dc8e8eea10b530f))
+* lint ([6d57837](https://github.com/d0ugal/slzb-exporter/commit/6d57837ea982ab11914e0e29ad96a54a70446c25))
+* lint ([0cd48a2](https://github.com/d0ugal/slzb-exporter/commit/0cd48a21fc15db9420deef96bfc0c32c94cc99f0))
+* remove unused spanCtx variable in collectConfigurationMetrics ([8006a92](https://github.com/d0ugal/slzb-exporter/commit/8006a92c690b93dd40380b74b01e338b9c6cda7a))
+* remove unused spanCtx variables from processDeviceData and collectFirmwareStatus ([0f2e390](https://github.com/d0ugal/slzb-exporter/commit/0f2e3908a10d94403c89cedeff2bc2ac6939840e))
+* resolve contextcheck and whitespace linting issues ([28d2dbc](https://github.com/d0ugal/slzb-exporter/commit/28d2dbcadfb7ea58077252377ff4f779e67d6c26))
+* Update google.golang.org/genproto/googleapis/api digest to ab9386a ([e46750c](https://github.com/d0ugal/slzb-exporter/commit/e46750c5e18138f6b2b1284786b7e11d1009400f))
+* Update google.golang.org/genproto/googleapis/rpc digest to ab9386a ([6fa51df](https://github.com/d0ugal/slzb-exporter/commit/6fa51df65667ec102dd7b0fe2100280750fdad30))
+* Update module github.com/bytedance/sonic to v1.14.2 ([05f71da](https://github.com/d0ugal/slzb-exporter/commit/05f71da4e4d090d17eac6b4fc6940bd335a45e74))
+* Update module github.com/bytedance/sonic/loader to v0.4.0 ([cd6829f](https://github.com/d0ugal/slzb-exporter/commit/cd6829fdae4ee069bb2c9460d609e188df1872b5))
+* Update module github.com/d0ugal/promexporter to v1.6.1 ([86c5c7f](https://github.com/d0ugal/slzb-exporter/commit/86c5c7f53b366cd566d05619e1e5cf2b5ed858ad))
+* Update module github.com/d0ugal/promexporter to v1.7.1 ([d3e5fa4](https://github.com/d0ugal/slzb-exporter/commit/d3e5fa4d9debb048f5617eefd200d62d1860b7bc))
+* Update module github.com/d0ugal/promexporter to v1.8.0 ([28d91a2](https://github.com/d0ugal/slzb-exporter/commit/28d91a2f9760b0556414550a0cc340851a4e9372))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.11 ([16b8871](https://github.com/d0ugal/slzb-exporter/commit/16b88717198e6c7adffb5a66dbcb49fd8a12b1bd))
+* Update module github.com/prometheus/common to v0.67.2 ([2503713](https://github.com/d0ugal/slzb-exporter/commit/25037136a0e41b7059e5d8cdb2593cb37efd7e2c))
+* Update module github.com/prometheus/procfs to v0.19.2 ([6bb2b5e](https://github.com/d0ugal/slzb-exporter/commit/6bb2b5e2c8f430389d2e2d38b0976de18db1024e))
+* Update module github.com/ugorji/go/codec to v1.3.1 ([e25a33b](https://github.com/d0ugal/slzb-exporter/commit/e25a33b24677abf0257c4d943907389a77625be0))
+
 ## [2.12.2](https://github.com/d0ugal/slzb-exporter/compare/v2.12.1...v2.12.2) (2025-10-26)
 
 
