@@ -2,12 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [ main, 'release-please--branches--main' ]
+    branches: [ main ]
   pull_request:
-  workflow_run:
-    workflows: ["Auto Format"]
-    types:
-      - completed
 
 env:
   REGISTRY: ghcr.io
@@ -17,15 +13,15 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Set up Go 1.25.1
       uses: actions/setup-go@v6
@@ -49,15 +45,15 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     continue-on-error: true
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v8
@@ -68,15 +64,15 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: [test]
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Set up Go 1.25.1
       uses: actions/setup-go@v6
@@ -97,7 +93,7 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    
     permissions:
       contents: read
       security-events: write
@@ -107,8 +103,8 @@ jobs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
@@ -123,7 +119,7 @@ jobs:
     name: Check if build is needed
     runs-on: ubuntu-latest
     needs: [test]
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    
     outputs:
       should-build: ${{ steps.check.outputs.should-build }}
     steps:
@@ -131,22 +127,22 @@ jobs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Check if build should be skipped
       id: check
       run: |
-        # Only check for push and workflow_run events (dev-build only runs on these)
-        if [ "${{ github.event_name }}" != "push" ] && [ "${{ github.event_name }}" != "workflow_run" ]; then
+        # Only check for push events (dev-build only runs on these)
+        if [ "${{ github.event_name }}" != "push" ]; then
           echo "should-build=false" >> $GITHUB_OUTPUT
           exit 0
-        fi
+        
         
         # Get the current commit SHA
-        CURRENT_SHA="${{ github.event.workflow_run.head_sha || github.sha }}"
+        CURRENT_SHA="${{ github.sha }}"
         
-        # Get commit message from git log (works for both push and workflow_run)
+        # Get commit message from git log
         COMMIT_MSG=$(git log -1 --format="%s" "$CURRENT_SHA" 2>/dev/null || echo "")
         
         echo "Checking commit: $CURRENT_SHA"
@@ -157,10 +153,10 @@ jobs:
           echo "Skip reason: Release commit detected"
           echo "should-build=false" >> $GITHUB_OUTPUT
           exit 0
-        fi
+        
         
         # For push events, check changed files against base branch
-        if [ "${{ github.event_name }}" = "push" ]; then
+        # For push events, check changed files against base branch
           # Get the base commit (previous commit for single commits, or base of range)
           BASE_SHA="${{ github.event.before }}"
           HEAD_SHA="${{ github.event.after }}"
@@ -171,20 +167,15 @@ jobs:
           else
             # Get list of changed files
             CHANGED_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          fi
+          
         else
-          # For workflow_run events, we need to compare against main branch
-          BASE_SHA="origin/main"
-          HEAD_SHA="$CURRENT_SHA"
-          git fetch origin main || true
-          CHANGED_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" 2>/dev/null || git diff --name-only HEAD~1 HEAD)
-        fi
+        
         
         if [ -z "$CHANGED_FILES" ]; then
           echo "No changed files detected, skipping build"
           echo "should-build=false" >> $GITHUB_OUTPUT
           exit 0
-        fi
+        
         
         # Documentation file patterns to ignore
         DOC_PATTERNS="^README\.md$|^CHANGELOG\.md$|^docs/|\.md$|^LICENSE"
@@ -202,7 +193,7 @@ jobs:
           echo "Non-doc files:"
           echo "$NON_DOC_FILES" | sed 's/^/  - /'
           echo "should-build=true" >> $GITHUB_OUTPUT
-        fi
+        
 
   dev-build:
     name: Development Build
@@ -218,8 +209,8 @@ jobs:
       uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        ref: ${{ github.event.workflow_run.head_branch || github.ref }}
-        sha: ${{ github.event.workflow_run.head_sha || github.sha }}
+        ref: ${{ github.ref }}
+        sha: ${{ github.sha }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
