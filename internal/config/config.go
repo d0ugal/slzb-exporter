@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -62,21 +63,13 @@ func LoadConfig() (*Config, error) {
 	baseConfig.Metrics.Collection.DefaultInterval = config.Duration{}
 	baseConfig.Metrics.Collection.DefaultIntervalSet = false
 
-	// Tracing configuration
-	if enabledStr := os.Getenv("TRACING_ENABLED"); enabledStr != "" {
-		enabled := enabledStr == "true"
-		baseConfig.Tracing.Enabled = &enabled
-	}
-
-	if serviceName := os.Getenv("TRACING_SERVICE_NAME"); serviceName != "" {
-		baseConfig.Tracing.ServiceName = serviceName
-	}
-
-	if endpoint := os.Getenv("TRACING_ENDPOINT"); endpoint != "" {
-		baseConfig.Tracing.Endpoint = endpoint
-	}
-
 	cfg.BaseConfig = *baseConfig
+
+	// Apply generic environment variables (TRACING_ENABLED, PROFILING_ENABLED, etc.)
+	// These are handled by promexporter and are shared across all exporters
+	if err := config.ApplyGenericEnvVars(&cfg.BaseConfig); err != nil {
+		return nil, fmt.Errorf("failed to apply generic environment variables: %w", err)
+	}
 
 	// SLZB configuration
 	if apiURL := os.Getenv("SLZB_EXPORTER_SLZB_API_URL"); apiURL != "" {
