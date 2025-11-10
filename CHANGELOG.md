@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.6](https://github.com/d0ugal/slzb-exporter/compare/v2.13.5...v2.13.6) (2025-11-10)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.12.0 ([eb640a6](https://github.com/d0ugal/slzb-exporter/commit/eb640a6775bd27fdd8499a31877be23d689906af))
+
 ## [2.13.5](https://github.com/d0ugal/slzb-exporter/compare/v2.13.4...v2.13.5) (2025-11-09)
 
 
