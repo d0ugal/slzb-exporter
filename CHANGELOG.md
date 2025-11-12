@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.0](https://github.com/d0ugal/slzb-exporter/compare/v2.13.7...v2.14.0) (2025-11-12)
+
+
+### Features
+
+* **ci:** ensure CI runs for release-please branches and PRs ([b07953a](https://github.com/d0ugal/slzb-exporter/commit/b07953ae4be491bf212b1c037d914370949f829e))
+* **ci:** use RELEASE_TOKEN secret for release-please ([89f0285](https://github.com/d0ugal/slzb-exporter/commit/89f02858dcf341505ca7e1402b5615a486b20a01))
+
+
+### Bug Fixes
+
+* **ci:** check github.head_ref for release-please PR detection ([6a32d85](https://github.com/d0ugal/slzb-exporter/commit/6a32d85f7f1aeb1dd6b95476403c97ef6f4d1c99))
+* Update google.golang.org/genproto/googleapis/api digest to 95abcf5 ([62559cc](https://github.com/d0ugal/slzb-exporter/commit/62559cc38804d12917d8dadaa41abd5b97d5be9c))
+* Update module github.com/d0ugal/promexporter to v1.12.2 ([f4a73af](https://github.com/d0ugal/slzb-exporter/commit/f4a73af8026bf8646e85608b534528e1a27ac5cc))
+* Update module golang.org/x/net to v0.47.0 ([3ef94a4](https://github.com/d0ugal/slzb-exporter/commit/3ef94a4d309d5fab22bb5d537096b5ad5907fadc))
+
 ## [2.13.7](https://github.com/d0ugal/slzb-exporter/compare/v2.13.6...v2.13.7) (2025-11-11)
 
 
