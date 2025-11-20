@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.3](https://github.com/d0ugal/slzb-exporter/compare/v2.14.2...v2.14.3) (2025-11-20)
+
+
+### Bug Fixes
+
+* **ci:** prevent dev-build from running on PRs and fix YAML syntax ([1b2dc35](https://github.com/d0ugal/slzb-exporter/commit/1b2dc35bb1cb0452ea57440a3f241e3e88f6134e))
+* correct indentation and remove trailing spaces ([b576726](https://github.com/d0ugal/slzb-exporter/commit/b576726b8e5558214fcbd4ecb0f224a8a820a39d))
+* correct run: block indentation ([77d4ae6](https://github.com/d0ugal/slzb-exporter/commit/77d4ae68dedda64a1285e37f82663895b2592045))
+* correct script content indentation in run blocks ([c11baa4](https://github.com/d0ugal/slzb-exporter/commit/c11baa46fc8f3daf76a627db0639b3963bebdda9))
+* correct with: block and script indentation ([7c8b94d](https://github.com/d0ugal/slzb-exporter/commit/7c8b94d52dc68a33c6c5001ee91ff7085784c915))
+* replace workflow with working version from brother-exporter ([9dbd775](https://github.com/d0ugal/slzb-exporter/commit/9dbd7752b8bd3c793d5874ad63c5a9035c78a7d9))
+* resolve YAML linting issues ([75e514b](https://github.com/d0ugal/slzb-exporter/commit/75e514bec8f84c070bb149dd9b252800c06b9d9c))
+* Update module github.com/d0ugal/promexporter to v1.13.3 ([41879e8](https://github.com/d0ugal/slzb-exporter/commit/41879e8876ebbb98023eef9ca4bf28a5e1c23991))
+* Update module github.com/d0ugal/promexporter to v1.13.4 ([b7e9da3](https://github.com/d0ugal/slzb-exporter/commit/b7e9da3dec36809a4d94fc0449a0a8185df02484))
+* Update module golang.org/x/crypto to v0.45.0 ([bbfa925](https://github.com/d0ugal/slzb-exporter/commit/bbfa925cddcd171035e5cb10236e2f804bf4d01a))
+
 ## [2.14.2](https://github.com/d0ugal/slzb-exporter/compare/v2.14.1...v2.14.2) (2025-11-18)
 
 
