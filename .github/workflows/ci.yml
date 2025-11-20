@@ -83,8 +83,8 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: slzb-exporter
-        path: slzb-exporter
-        retention-days: 30
+          path: slzb-exporter
+          retention-days: 30
 
   security:
     name: Security Scan
@@ -133,7 +133,7 @@ jobs:
           exit 0
         fi
 
-          # Get the current commit SHA
+        # Get the current commit SHA
           CURRENT_SHA="${{ github.sha }}"
 
           # Get commit message from git log
