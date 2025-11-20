@@ -15,29 +15,28 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
         fetch-depth: 0
         ref: ${{ github.ref }}
 
-    - name: Set up Go 1.25.1
-      uses: actions/setup-go@v6
-      with:
+      - name: Set up Go 1.25.1
+        uses: actions/setup-go@v6
+        with:
         go-version: '1.25.4'
 
-    - name: Install dependencies
-      run: go mod download
+      - name: Install dependencies
+        run: go mod download
 
-    - name: Run tests
-      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      - name: Run tests
+        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
-      with:
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
         file: ./coverage.txt
         flags: unittests
         name: codecov-umbrella
@@ -46,45 +45,43 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     continue-on-error: true
-    
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
         fetch-depth: 0
         ref: ${{ github.ref }}
 
-    - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v9
-      with:
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
         version: latest
 
   build:
     name: Build
     runs-on: ubuntu-latest
     needs: [test]
-    
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
         fetch-depth: 0
         ref: ${{ github.ref }}
 
-    - name: Set up Go 1.25.1
-      uses: actions/setup-go@v6
-      with:
+      - name: Set up Go 1.25.1
+        uses: actions/setup-go@v6
+        with:
         go-version: '1.25.4'
 
-    - name: Build
-      run: |
+      - name: Build
+        run: |
         go build -v -ldflags="-s -w" -o slzb-exporter ./cmd
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v5
-      with:
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v5
+        with:
         name: slzb-exporter
         path: slzb-exporter
         retention-days: 30
@@ -92,21 +89,21 @@ jobs:
   security:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
       security-events: write
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
         fetch-depth: 0
         ref: ${{ github.ref }}
 
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
         scan-type: 'fs'
         scan-ref: '.'
         format: 'table'
@@ -117,25 +114,25 @@ jobs:
     name: Check if build is needed
     runs-on: ubuntu-latest
     needs: [test]
-    
+
     outputs:
       should-build: ${{ steps.check.outputs.should-build }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
         fetch-depth: 0
         ref: ${{ github.ref }}
 
-    - name: Check if build should be skipped
-      id: check
-      run: |
+      - name: Check if build should be skipped
+        id: check
+        run: |
         # Only check for push events (dev-build only runs on these)
         if [ "${{ github.event_name }}" != "push" ]; then
           echo "should-build=false" >> $GITHUB_OUTPUT
           exit 0
         fi
-        
+
         # Get the current commit SHA
         CURRENT_SHA="${{ github.sha }}"
         
@@ -169,7 +166,7 @@ jobs:
         # Get the base commit (previous commit for single commits, or base of range)
         BASE_SHA="${{ github.event.before }}"
         HEAD_SHA="${{ github.event.after }}"
-        
+
         if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
           # Initial commit or no base, check all files
           CHANGED_FILES=$(git ls-tree -r --name-only HEAD)
@@ -212,49 +209,49 @@ jobs:
       packages: write
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-        ref: ${{ github.ref }}
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Log in to GHCR
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Generate dev tag
-      id: meta
-      run: |
-        DEV_TAG=$(make dev-tag)
-        echo "dev_tag=${DEV_TAG}" >> $GITHUB_OUTPUT
-        echo "Generated dev tag: ${DEV_TAG}"
+      - name: Generate dev tag
+        id: meta
+        run: |
+          DEV_TAG=$(make dev-tag)
+          echo "dev_tag=${DEV_TAG}" >> $GITHUB_OUTPUT
+          echo "Generated dev tag: ${DEV_TAG}"
 
-    - name: Extract metadata
-      id: docker_meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          ${{ steps.meta.outputs.dev_tag }}
-          dev
+      - name: Extract metadata
+        id: docker_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.meta.outputs.dev_tag }}
+            dev
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        platforms: linux/amd64,linux/arm64
-        push: true
-        tags: ${{ steps.docker_meta.outputs.tags }}
-        labels: ${{ steps.docker_meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=min
-        build-args: |
-          VERSION=${{ steps.meta.outputs.dev_tag }}
-          COMMIT=${{ github.sha }}
-          BUILD_DATE=${{ github.event.head_commit.timestamp }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=min
+          build-args: |
+            VERSION=${{ steps.meta.outputs.dev_tag }}
+            COMMIT=${{ github.sha }}
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}

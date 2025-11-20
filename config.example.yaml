@@ -3,14 +3,13 @@
 # Set these environment variables in your deployment environment
 
 # Server configuration
-SLZB_EXPORTER_SERVER_HOST=0.0.0.0
-SLZB_EXPORTER_SERVER_PORT=9110
+SLZB_EXPORTER_SERVER_HOST: "0.0.0.0"
+SLZB_EXPORTER_SERVER_PORT: 9110
 
 # SLZB-06 device configuration
-SLZB_EXPORTER_SLZB_API_URL=http://slzb-device.local
-SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL=10s
+SLZB_EXPORTER_SLZB_API_URL: "http://slzb-device.local"
+SLZB_EXPORTER_METRICS_DEFAULT_INTERVAL: "10s"
 
 # Logging configuration
-SLZB_EXPORTER_LOG_LEVEL=info  # debug, info, warn, error
-SLZB_EXPORTER_LOG_FORMAT=json # json, text
-
+SLZB_EXPORTER_LOG_LEVEL: "info"  # debug, info, warn, error
+SLZB_EXPORTER_LOG_FORMAT: "json"  # json, text
