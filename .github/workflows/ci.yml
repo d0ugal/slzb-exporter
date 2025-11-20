@@ -133,18 +133,18 @@ jobs:
           exit 0
         fi
 
-        # Get the current commit SHA
-        CURRENT_SHA="${{ github.sha }}"
+          # Get the current commit SHA
+          CURRENT_SHA="${{ github.sha }}"
 
-        # Get commit message from git log
-        COMMIT_MSG=$(git log -1 --format="%s" "$CURRENT_SHA" 2>/dev/null || echo "")
+          # Get commit message from git log
+          COMMIT_MSG=$(git log -1 --format="%s" "$CURRENT_SHA" 2>/dev/null || echo "")
 
-        echo "Checking commit: $CURRENT_SHA"
+          echo "Checking commit: $CURRENT_SHA"
         echo "Commit message: $COMMIT_MSG"
 
-        # Check if it's a release commit (pattern: "chore(main): release" or similar)
-        # BUT: Always run CI for release-please branches and PRs
-        if echo "$COMMIT_MSG" | grep -qiE "^(chore|release|version).*(release|version|changelog)"; then
+          # Check if it's a release commit (pattern: "chore(main): release" or similar)
+          # BUT: Always run CI for release-please branches and PRs
+          if echo "$COMMIT_MSG" | grep -qiE "^(chore|release|version).*(release|version|changelog)"; then
           # Check if this is from a release-please branch or PR (should always run CI)
           if echo "${{ github.ref }}" | grep -qiE "release-please" || echo "${{ github.head_ref }}" | grep -qiE "release-please"; then
             echo "Release commit from release-please branch/PR - running CI"
@@ -162,8 +162,8 @@ jobs:
           exit 0
         fi
 
-        # For push events, check changed files against base branch
-        # Get the base commit (previous commit for single commits, or base of range)
+          # For push events, check changed files against base branch
+          # Get the base commit (previous commit for single commits, or base of range)
         BASE_SHA="${{ github.event.before }}"
         HEAD_SHA="${{ github.event.after }}"
 
