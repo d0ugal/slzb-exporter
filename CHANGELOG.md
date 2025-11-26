@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.14.6](https://github.com/d0ugal/slzb-exporter/compare/v2.14.5...v2.14.6) (2025-11-26)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.13.7 ([b7c5a10](https://github.com/d0ugal/slzb-exporter/commit/b7c5a1062097cae09d9cb1c7aeaa635b2e1ef72f))
+* Update module github.com/quic-go/quic-go to v0.57.1 ([0fe30c6](https://github.com/d0ugal/slzb-exporter/commit/0fe30c60f31b7a23715e4baf8bad7a7622c00cd0))
+
 ## [2.14.5](https://github.com/d0ugal/slzb-exporter/compare/v2.14.4...v2.14.5) (2025-11-25)
 
 
