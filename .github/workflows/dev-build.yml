@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-dev-build:
-    uses: d0ugal/promexporter/.github/workflows/common/dev-build.yml@v1.14.0
+    uses: d0ugal/promexporter/.github/workflows/exporter-dev-build.yml@v1.14.0
     with:
       image_name: ${{ github.repository }}
     secrets: inherit
