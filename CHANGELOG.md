@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.0](https://github.com/d0ugal/slzb-exporter/compare/v2.14.7...v2.15.0) (2025-11-29)
+
+
+### Features
+
+* use reusable workflows from promexporter ([d7f80d2](https://github.com/d0ugal/slzb-exporter/commit/d7f80d239942f13cbf31b729a13cccd4f96df5eb))
+
+
+### Bug Fixes
+
+* update reusable workflow paths to top level ([492b342](https://github.com/d0ugal/slzb-exporter/commit/492b34206e980a28254b9ac2de46ec74c6ec1d85))
+* update workflow paths and version to v1.14.1 ([d0fe670](https://github.com/d0ugal/slzb-exporter/commit/d0fe6701d9ed5969e198f8fbd076427e0f057efb))
+
 ## [2.14.7](https://github.com/d0ugal/slzb-exporter/compare/v2.14.6...v2.14.7) (2025-11-29)
 
 
