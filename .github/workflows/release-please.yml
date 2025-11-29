@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-release-please:
-    uses: d0ugal/promexporter/.github/workflows/common/release-please.yml@v1.14.0
+    uses: d0ugal/promexporter/.github/workflows/exporter-release-please.yml@v1.14.0
     with:
       image_name: ${{ github.repository }}
     secrets: inherit
