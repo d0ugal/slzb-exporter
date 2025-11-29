@@ -7,6 +7,8 @@ on:
       - CHANGELOG.md
       - '**.md'
       - LICENSE
+      - '**/*.example.yml'
+      - '**/*.example.yaml'
 
 env:
   REGISTRY: ghcr.io
@@ -69,7 +71,7 @@ jobs:
           fi
 
           # Documentation file patterns to ignore
-          DOC_PATTERNS="^README\.md$|^CHANGELOG\.md$|^docs/|\.md$|^LICENSE"
+          DOC_PATTERNS="^README\.md$|^CHANGELOG\.md$|^docs/|\.md$|^LICENSE|.*\.example\.(yml|yaml)$"
 
           # Check if all changed files are documentation
           NON_DOC_FILES=$(echo "$CHANGED_FILES" | grep -vE "$DOC_PATTERNS" || true)
