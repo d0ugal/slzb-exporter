@@ -9,7 +9,7 @@ on:
 
 jobs:
   call-ci:
-    uses: d0ugal/promexporter/.github/workflows/exporter-ci.yml@v1.14.0
+    uses: d0ugal/promexporter/.github/workflows/exporter-ci.yml@v1.14.1
     with:
       binary_name: ${{ github.event.repository.name }}
       go_version: '1.25.4'
