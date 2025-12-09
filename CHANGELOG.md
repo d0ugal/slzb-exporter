@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.3](https://github.com/d0ugal/slzb-exporter/compare/v2.15.2...v2.15.3) (2025-12-09)
+
+
+### Bug Fixes
+
+* **ci:** add GOMODCACHE env var to fix permission denied error ([e026ea5](https://github.com/d0ugal/slzb-exporter/commit/e026ea5d6364f499b2c6f8a84c7f4e23792d61b2))
+* Update module golang.org/x/crypto to v0.46.0 ([b937354](https://github.com/d0ugal/slzb-exporter/commit/b9373545ffcab29ad4629fdc98c87ffa7c4abf65))
+* Update module golang.org/x/net to v0.48.0 ([8aa7889](https://github.com/d0ugal/slzb-exporter/commit/8aa788938d3a851f12e61b80b37a4eea154ffd8d))
+* Update opentelemetry-go monorepo to v1.39.0 ([d018625](https://github.com/d0ugal/slzb-exporter/commit/d0186257a2fae7ce7aa8644b3edfa072c43b3192))
+* Update opentelemetry-go-contrib monorepo to v0.64.0 ([4de7bd5](https://github.com/d0ugal/slzb-exporter/commit/4de7bd521abcc75ef2ab827a07f1fba3c923a642))
+
 ## [2.15.2](https://github.com/d0ugal/slzb-exporter/compare/v2.15.1...v2.15.2) (2025-12-04)
 
 
