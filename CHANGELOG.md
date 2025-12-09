@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.2](https://github.com/d0ugal/slzb-exporter/compare/v2.15.1...v2.15.2) (2025-12-04)
+
+
+### Bug Fixes
+
+* **workflows:** fix workflow syntax errors, revert Alpine, and enable PR builds ([f037f1c](https://github.com/d0ugal/slzb-exporter/commit/f037f1cdf45a7584624937900d79b51b175ef88c))
+
 ## [2.15.1](https://github.com/d0ugal/slzb-exporter/compare/v2.15.0...v2.15.1) (2025-12-04)
 
 
