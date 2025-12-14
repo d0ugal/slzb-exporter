@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.5](https://github.com/d0ugal/slzb-exporter/compare/v2.15.4...v2.15.5) (2025-12-14)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 97cd9d5 ([3934c3c](https://github.com/d0ugal/slzb-exporter/commit/3934c3c859655ab8ddb670c475c9247efcb5d42d))
+* Update google.golang.org/genproto/googleapis/rpc digest to 97cd9d5 ([9e47f2f](https://github.com/d0ugal/slzb-exporter/commit/9e47f2f3c35d57c4fb89d28a6c0bc1bf1a2dd090))
+* Update module github.com/d0ugal/promexporter to v1.14.5 ([fdf5f1d](https://github.com/d0ugal/slzb-exporter/commit/fdf5f1d131a2a00af4a1829bc6b545e4d51e2557))
+* Update module github.com/d0ugal/promexporter to v1.14.6 ([048d75e](https://github.com/d0ugal/slzb-exporter/commit/048d75e5ff7881f637495974a24b6a5509ae7c3e))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.12 ([cc99032](https://github.com/d0ugal/slzb-exporter/commit/cc99032f32aafc99132a7517644db6fa184d764d))
+* Update module github.com/go-playground/validator/v10 to v10.29.0 ([dbb24b2](https://github.com/d0ugal/slzb-exporter/commit/dbb24b27b7d4b5a3b1538fd10c716ceaf0c4b60d))
+* Update module google.golang.org/protobuf to v1.36.11 ([115d2d1](https://github.com/d0ugal/slzb-exporter/commit/115d2d1e417aa5c16dfc3915af4f4f0456227694))
+
 ## [2.15.4](https://github.com/d0ugal/slzb-exporter/compare/v2.15.3...v2.15.4) (2025-12-10)
 
 
