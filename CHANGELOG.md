@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.6](https://github.com/d0ugal/slzb-exporter/compare/v2.15.5...v2.15.6) (2025-12-17)
+
+
+### Bug Fixes
+
+* Update module github.com/goccy/go-yaml to v1.19.1 ([9a2e80a](https://github.com/d0ugal/slzb-exporter/commit/9a2e80aad5e0ded4eb173febf8ddf4ebdee22cea))
+
 ## [2.15.5](https://github.com/d0ugal/slzb-exporter/compare/v2.15.4...v2.15.5) (2025-12-14)
 
 
