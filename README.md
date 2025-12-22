@@ -2,7 +2,7 @@
 
 A Prometheus exporter for SLZB-06 Zigbee 3.0 PoE Ethernet USB Adapters.
 
-**Image**: `ghcr.io/d0ugal/slzb-exporter:v2.15.8`
+**Image**: `ghcr.io/d0ugal/slzb-exporter:v2.15.9`
 
 ## Metrics
 
@@ -37,7 +37,7 @@ A Prometheus exporter for SLZB-06 Zigbee 3.0 PoE Ethernet USB Adapters.
 version: '3.8'
 services:
   slzb-exporter:
-    image: ghcr.io/d0ugal/slzb-exporter:v2.15.8
+    image: ghcr.io/d0ugal/slzb-exporter:v2.15.9
     ports:
       - "9110:9110"
     environment:
@@ -84,7 +84,7 @@ export SLZB_EXPORTER_LOG_FORMAT="json"
 version: '3.8'
 services:
   slzb-exporter:
-    image: ghcr.io/d0ugal/slzb-exporter:v2.15.8
+    image: ghcr.io/d0ugal/slzb-exporter:v2.15.9
     ports:
       - "9110:9110"
     environment:
@@ -112,7 +112,7 @@ spec:
     spec:
       containers:
       - name: slzb-exporter
-        image: ghcr.io/d0ugal/slzb-exporter:v2.15.8
+        image: ghcr.io/d0ugal/slzb-exporter:v2.15.9
         ports:
         - containerPort: 9110
         env:
