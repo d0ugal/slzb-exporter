@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.13](https://github.com/d0ugal/slzb-exporter/compare/v2.15.12...v2.15.13) (2025-12-24)
+
+
+### Bug Fixes
+
+* Update module github.com/go-playground/validator/v10 to v10.30.1 ([1367093](https://github.com/d0ugal/slzb-exporter/commit/1367093beda9e90dc4b7807881d2dddd266804c9))
+
 ## [2.15.12](https://github.com/d0ugal/slzb-exporter/compare/v2.15.11...v2.15.12) (2025-12-23)
 
 
