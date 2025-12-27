@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.14](https://github.com/d0ugal/slzb-exporter/compare/v2.15.13...v2.15.14) (2025-12-27)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.12 ([0fa3d4e](https://github.com/d0ugal/slzb-exporter/commit/0fa3d4ebcc524727930038e6d605be3da2b9e5a7))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.4 ([aec98d0](https://github.com/d0ugal/slzb-exporter/commit/aec98d014e5f0161930b5558e80779547e74efce))
+
 ## [2.15.13](https://github.com/d0ugal/slzb-exporter/compare/v2.15.12...v2.15.13) (2025-12-24)
 
 
