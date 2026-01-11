@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.19](https://github.com/d0ugal/slzb-exporter/compare/v2.15.18...v2.15.19) (2026-01-11)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.16 ([5f2e3d3](https://github.com/d0ugal/slzb-exporter/commit/5f2e3d353d0ee96eb9bccb664ab2dfcd4390469f))
+* Update module github.com/d0ugal/promexporter to v1.14.17 ([3666389](https://github.com/d0ugal/slzb-exporter/commit/3666389780c11accf094970ea845bba88d4a171f))
+* Update module github.com/quic-go/quic-go to v0.59.0 ([254b7c4](https://github.com/d0ugal/slzb-exporter/commit/254b7c41111f7bcfb99f848086954c3ea5faef07))
+* Update module golang.org/x/text to v0.33.0 ([3083d32](https://github.com/d0ugal/slzb-exporter/commit/3083d32f6ec6f705eb31c1911b36c889ec5a88b0))
+
 ## [2.15.18](https://github.com/d0ugal/slzb-exporter/compare/v2.15.17...v2.15.18) (2026-01-08)
 
 
