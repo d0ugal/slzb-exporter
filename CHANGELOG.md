@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.21](https://github.com/d0ugal/slzb-exporter/compare/v2.15.20...v2.15.21) (2026-01-16)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.6 ([84cbd95](https://github.com/d0ugal/slzb-exporter/commit/84cbd95b8570eca6d6da8ef43fd1e55fdd375722))
+* Update module github.com/klauspost/compress to v1.18.3 ([266ce79](https://github.com/d0ugal/slzb-exporter/commit/266ce79fa98db969c1f19ff3c81fd3397a612f52))
+
 ## [2.15.20](https://github.com/d0ugal/slzb-exporter/compare/v2.15.19...v2.15.20) (2026-01-14)
 
 
