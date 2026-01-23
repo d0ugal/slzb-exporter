@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.23](https://github.com/d0ugal/slzb-exporter/compare/v2.15.22...v2.15.23) (2026-01-23)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 409b4a9 ([dd18847](https://github.com/d0ugal/slzb-exporter/commit/dd18847e6ba2dc23065420d664e960005d1901a4))
+* Update google.golang.org/genproto/googleapis/api digest to 8e98ce8 ([f3b1071](https://github.com/d0ugal/slzb-exporter/commit/f3b1071f777a9861ef02e760f4ea98d34cf5f970))
+* Update google.golang.org/genproto/googleapis/api digest to b8f7ae3 ([529b008](https://github.com/d0ugal/slzb-exporter/commit/529b008aaff9f2a45c8136132104536b9a5bc173))
+* Update google.golang.org/genproto/googleapis/rpc digest to 409b4a9 ([c971663](https://github.com/d0ugal/slzb-exporter/commit/c9716634572a42b81ec6e13121211cd67968db8c))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8e98ce8 ([0cd8b1d](https://github.com/d0ugal/slzb-exporter/commit/0cd8b1d529727deec3f57929d704b038a1e120a1))
+* Update google.golang.org/genproto/googleapis/rpc digest to b8f7ae3 ([c32d977](https://github.com/d0ugal/slzb-exporter/commit/c32d977c948c3f30b07a90a7c55494ceca39d5b3))
+* Update module github.com/bytedance/sonic to v1.15.0 ([79432f8](https://github.com/d0ugal/slzb-exporter/commit/79432f886cf340b76e3e24e2836b5fc1a18871cf))
+* Update module github.com/bytedance/sonic/loader to v0.5.0 ([5a8e447](https://github.com/d0ugal/slzb-exporter/commit/5a8e447140f408b9cecc3c7b3e5891f9ec2ddf9c))
+* Update module github.com/d0ugal/promexporter to v1.14.22 ([a562265](https://github.com/d0ugal/slzb-exporter/commit/a5622651fa5d0794fab76f7cafe8abc07587f325))
+* Update module github.com/d0ugal/promexporter to v1.14.23 ([a24c154](https://github.com/d0ugal/slzb-exporter/commit/a24c154748fb4bb9b630bf5a3a9968f2ee7b10ea))
+* Update module github.com/d0ugal/promexporter to v1.14.24 ([f1d5386](https://github.com/d0ugal/slzb-exporter/commit/f1d53867065dff66b64c26cd9ce415e178753fcd))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.5 ([cacf76d](https://github.com/d0ugal/slzb-exporter/commit/cacf76da35fd724678173304a62a5d8b40d8ff66))
+
 ## [2.15.22](https://github.com/d0ugal/slzb-exporter/compare/v2.15.21...v2.15.22) (2026-01-17)
 
 
