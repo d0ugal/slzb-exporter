@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.24](https://github.com/d0ugal/slzb-exporter/compare/v2.15.23...v2.15.24) (2026-01-29)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 8636f87 ([bdb6a76](https://github.com/d0ugal/slzb-exporter/commit/bdb6a76aa643e589dc947b1a3db183c9057b3a23))
+* Update google.golang.org/genproto/googleapis/api digest to d11affd ([8b5f01a](https://github.com/d0ugal/slzb-exporter/commit/8b5f01aa2121cd21c255091dafc890cce459d2c3))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8636f87 ([8ad9953](https://github.com/d0ugal/slzb-exporter/commit/8ad9953e4cc6ac179d1e245e0d86075567acf74e))
+* Update google.golang.org/genproto/googleapis/rpc digest to d11affd ([5335eb1](https://github.com/d0ugal/slzb-exporter/commit/5335eb19392df51d3f78db542a436657e4bb9f73))
+* Update module github.com/d0ugal/promexporter to v1.14.25 ([bb29b32](https://github.com/d0ugal/slzb-exporter/commit/bb29b3293da884e7155886be424e4fd313213158))
+* Update module github.com/d0ugal/promexporter to v1.14.26 ([143eeba](https://github.com/d0ugal/slzb-exporter/commit/143eebaecbb1d4708d1d5fcc57d433d3856f5b28))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.6 ([b4c320c](https://github.com/d0ugal/slzb-exporter/commit/b4c320c9cae353ea4e053e21e96f3304aa44eed5))
+
 ## [2.15.23](https://github.com/d0ugal/slzb-exporter/compare/v2.15.22...v2.15.23) (2026-01-23)
 
 
