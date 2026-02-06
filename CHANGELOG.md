@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.24](https://github.com/d0ugal/slzb-exporter/compare/v2.15.23...v2.15.24) (2026-02-06)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.25.7 ([c1f0b89](https://github.com/d0ugal/slzb-exporter/commit/c1f0b89ae5e16e17a83b7a83b25b67e35542f146))
+* Update google.golang.org/genproto/googleapis/api digest to 546029d ([37fd7e0](https://github.com/d0ugal/slzb-exporter/commit/37fd7e0f8161a22ecf6103a685d0e48eb1dc428a))
+* Update google.golang.org/genproto/googleapis/api digest to 8636f87 ([bdb6a76](https://github.com/d0ugal/slzb-exporter/commit/bdb6a76aa643e589dc947b1a3db183c9057b3a23))
+* Update google.golang.org/genproto/googleapis/api digest to ce8ad4c ([6ed13e1](https://github.com/d0ugal/slzb-exporter/commit/6ed13e1572816ad83a180abdaab4497f538265cf))
+* Update google.golang.org/genproto/googleapis/api digest to d11affd ([8b5f01a](https://github.com/d0ugal/slzb-exporter/commit/8b5f01aa2121cd21c255091dafc890cce459d2c3))
+* Update google.golang.org/genproto/googleapis/rpc digest to 546029d ([42b6128](https://github.com/d0ugal/slzb-exporter/commit/42b6128dd448395dca7216332fdcd4b53bc37ac6))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8636f87 ([8ad9953](https://github.com/d0ugal/slzb-exporter/commit/8ad9953e4cc6ac179d1e245e0d86075567acf74e))
+* Update google.golang.org/genproto/googleapis/rpc digest to ce8ad4c ([7bce02a](https://github.com/d0ugal/slzb-exporter/commit/7bce02ae8b3d0bbb64c73b8baa0534063a7678f4))
+* Update google.golang.org/genproto/googleapis/rpc digest to d11affd ([5335eb1](https://github.com/d0ugal/slzb-exporter/commit/5335eb19392df51d3f78db542a436657e4bb9f73))
+* Update module github.com/d0ugal/promexporter to v1.14.25 ([bb29b32](https://github.com/d0ugal/slzb-exporter/commit/bb29b3293da884e7155886be424e4fd313213158))
+* Update module github.com/d0ugal/promexporter to v1.14.26 ([143eeba](https://github.com/d0ugal/slzb-exporter/commit/143eebaecbb1d4708d1d5fcc57d433d3856f5b28))
+* Update module github.com/d0ugal/promexporter to v2 ([1999186](https://github.com/d0ugal/slzb-exporter/commit/1999186f5830694568a8e711d6d5af4267da9ff1))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.13 ([7a2abe3](https://github.com/d0ugal/slzb-exporter/commit/7a2abe34704442ec811b270a10d798e3f0df15a3))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.6 ([b4c320c](https://github.com/d0ugal/slzb-exporter/commit/b4c320c9cae353ea4e053e21e96f3304aa44eed5))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.7 ([f1efe16](https://github.com/d0ugal/slzb-exporter/commit/f1efe165b4adc7827296f0d8c6bbf5b8f9e0bfbe))
+* Update opentelemetry-go monorepo to v1.40.0 ([52e32e3](https://github.com/d0ugal/slzb-exporter/commit/52e32e315196aa8fac4b431a9580706db6c48d22))
+* Update opentelemetry-go-contrib monorepo to v0.65.0 ([aaef250](https://github.com/d0ugal/slzb-exporter/commit/aaef250879f7bbe9a91c3c140f78efc4d0192b74))
+
 ## [2.15.23](https://github.com/d0ugal/slzb-exporter/compare/v2.15.22...v2.15.23) (2026-01-23)
 
 
