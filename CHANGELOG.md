@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.25](https://github.com/d0ugal/slzb-exporter/compare/v2.15.24...v2.15.25) (2026-02-08)
+
+
+### Bug Fixes
+
+* Update module golang.org/x/arch to v0.24.0 ([41fe113](https://github.com/d0ugal/slzb-exporter/commit/41fe1135feaf039cf94f0cafa3ddc098b28552bd))
+
 ## [2.15.24](https://github.com/d0ugal/slzb-exporter/compare/v2.15.23...v2.15.24) (2026-02-06)
 
 
