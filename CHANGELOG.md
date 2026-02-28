@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.25](https://github.com/d0ugal/slzb-exporter/compare/v2.15.24...v2.15.25) (2026-02-28)
+
+
+### Bug Fixes
+
+* Update dependency go to v1.26.0 ([b275960](https://github.com/d0ugal/slzb-exporter/commit/b27596027819f96d59f4128d098a8ce0683d1325))
+* Update google.golang.org/genproto/googleapis/api digest to 2f722ef ([db3a626](https://github.com/d0ugal/slzb-exporter/commit/db3a62678b5dbfb62b22d7738f262cb31413be3b))
+* Update google.golang.org/genproto/googleapis/api digest to 42d3e9b ([bde1779](https://github.com/d0ugal/slzb-exporter/commit/bde17796b17275339ab853f7354ff3db6c8056c9))
+* Update google.golang.org/genproto/googleapis/api digest to 4cfbd41 ([af2a888](https://github.com/d0ugal/slzb-exporter/commit/af2a888080db3b02137831c09bce43c14fc99bab))
+* Update google.golang.org/genproto/googleapis/api digest to a2cb227 ([059a840](https://github.com/d0ugal/slzb-exporter/commit/059a840d37201f26116cbd2242e48d62291959fc))
+* Update google.golang.org/genproto/googleapis/api digest to a57be14 ([a277130](https://github.com/d0ugal/slzb-exporter/commit/a2771303138537fad269536e61bde305ca0ee13f))
+* Update google.golang.org/genproto/googleapis/rpc digest to 2f722ef ([f201111](https://github.com/d0ugal/slzb-exporter/commit/f201111c654f4db115bdfb1b2975feff9471e16e))
+* Update google.golang.org/genproto/googleapis/rpc digest to 42d3e9b ([e4fbb33](https://github.com/d0ugal/slzb-exporter/commit/e4fbb33c24dec04760fd3717a482ef8d22c6d10e))
+* Update google.golang.org/genproto/googleapis/rpc digest to 4cfbd41 ([5a7b038](https://github.com/d0ugal/slzb-exporter/commit/5a7b03847f7dee6a8ffefad57c80067a1c8c233c))
+* Update google.golang.org/genproto/googleapis/rpc digest to a57be14 ([8577ff5](https://github.com/d0ugal/slzb-exporter/commit/8577ff58014a1c5de819a58497d85f9af77f33d2))
+* Update module github.com/gin-gonic/gin to v1.12.0 ([4705d41](https://github.com/d0ugal/slzb-exporter/commit/4705d4135728c8f342a4aa592764da23b4667e29))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.27.8 ([6219e9f](https://github.com/d0ugal/slzb-exporter/commit/6219e9fe4da4feeb57be504e82c82e8cfde3558a))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.28.0 ([70abb09](https://github.com/d0ugal/slzb-exporter/commit/70abb09891cb6b41ab962efe7a7d97dc2bb92367))
+* Update module github.com/klauspost/compress to v1.18.4 ([9fd27fe](https://github.com/d0ugal/slzb-exporter/commit/9fd27fe7a3afccd85c3db841ccc648b7eb6d0923))
+* Update module github.com/prometheus/procfs to v0.20.0 ([dbfcce4](https://github.com/d0ugal/slzb-exporter/commit/dbfcce46747b1815f994e0cca4045c089629bd6c))
+* Update module github.com/prometheus/procfs to v0.20.1 ([3e2337c](https://github.com/d0ugal/slzb-exporter/commit/3e2337cc1c3b45d8f1788a15712c912be48f0b79))
+* Update module golang.org/x/arch to v0.24.0 ([41fe113](https://github.com/d0ugal/slzb-exporter/commit/41fe1135feaf039cf94f0cafa3ddc098b28552bd))
+* Update module golang.org/x/crypto to v0.48.0 ([3f8a466](https://github.com/d0ugal/slzb-exporter/commit/3f8a46676eb433cfc7f271e111ade046a430261e))
+* Update module golang.org/x/net to v0.50.0 ([f5945a2](https://github.com/d0ugal/slzb-exporter/commit/f5945a2f492da1b61b619a99fbcfae53386a1ca8))
+* Update module golang.org/x/net to v0.51.0 ([3598bf4](https://github.com/d0ugal/slzb-exporter/commit/3598bf4caa39fd7ba88e95237418924725e6189b))
+* Update module golang.org/x/sys to v0.41.0 ([9e8680c](https://github.com/d0ugal/slzb-exporter/commit/9e8680c23c8065c01234b2d9380edccd0f870e60))
+* Update module google.golang.org/grpc to v1.79.0 ([5434b98](https://github.com/d0ugal/slzb-exporter/commit/5434b98f93c05a0c529af61b72c1b1ab18edd908))
+* Update module google.golang.org/grpc to v1.79.1 ([1668faf](https://github.com/d0ugal/slzb-exporter/commit/1668faf3a83c02b9187bf436cf0241b8a6d708fd))
+
 ## [2.15.24](https://github.com/d0ugal/slzb-exporter/compare/v2.15.23...v2.15.24) (2026-02-06)
 
 
