@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   slzb-exporter:
-    image: ghcr.io/d0ugal/slzb-exporter:v2.15.26@sha256:4c4057a76fa76126ec3bb53ebccb3bbb113eb5c668f19c3db4854bbbcc0e4c8a
+    image: ghcr.io/d0ugal/slzb-exporter:v2.15.27@sha256:9612c47e89f2416ca5916ae3fbf6f5c17264419a9a4e727f78b185f8816b17d7
     container_name: slzb-exporter
     ports:
       - "9110:9110"
