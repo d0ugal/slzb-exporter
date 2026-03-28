@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.29](https://github.com/d0ugal/slzb-exporter/compare/v2.15.28...v2.15.29) (2026-03-28)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic/loader to v0.5.1 ([5fcb56e](https://github.com/d0ugal/slzb-exporter/commit/5fcb56e9a6a5eff0ef714563cd831f97822e3888))
+* Update module github.com/d0ugal/promexporter to v1.14.29 ([666fd0d](https://github.com/d0ugal/slzb-exporter/commit/666fd0dcaf8c74000810a8dfdd3641d4b7f326cf))
+* Update module github.com/gin-contrib/sse to v1.1.1 ([3aa1601](https://github.com/d0ugal/slzb-exporter/commit/3aa16015655b1bab69f0d0f6fd20de4f6e0fe8f6))
+
 ## [2.15.28](https://github.com/d0ugal/slzb-exporter/compare/v2.15.27...v2.15.28) (2026-03-26)
 
 
