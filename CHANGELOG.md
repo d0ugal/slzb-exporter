@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.30](https://github.com/d0ugal/slzb-exporter/compare/v2.15.29...v2.15.30) (2026-03-31)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to d5a96ad ([23447ae](https://github.com/d0ugal/slzb-exporter/commit/23447ae9d025433104bf3c1ebbffe7eca18edfbc))
+* Update google.golang.org/genproto/googleapis/rpc digest to d5a96ad ([de38aa9](https://github.com/d0ugal/slzb-exporter/commit/de38aa977845af5e709f3c49289980cdee3db3ad))
+* Update module github.com/d0ugal/promexporter to v1.14.30 ([2da49fa](https://github.com/d0ugal/slzb-exporter/commit/2da49fa06a84bbfdd97b03841058960947eeca89))
+* Update module github.com/go-playground/validator/v10 to v10.30.2 ([1248e61](https://github.com/d0ugal/slzb-exporter/commit/1248e617edb9b71c5a46d4f7b77ef30eb49b6310))
+
 ## [2.15.29](https://github.com/d0ugal/slzb-exporter/compare/v2.15.28...v2.15.29) (2026-03-28)
 
 
