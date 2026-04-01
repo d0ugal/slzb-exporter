@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.32](https://github.com/d0ugal/slzb-exporter/compare/v2.15.31...v2.15.32) (2026-04-01)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 9d38bb4 ([87b09da](https://github.com/d0ugal/slzb-exporter/commit/87b09da0c8765c38f93a4bc84da0e9c9ae810811))
+* Update google.golang.org/genproto/googleapis/api digest to f93e5f3 ([95ef339](https://github.com/d0ugal/slzb-exporter/commit/95ef33936bb438d9f6e0a53026d3faeb64de49bc))
+* Update google.golang.org/genproto/googleapis/rpc digest to 9d38bb4 ([07c8a8b](https://github.com/d0ugal/slzb-exporter/commit/07c8a8b0fa0ea498b87cb6ab4625a974145f4ae3))
+* Update module google.golang.org/grpc to v1.80.0 ([312dc8f](https://github.com/d0ugal/slzb-exporter/commit/312dc8fd0c7fe8a13c0546c11f90ece0289c1536))
+
 ## [2.15.31](https://github.com/d0ugal/slzb-exporter/compare/v2.15.30...v2.15.31) (2026-03-31)
 
 
