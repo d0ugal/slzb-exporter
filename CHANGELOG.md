@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.40](https://github.com/d0ugal/slzb-exporter/compare/v2.15.39...v2.15.40) (2026-04-08)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.36 ([b32b512](https://github.com/d0ugal/slzb-exporter/commit/b32b51244798a0f16cb32a855b42021a5cd3b9c5))
+* Update module github.com/mattn/go-isatty to v0.0.21 ([8cfae0c](https://github.com/d0ugal/slzb-exporter/commit/8cfae0c7e85b160ad539448723dbbca2dd94725c))
+* Update module golang.org/x/sys to v0.43.0 ([bbe20e3](https://github.com/d0ugal/slzb-exporter/commit/bbe20e3f6e9cc73ebf2f4c50dcf9a3953897fc4c))
+
 ## [2.15.39](https://github.com/d0ugal/slzb-exporter/compare/v2.15.38...v2.15.39) (2026-04-08)
 
 
