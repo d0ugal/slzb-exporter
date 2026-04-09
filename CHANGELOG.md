@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.15.41](https://github.com/d0ugal/slzb-exporter/compare/v2.15.40...v2.15.41) (2026-04-09)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.37 ([3e438ba](https://github.com/d0ugal/slzb-exporter/commit/3e438ba6561ce807cc6b2e310eda8d573daf1c32))
+* Update module golang.org/x/crypto to v0.50.0 ([c9e478c](https://github.com/d0ugal/slzb-exporter/commit/c9e478c2db9183629e300e7651d1cc006d4de7e7))
+
 ## [2.15.40](https://github.com/d0ugal/slzb-exporter/compare/v2.15.39...v2.15.40) (2026-04-08)
 
 
