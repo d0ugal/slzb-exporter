@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.0](https://github.com/d0ugal/slzb-exporter/compare/v2.15.41...v2.16.0) (2026-04-10)
+
+
+### Features
+
+* add WiFi RSSI metric and fix duplicate collectDeviceInfo call ([f3cccc8](https://github.com/d0ugal/slzb-exporter/commit/f3cccc8c11c1a31212fd90723763d071ee1ce269))
+
+
+### Bug Fixes
+
+* add blank lines to satisfy wsl_v5 linter ([b9237de](https://github.com/d0ugal/slzb-exporter/commit/b9237def8db9b8c06d4b8fea790cc970de2b8f38))
+* Update module github.com/d0ugal/promexporter to v1.14.38 ([dd46b0f](https://github.com/d0ugal/slzb-exporter/commit/dd46b0fc66d5dc639c523c905f77701ffff884ac))
+* Update module golang.org/x/net to v0.53.0 ([e529c36](https://github.com/d0ugal/slzb-exporter/commit/e529c36929a8fbf5270713559ca6cd87af716112))
+
 ## [2.15.41](https://github.com/d0ugal/slzb-exporter/compare/v2.15.40...v2.15.41) (2026-04-09)
 
 
