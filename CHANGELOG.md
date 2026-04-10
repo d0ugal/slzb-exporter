@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.1](https://github.com/d0ugal/slzb-exporter/compare/v2.16.0...v2.16.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.39 ([d7870fd](https://github.com/d0ugal/slzb-exporter/commit/d7870fd84e28708d3761501cff0ea35a9a658f27))
+* Update module golang.org/x/arch to v0.26.0 ([629e9a6](https://github.com/d0ugal/slzb-exporter/commit/629e9a6178aa43eb46c8eefddca4a02cd28adcce))
+
 ## [2.16.0](https://github.com/d0ugal/slzb-exporter/compare/v2.15.41...v2.16.0) (2026-04-10)
 
 
