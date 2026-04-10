@@ -22,6 +22,7 @@ type SLZBRegistry struct {
 	SLZBHeapRatio         *prometheus.GaugeVec
 	SLZBEthernetConnected *prometheus.GaugeVec
 	SLZBWifiConnected     *prometheus.GaugeVec
+	SLZBWifiRSSI          *prometheus.GaugeVec
 
 	// HTTP request metrics (exporter's requests to SLZB device)
 	SLZBHTTPRequestsTotal *prometheus.CounterVec
@@ -168,6 +169,16 @@ func NewSLZBRegistry(baseRegistry *promexporter_metrics.Registry) *SLZBRegistry 
 	)
 
 	baseRegistry.AddMetricInfo("slzb_device_wifi_connected", "SLZB device WiFi connection status (1=connected, 0=disconnected)", []string{"device", "ssid", "ip_address", "mac_address", "gateway", "subnet_mask", "dns_server"})
+
+	slzb.SLZBWifiRSSI = factory.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "slzb_device_wifi_rssi_dbm",
+			Help: "SLZB device WiFi signal strength in dBm",
+		},
+		[]string{"device"},
+	)
+
+	baseRegistry.AddMetricInfo("slzb_device_wifi_rssi_dbm", "SLZB device WiFi signal strength in dBm", []string{"device"})
 
 	slzb.SLZBHTTPRequestsTotal = factory.NewCounterVec(
 		prometheus.CounterOpts{

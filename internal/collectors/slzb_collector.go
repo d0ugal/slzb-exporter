@@ -215,32 +215,6 @@ func (sc *SLZBCollector) collectMetrics(ctx context.Context) {
 
 	totalCollections++
 
-	// Collect device information
-	deviceInfo2Start := time.Now()
-	if sc.collectDeviceInfo(ctx, deviceID) {
-		deviceInfo2Duration := time.Since(deviceInfo2Start).Seconds()
-		if collectorSpan != nil {
-			collectorSpan.SetAttributes(
-				attribute.Float64("device_info_2.duration_seconds", deviceInfo2Duration),
-			)
-			collectorSpan.AddEvent("device_info_collected",
-				attribute.Float64("duration_seconds", deviceInfo2Duration),
-			)
-		}
-
-		successfulCollections++
-	} else {
-		deviceInfo2Duration := time.Since(deviceInfo2Start).Seconds()
-		if collectorSpan != nil {
-			collectorSpan.SetAttributes(
-				attribute.Float64("device_info_2.duration_seconds", deviceInfo2Duration),
-			)
-			collectorSpan.RecordError(fmt.Errorf("device info collection failed"), attribute.String("device.id", deviceID))
-		}
-	}
-
-	totalCollections++
-
 	// NEW: Collect firmware update status
 	firmwareStart := time.Now()
 	if sc.collectFirmwareStatus(ctx, deviceID) {
@@ -664,6 +638,9 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 			"subnet_mask": "none",
 			"dns_server":  "none",
 		}).Set(0)
+		sc.metrics.SLZBWifiRSSI.With(prometheus.Labels{
+			"device": deviceName,
+		}).Set(0)
 		slog.Info("Ethernet connected from device info", "device", deviceName, "ip", ipAddr, "mac", macAddr, "gateway", gateway, "subnet", subnet, "dns", dns, "speed", speedMbps)
 	} else {
 		sc.metrics.SLZBEthernetConnected.With(prometheus.Labels{
@@ -675,16 +652,55 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 			"dns_server":  "unknown",
 			"speed_mbps":  "unknown",
 		}).Set(0)
+
+		wifiSsid := "unknown"
+		wifiIP := "unknown"
+		wifiMac := "unknown"
+		wifiGateway := "unknown"
+		wifiSubnet := "unknown"
+
+		if v, ok := deviceData["wifiSsid"]; ok && v != "" {
+			wifiSsid = v
+		}
+		if v, ok := deviceData["wifiIp"]; ok && v != "" {
+			wifiIP = v
+		}
+		if v, ok := deviceData["wifiMac"]; ok && v != "" {
+			wifiMac = v
+		}
+		if v, ok := deviceData["wifiGate"]; ok && v != "" {
+			wifiGateway = v
+		}
+		if v, ok := deviceData["wifiSubnet"]; ok && v != "" {
+			wifiSubnet = v
+		}
+
+		wifiConnected := 0.0
+		if wifiConn, ok := deviceData["wifiConnected"]; ok && wifiConn == "1" {
+			wifiConnected = 1.0
+		}
+
 		sc.metrics.SLZBWifiConnected.With(prometheus.Labels{
 			"device":      deviceName,
-			"ssid":        "unknown",
-			"ip_address":  "unknown",
-			"mac_address": "unknown",
-			"gateway":     "unknown",
-			"subnet_mask": "unknown",
-			"dns_server":  "unknown",
-		}).Set(0)
-		slog.Info("Ethernet disconnected from device info", "device", deviceName)
+			"ssid":        wifiSsid,
+			"ip_address":  wifiIP,
+			"mac_address": wifiMac,
+			"gateway":     wifiGateway,
+			"subnet_mask": wifiSubnet,
+			"dns_server":  wifiGateway,
+		}).Set(wifiConnected)
+
+		rssi := 0.0
+		if rssiStr, ok := deviceData["wifiRssi"]; ok {
+			if parsed, err := strconv.ParseFloat(rssiStr, 64); err == nil {
+				rssi = parsed
+			}
+		}
+		sc.metrics.SLZBWifiRSSI.With(prometheus.Labels{
+			"device": deviceName,
+		}).Set(rssi)
+
+		slog.Info("Ethernet disconnected from device info", "device", deviceName, "wifi_ssid", wifiSsid, "wifi_rssi", rssi)
 	}
 }
 
