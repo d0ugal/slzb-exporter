@@ -662,15 +662,19 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 		if v, ok := deviceData["wifiSsid"]; ok && v != "" {
 			wifiSsid = v
 		}
+
 		if v, ok := deviceData["wifiIp"]; ok && v != "" {
 			wifiIP = v
 		}
+
 		if v, ok := deviceData["wifiMac"]; ok && v != "" {
 			wifiMac = v
 		}
+
 		if v, ok := deviceData["wifiGate"]; ok && v != "" {
 			wifiGateway = v
 		}
+
 		if v, ok := deviceData["wifiSubnet"]; ok && v != "" {
 			wifiSubnet = v
 		}
@@ -691,11 +695,13 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 		}).Set(wifiConnected)
 
 		rssi := 0.0
+
 		if rssiStr, ok := deviceData["wifiRssi"]; ok {
 			if parsed, err := strconv.ParseFloat(rssiStr, 64); err == nil {
 				rssi = parsed
 			}
 		}
+
 		sc.metrics.SLZBWifiRSSI.With(prometheus.Labels{
 			"device": deviceName,
 		}).Set(rssi)
