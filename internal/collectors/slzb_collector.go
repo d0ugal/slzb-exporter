@@ -680,6 +680,7 @@ func (sc *SLZBCollector) updateDeviceNetworkMetrics(deviceName string, deviceDat
 		}
 
 		wifiConnected := 0.0
+
 		if wifiConn, ok := deviceData["wifiConnected"]; ok && wifiConn == "1" {
 			wifiConnected = 1.0
 		}
