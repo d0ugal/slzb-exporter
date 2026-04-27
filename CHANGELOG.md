@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.7](https://github.com/d0ugal/slzb-exporter/compare/v2.16.6...v2.16.7) (2026-04-27)
+
+
+### Bug Fixes
+
+* Update module github.com/mattn/go-isatty to v0.0.22 ([db4a32d](https://github.com/d0ugal/slzb-exporter/commit/db4a32de820c1b53cf86e596e1278b40c62a4e73))
+* use RELEASE_TOKEN in auto-format workflow to trigger CI ([c46d8bb](https://github.com/d0ugal/slzb-exporter/commit/c46d8bbc3daa40d4869852425ad7f8e028b5f98f))
+
 ## [2.16.6](https://github.com/d0ugal/slzb-exporter/compare/v2.16.5...v2.16.6) (2026-04-21)
 
 
