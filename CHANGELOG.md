@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.8](https://github.com/d0ugal/slzb-exporter/compare/v2.16.7...v2.16.8) (2026-04-27)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 7cedc36 ([360cc6c](https://github.com/d0ugal/slzb-exporter/commit/360cc6c9e13f09b3e097bea33190af5122df3dbd))
+* Update module github.com/bytedance/sonic to v1.15.1 ([81bacce](https://github.com/d0ugal/slzb-exporter/commit/81bacce6a174a3928c73593e2b927a194b4ff58d))
+* Update module github.com/d0ugal/promexporter to v1.14.44 ([98b1ed4](https://github.com/d0ugal/slzb-exporter/commit/98b1ed4a33a5c022e5b7b2f3415e6dc2ca529eaa))
+
 ## [2.16.7](https://github.com/d0ugal/slzb-exporter/compare/v2.16.6...v2.16.7) (2026-04-27)
 
 
