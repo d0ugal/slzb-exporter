@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.10](https://github.com/d0ugal/slzb-exporter/compare/v2.16.9...v2.16.10) (2026-04-30)
+
+
+### Bug Fixes
+
+* Update module github.com/cloudwego/base64x to v0.1.7 ([916418d](https://github.com/d0ugal/slzb-exporter/commit/916418df55a0ace7c6302e944913bb693006bdc4))
+* Update module github.com/d0ugal/promexporter to v1.14.46 ([0b7cd75](https://github.com/d0ugal/slzb-exporter/commit/0b7cd750808209a03693723e0558dcef975689c9))
+* Update module github.com/klauspost/compress to v1.18.6 ([0ce749a](https://github.com/d0ugal/slzb-exporter/commit/0ce749a4b575b4830b406fe521846e710b037b1d))
+
 ## [2.16.9](https://github.com/d0ugal/slzb-exporter/compare/v2.16.8...v2.16.9) (2026-04-28)
 
 
