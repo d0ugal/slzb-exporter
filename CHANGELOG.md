@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.12](https://github.com/d0ugal/slzb-exporter/compare/v2.16.11...v2.16.12) (2026-05-02)
+
+
+### Bug Fixes
+
+* Update module github.com/pelletier/go-toml/v2 to v2.3.1 ([075c42e](https://github.com/d0ugal/slzb-exporter/commit/075c42ef0730bcf4bdeb3407049176a6d9029204))
+
 ## [2.16.11](https://github.com/d0ugal/slzb-exporter/compare/v2.16.10...v2.16.11) (2026-05-01)
 
 
