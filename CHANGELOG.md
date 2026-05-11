@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.17](https://github.com/d0ugal/slzb-exporter/compare/v2.16.16...v2.16.17) (2026-05-11)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.3 ([5be1e43](https://github.com/d0ugal/slzb-exporter/commit/5be1e4331e23bc626dc08a6d6ff67dd3b4499402))
+* Update google.golang.org/genproto/googleapis/api digest to 3700d41 ([d9159f3](https://github.com/d0ugal/slzb-exporter/commit/d9159f3d1259a170e7ff712bcad1e69766b0b537))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3700d41 ([64aa098](https://github.com/d0ugal/slzb-exporter/commit/64aa0989a0d3e103a32ba4037301a202428ee6eb))
+* Update module github.com/d0ugal/promexporter to v1.14.51 ([8f87c83](https://github.com/d0ugal/slzb-exporter/commit/8f87c83c90e2b89698716b6c6867fdf3c4802acb))
+* Update module github.com/d0ugal/promexporter to v1.14.52 ([9ea1923](https://github.com/d0ugal/slzb-exporter/commit/9ea1923a92825ec499e63b843fcadf5830572612))
+* Update module github.com/d0ugal/promexporter to v1.14.53 ([8882165](https://github.com/d0ugal/slzb-exporter/commit/8882165f42dc0636f195330e62e63cd4afc431f9))
+* Update module github.com/d0ugal/promexporter to v1.14.54 ([b3ff2c2](https://github.com/d0ugal/slzb-exporter/commit/b3ff2c2b06a6d84ab9d81c1b0d0251659d8aac82))
+* Update module github.com/quic-go/quic-go to v0.59.1 ([489a0c1](https://github.com/d0ugal/slzb-exporter/commit/489a0c1b765ee2e577fb9c9623d85f0d3d870669))
+* Update module golang.org/x/arch to v0.27.0 ([697ba47](https://github.com/d0ugal/slzb-exporter/commit/697ba47442f6c1ff00bd67f9a8df932a4ecae2e7))
+* Update module golang.org/x/crypto to v0.51.0 ([ef46667](https://github.com/d0ugal/slzb-exporter/commit/ef466673c84b7672ae435763c33fccd71f86792a))
+* Update module golang.org/x/net to v0.54.0 ([fa71be3](https://github.com/d0ugal/slzb-exporter/commit/fa71be3a6f0cab047a9cd60cccc92431810b555d))
+* Update module golang.org/x/sys to v0.44.0 ([23d670e](https://github.com/d0ugal/slzb-exporter/commit/23d670e5a0ea8169975b1bc5a36f2ac9ff1c7348))
+* Update module golang.org/x/text to v0.37.0 ([dc1182f](https://github.com/d0ugal/slzb-exporter/commit/dc1182fb441d9379d8fdb696f45986e12fa46021))
+
 ## [2.16.16](https://github.com/d0ugal/slzb-exporter/compare/v2.16.15...v2.16.16) (2026-05-06)
 
 
