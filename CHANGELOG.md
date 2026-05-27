@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.24](https://github.com/d0ugal/slzb-exporter/compare/v2.16.23...v2.16.24) (2026-05-27)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 0a33c5d ([8957caa](https://github.com/d0ugal/slzb-exporter/commit/8957caa345c30ed41fc911fb820fcffd87c3fca8))
+* Update google.golang.org/genproto/googleapis/api digest to 3dc84a4 ([5189b55](https://github.com/d0ugal/slzb-exporter/commit/5189b559f9a5719799dfe8720bf901d644078c55))
+* Update google.golang.org/genproto/googleapis/api digest to 7f3bc5b ([0bb328f](https://github.com/d0ugal/slzb-exporter/commit/0bb328f7c7b3cfe67971c4a565bc7e666eeae0cb))
+* Update google.golang.org/genproto/googleapis/rpc digest to 0a33c5d ([03c4bbc](https://github.com/d0ugal/slzb-exporter/commit/03c4bbc9565e8ec0997bf4f52e009ebf08fa0958))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3dc84a4 ([060ba27](https://github.com/d0ugal/slzb-exporter/commit/060ba279a2fa8273c401de08aa1f87cbb4307d44))
+* Update module github.com/d0ugal/promexporter to v1.14.59 ([094e507](https://github.com/d0ugal/slzb-exporter/commit/094e5077234bbd2089be16143089ff56c580eff4))
+
 ## [2.16.23](https://github.com/d0ugal/slzb-exporter/compare/v2.16.22...v2.16.23) (2026-05-22)
 
 
