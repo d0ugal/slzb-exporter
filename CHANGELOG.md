@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.25](https://github.com/d0ugal/slzb-exporter/compare/v2.16.24...v2.16.25) (2026-05-28)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.60 ([4545376](https://github.com/d0ugal/slzb-exporter/commit/454537674dba7723321ce00b9d782c46dfba67c8))
+* Update module github.com/grafana/pyroscope-go to v1.3.1 ([0d3e889](https://github.com/d0ugal/slzb-exporter/commit/0d3e889a9894a6870a44c706471ca3003cd6624b))
+* Update opentelemetry-go monorepo to v1.44.0 ([05389cc](https://github.com/d0ugal/slzb-exporter/commit/05389cc9bc3ea9bc3e3d4b0de5bac932736c5069))
+* Update opentelemetry-go-contrib monorepo to v0.69.0 ([9ac9782](https://github.com/d0ugal/slzb-exporter/commit/9ac97825772f6ff03b90266167f23a74b55e690f))
+
 ## [2.16.24](https://github.com/d0ugal/slzb-exporter/compare/v2.16.23...v2.16.24) (2026-05-27)
 
 
