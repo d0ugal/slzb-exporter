@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.26](https://github.com/d0ugal/slzb-exporter/compare/v2.16.25...v2.16.26) (2026-05-29)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.61 ([d75d37b](https://github.com/d0ugal/slzb-exporter/commit/d75d37b96e0ec55b6cf003d0a8d8fd8439e7c470))
+* Update module github.com/prometheus/common to v0.68.0 ([86816b4](https://github.com/d0ugal/slzb-exporter/commit/86816b409dc9e7cd260cc1a0af733023d6cb3f80))
+
 ## [2.16.25](https://github.com/d0ugal/slzb-exporter/compare/v2.16.24...v2.16.25) (2026-05-28)
 
 
