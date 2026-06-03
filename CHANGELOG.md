@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.27](https://github.com/d0ugal/slzb-exporter/compare/v2.16.26...v2.16.27) (2026-06-03)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.4 ([4c00717](https://github.com/d0ugal/slzb-exporter/commit/4c007173088fbdf7a8351529bcafcb57f01533b0))
+* Update module github.com/d0ugal/promexporter to v1.14.62 ([076afa5](https://github.com/d0ugal/slzb-exporter/commit/076afa53c0319597e7d361044672a91a5ada9027))
+* Update module github.com/go-playground/validator/v10 to v10.30.3 ([3efe2f0](https://github.com/d0ugal/slzb-exporter/commit/3efe2f0075a17fb9e921722200e67708a2388da6))
+* Update module github.com/prometheus/common to v0.68.1 ([04391e9](https://github.com/d0ugal/slzb-exporter/commit/04391e922dc485a6176340c719ae7169ca592b1d))
+
 ## [2.16.26](https://github.com/d0ugal/slzb-exporter/compare/v2.16.25...v2.16.26) (2026-05-29)
 
 
