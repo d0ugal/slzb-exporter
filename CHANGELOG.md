@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.28](https://github.com/d0ugal/slzb-exporter/compare/v2.16.27...v2.16.28) (2026-06-04)
+
+
+### Bug Fixes
+
+* Update module github.com/bytedance/sonic to v1.15.2 ([2737291](https://github.com/d0ugal/slzb-exporter/commit/2737291289de7d43a20e92eb4900495915a17424))
+* Update module github.com/d0ugal/promexporter to v1.14.63 ([4557d63](https://github.com/d0ugal/slzb-exporter/commit/4557d63580092556ae7cd185a8bfe9efb5b3a573))
+
 ## [2.16.27](https://github.com/d0ugal/slzb-exporter/compare/v2.16.26...v2.16.27) (2026-06-03)
 
 
