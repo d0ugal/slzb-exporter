@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.30](https://github.com/d0ugal/slzb-exporter/compare/v2.16.29...v2.16.30) (2026-06-07)
+
+
+### Bug Fixes
+
+* Update module github.com/quic-go/quic-go to v0.60.0 ([853c874](https://github.com/d0ugal/slzb-exporter/commit/853c8742c2e406ec75b46f96f25b156ded548535))
+
 ## [2.16.29](https://github.com/d0ugal/slzb-exporter/compare/v2.16.28...v2.16.29) (2026-06-05)
 
 
