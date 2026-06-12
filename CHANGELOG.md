@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.31](https://github.com/d0ugal/slzb-exporter/compare/v2.16.30...v2.16.31) (2026-06-12)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 4308a22 ([faa35c6](https://github.com/d0ugal/slzb-exporter/commit/faa35c62fc3f7d6f3a5eccdd7cf35ce8f9a00ea6))
+* Update google.golang.org/genproto/googleapis/api digest to 7ab31c2 ([aa98ca9](https://github.com/d0ugal/slzb-exporter/commit/aa98ca924d0b9213e715c91a409edf67804b3724))
+* Update google.golang.org/genproto/googleapis/rpc digest to 4308a22 ([4fac301](https://github.com/d0ugal/slzb-exporter/commit/4fac301963e93528a04342135bca66a44f451b88))
+* Update google.golang.org/genproto/googleapis/rpc digest to 7ab31c2 ([b900f13](https://github.com/d0ugal/slzb-exporter/commit/b900f136c3dbb68bfecb55eb020335c0ec0663b7))
+* Update module github.com/felixge/httpsnoop to v1.1.0 ([300981a](https://github.com/d0ugal/slzb-exporter/commit/300981a8ad89ea73460324f6aaec8dbc61abbdf2))
+* Update module golang.org/x/arch to v0.28.0 ([bb86473](https://github.com/d0ugal/slzb-exporter/commit/bb864734f71098dd01119c51bc93d43f38b28fcb))
+* Update module golang.org/x/crypto to v0.53.0 ([91f3b7c](https://github.com/d0ugal/slzb-exporter/commit/91f3b7cc9597c06389ff64cea8b52ffa3fddfbe5))
+* Update module golang.org/x/net to v0.56.0 ([a3e1b7a](https://github.com/d0ugal/slzb-exporter/commit/a3e1b7a1ef92620047a4e3df287cc2187768e3ee))
+* Update module golang.org/x/sys to v0.46.0 ([43b39db](https://github.com/d0ugal/slzb-exporter/commit/43b39db74c45ab49804c5c8739e2ecfd77d52b4e))
+* Update module golang.org/x/text to v0.38.0 ([9f8bfa4](https://github.com/d0ugal/slzb-exporter/commit/9f8bfa4b588f03290c75054d322a1318dcafa9a5))
+
 ## [2.16.30](https://github.com/d0ugal/slzb-exporter/compare/v2.16.29...v2.16.30) (2026-06-07)
 
 
