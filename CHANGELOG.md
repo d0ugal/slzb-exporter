@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.33](https://github.com/d0ugal/slzb-exporter/compare/v2.16.32...v2.16.33) (2026-06-18)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 62b3387 ([264529c](https://github.com/d0ugal/slzb-exporter/commit/264529c903a22afbaa9bfc2fa6ced90c294cf278))
+* Update module github.com/cenkalti/backoff/v5 to v6 ([96fb087](https://github.com/d0ugal/slzb-exporter/commit/96fb08784b830dafd23f311e9ccbc86849260985))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.0 ([8978a5f](https://github.com/d0ugal/slzb-exporter/commit/8978a5fd8999495fb65189fe5e3ce2c909b047fe))
+* Update module github.com/prometheus/common to v0.69.0 ([3c2b3a7](https://github.com/d0ugal/slzb-exporter/commit/3c2b3a7cd034cd25dad29b55bdd120d2dabbfaaf))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.6.1 ([0d7a508](https://github.com/d0ugal/slzb-exporter/commit/0d7a508b6c77190f07d9ae6f9f1781d0f9757ffb))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.7.0 ([b9c2a68](https://github.com/d0ugal/slzb-exporter/commit/b9c2a686451b135aba0c79778909b99b396071e3))
+
 ## [2.16.32](https://github.com/d0ugal/slzb-exporter/compare/v2.16.31...v2.16.32) (2026-06-16)
 
 
