@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.36](https://github.com/d0ugal/slzb-exporter/compare/v2.16.35...v2.16.36) (2026-06-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 1f2690b ([6f0f3aa](https://github.com/d0ugal/slzb-exporter/commit/6f0f3aa07570964072222fd45f4543cf662dc665))
+* Update google.golang.org/genproto/googleapis/api digest to b703f56 ([e114f87](https://github.com/d0ugal/slzb-exporter/commit/e114f877b6c5e9642d264d22f23986cef2d38b3e))
+* Update google.golang.org/genproto/googleapis/rpc digest to b703f56 ([603b35f](https://github.com/d0ugal/slzb-exporter/commit/603b35fb95062bf9bfe85eab9c029c48b0a50848))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.1 ([6b2286f](https://github.com/d0ugal/slzb-exporter/commit/6b2286fde1da4a992c501e48d1af7c9d640ef5da))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.2 ([cd9143c](https://github.com/d0ugal/slzb-exporter/commit/cd9143ceeb6b8e3a0b89b3db3bd2988e67e5eac4))
+
 ## [2.16.35](https://github.com/d0ugal/slzb-exporter/compare/v2.16.34...v2.16.35) (2026-06-19)
 
 
