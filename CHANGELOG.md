@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.37](https://github.com/d0ugal/slzb-exporter/compare/v2.16.36...v2.16.37) (2026-06-27)
+
+
+### Bug Fixes
+
+* Update module github.com/prometheus/procfs to v0.21.0 ([3ffd9da](https://github.com/d0ugal/slzb-exporter/commit/3ffd9dac1b43ee42d07cb944f5126fe5e27a6044))
+
 ## [2.16.36](https://github.com/d0ugal/slzb-exporter/compare/v2.16.35...v2.16.36) (2026-06-24)
 
 
