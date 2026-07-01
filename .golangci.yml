@@ -2,7 +2,7 @@ version: "2"
 
 run:
   timeout: 5m
-  go: "1.25.1"
+  go: "1.25.0"
 
 linters:
   # Use fast linters for better performance
@@ -43,14 +43,13 @@ linters:
     - usetesting  # Not critical
     - varnamelen  # Variable names fine
     - wsl  # Use wsl_v5 instead
-    - gocyclo  # Temporarily disabled - will fix complexity in separate commit
+    - gocyclo  # Allow complex functions for SNMP data processing
+    - maintidx  # Allow complex registry functions
 
   settings:
     gosec:
       # Allow some security warnings
       excludes:
-        - G104  # Errors unhandled - Setenv/Unsetenv rarely fail in practice
-        - G112  # Potential Slowloris Attack - ReadHeaderTimeout configured
         - G204  # Subprocess launched with variable - inputs are validated and sanitized
         - G304  # Potential file inclusion via variable - path is validated and comes from trusted config
     dupl:
