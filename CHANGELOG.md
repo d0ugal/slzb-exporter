@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.38](https://github.com/d0ugal/slzb-exporter/compare/v2.16.37...v2.16.38) (2026-07-01)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 925bb5d ([e49b6a4](https://github.com/d0ugal/slzb-exporter/commit/e49b6a4589efafbee7eb66250330cca50405aa75))
+* Update google.golang.org/genproto/googleapis/rpc digest to 925bb5d ([b95baba](https://github.com/d0ugal/slzb-exporter/commit/b95babab0fa4b3ec6eb002346bc025754986cebf))
+* Update module github.com/cenkalti/backoff/v5 to v7 ([08115dd](https://github.com/d0ugal/slzb-exporter/commit/08115ddc81048d5d42c2dc700e0243c2ed28af56))
+* Update module github.com/klauspost/compress to v1.18.7 ([25140e7](https://github.com/d0ugal/slzb-exporter/commit/25140e70d78d9752bb37682f4bf2e9aed56fe485))
+* Update module github.com/klauspost/compress to v1.19.0 ([8738056](https://github.com/d0ugal/slzb-exporter/commit/8738056b1787cc18c40989582e33f74290ba33da))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.0 ([52e5fb6](https://github.com/d0ugal/slzb-exporter/commit/52e5fb669093465b45c8d6697a9b9304c3f73ac8))
+* Update module github.com/prometheus/procfs to v0.21.1 ([1f2a62b](https://github.com/d0ugal/slzb-exporter/commit/1f2a62b258eaa5706a1b960785b3b940418d47ff))
+* Update module google.golang.org/grpc to v1.82.0 ([9a7804d](https://github.com/d0ugal/slzb-exporter/commit/9a7804dbbddf571c68185e4f65d15c8717a88909))
+
 ## [2.16.37](https://github.com/d0ugal/slzb-exporter/compare/v2.16.36...v2.16.37) (2026-06-27)
 
 
