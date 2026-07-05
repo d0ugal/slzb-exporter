@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.39](https://github.com/d0ugal/slzb-exporter/compare/v2.16.38...v2.16.39) (2026-07-05)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.4.0 ([4d981fa](https://github.com/d0ugal/slzb-exporter/commit/4d981fa511fb8e7a4d9422ea26fd72e44891525d))
+* Update module github.com/pelletier/go-toml/v2 to v2.4.3 ([938925d](https://github.com/d0ugal/slzb-exporter/commit/938925d46ee1566f131eb0a50367a56669fa33e9))
+
 ## [2.16.38](https://github.com/d0ugal/slzb-exporter/compare/v2.16.37...v2.16.38) (2026-07-01)
 
 
