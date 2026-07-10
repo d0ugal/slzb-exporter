@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.44](https://github.com/d0ugal/slzb-exporter/compare/v2.16.43...v2.16.44) (2026-07-10)
+
+
+### Bug Fixes
+
+* Update module github.com/grafana/pyroscope-go to v1.4.1 ([63730b6](https://github.com/d0ugal/slzb-exporter/commit/63730b6783d5641864c9e70cb7c2f31894aef7b5))
+* Update module github.com/grafana/pyroscope-go/godeltaprof to v0.1.12 ([2ce2aff](https://github.com/d0ugal/slzb-exporter/commit/2ce2aff251a39c48e6dbea16714c04c4b9f690e8))
+* Update module github.com/prometheus/common to v0.70.0 ([d04c6e7](https://github.com/d0ugal/slzb-exporter/commit/d04c6e7bb11f1ed6d7b51fda1152c66c98f3c349))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.0 ([e9e1986](https://github.com/d0ugal/slzb-exporter/commit/e9e19866e19e602852c24ffb28d78d2cf8f3d63a))
+
 ## [2.16.43](https://github.com/d0ugal/slzb-exporter/compare/v2.16.42...v2.16.43) (2026-07-09)
 
 
