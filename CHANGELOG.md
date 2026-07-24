@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.47](https://github.com/d0ugal/slzb-exporter/compare/v2.16.46...v2.16.47) (2026-07-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 0afa2a6 ([31b9de9](https://github.com/d0ugal/slzb-exporter/commit/31b9de9283b3f8b6735fdb926ebb1027f93e3dee))
+* Update google.golang.org/genproto/googleapis/api digest to 3fe39f3 ([2a30ebe](https://github.com/d0ugal/slzb-exporter/commit/2a30ebeff608992b771f1cf53ae44ea816fc0783))
+* Update google.golang.org/genproto/googleapis/api digest to e059f2f ([0c14de7](https://github.com/d0ugal/slzb-exporter/commit/0c14de7d3b9f51d143e75a58839552a7aa417a04))
+* Update google.golang.org/genproto/googleapis/rpc digest to 0afa2a6 ([6cce7e9](https://github.com/d0ugal/slzb-exporter/commit/6cce7e96272bbf6d4ffc4f66c2a27167d5d712dc))
+* Update google.golang.org/genproto/googleapis/rpc digest to 3fe39f3 ([316765d](https://github.com/d0ugal/slzb-exporter/commit/316765d998692666de95088cb5c3738a7948322e))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.14 ([7cd6baf](https://github.com/d0ugal/slzb-exporter/commit/7cd6bafd73e26374928fb9a936cf90444c57a71c))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.15 ([534c185](https://github.com/d0ugal/slzb-exporter/commit/534c185007c0a7b2998cd262e149ba7a6aa95683))
+* Update module github.com/go-logr/logr to v1.4.4 ([cd234a1](https://github.com/d0ugal/slzb-exporter/commit/cd234a1b0b0696ad0169cb36c066a31704ef6400))
+* Update module github.com/klauspost/compress to v1.19.1 ([fab9774](https://github.com/d0ugal/slzb-exporter/commit/fab9774450b7f0a98c02aed12e8a138496e9632a))
+* Update module github.com/leodido/go-urn to v1.5.0 ([9fe3a56](https://github.com/d0ugal/slzb-exporter/commit/9fe3a5642eb0036b8189f940785519e2aeaadcd5))
+* Update module github.com/mattn/go-isatty to v0.0.23 ([4557be9](https://github.com/d0ugal/slzb-exporter/commit/4557be95e1e32fec3134617c7cc7e4f4121ec926))
+* Update module github.com/mattn/go-isatty to v0.0.24 ([fa6a9fc](https://github.com/d0ugal/slzb-exporter/commit/fa6a9fcf286a108d705707e32340a3845d7f919c))
+* Update module github.com/prometheus/client_golang to v1.24.0 ([7f95224](https://github.com/d0ugal/slzb-exporter/commit/7f9522455c74d4e814cd04dc9be61d6625e998b4))
+* Update module github.com/prometheus/common to v0.70.1 ([69a11f0](https://github.com/d0ugal/slzb-exporter/commit/69a11f09a176824beb9b0e3bf22f9ea4e19104aa))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.0 ([1db25b6](https://github.com/d0ugal/slzb-exporter/commit/1db25b67ab19bfe52661ae4bdda0db8dd71f886a))
+
 ## [2.16.46](https://github.com/d0ugal/slzb-exporter/compare/v2.16.45...v2.16.46) (2026-07-16)
 
 
