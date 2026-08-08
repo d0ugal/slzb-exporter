@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.48](https://github.com/d0ugal/slzb-exporter/compare/v2.16.47...v2.16.48) (2026-08-08)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 6ac0973 ([c323899](https://github.com/d0ugal/slzb-exporter/commit/c3238993ab899275a1b1ca2b1c13a0afd635e16a))
+* Update google.golang.org/genproto/googleapis/api digest to c8921c7 ([dce8d0a](https://github.com/d0ugal/slzb-exporter/commit/dce8d0a42a9d2073cfc530db1cb3d952a1931f9b))
+* Update google.golang.org/genproto/googleapis/rpc digest to 6ac0973 ([09127df](https://github.com/d0ugal/slzb-exporter/commit/09127dfccb7e4807c083f9fc0ee83938e7abd806))
+* Update google.golang.org/genproto/googleapis/rpc digest to c8921c7 ([d86d98e](https://github.com/d0ugal/slzb-exporter/commit/d86d98e59a3cf6a2f3cea89433b6b8b92c230faf))
+* Update module github.com/d0ugal/promexporter to v1.14.68 ([6031084](https://github.com/d0ugal/slzb-exporter/commit/6031084101d5b57c0bfdd6b19c39a406195e92b6))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.30.0 ([b5f8394](https://github.com/d0ugal/slzb-exporter/commit/b5f83944f492c909457eb1c82e26abc73cc9968b))
+* Update module github.com/klauspost/compress to v1.19.2 ([ff31644](https://github.com/d0ugal/slzb-exporter/commit/ff31644993d23c9eea0e86c4af9332f3bcbe3671))
+* Update module github.com/ugorji/go/codec to v1.3.2 ([d67f927](https://github.com/d0ugal/slzb-exporter/commit/d67f9275c0daafd1c6b50c0c16a1d5d7f3f11992))
+* Update module golang.org/x/arch to v0.30.0 ([b11fe67](https://github.com/d0ugal/slzb-exporter/commit/b11fe676f7088d6f72c8ce6614442aa3a49d6e25))
+* Update opentelemetry-go monorepo to v1.45.0 ([216928a](https://github.com/d0ugal/slzb-exporter/commit/216928a3a83649cf7a17d12fdddae03a2ebf92c3))
+* Update opentelemetry-go-contrib monorepo to v0.70.0 ([c4297f1](https://github.com/d0ugal/slzb-exporter/commit/c4297f1cdaa800ae69875bbb8c4acf10372e9fe4))
+
 ## [2.16.47](https://github.com/d0ugal/slzb-exporter/compare/v2.16.46...v2.16.47) (2026-07-30)
 
 
