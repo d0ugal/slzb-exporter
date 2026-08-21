@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.49](https://github.com/d0ugal/slzb-exporter/compare/v2.16.48...v2.16.49) (2026-08-21)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.6 ([8d29d70](https://github.com/d0ugal/slzb-exporter/commit/8d29d70b80bb1c338b5bee21c99b59b1cf0d6265))
+* Update go toolchain directive to v1.27.0 ([c81b4bd](https://github.com/d0ugal/slzb-exporter/commit/c81b4bd4085ad74cabfe8533d254035a2db8bb50))
+* Update google.golang.org/genproto/googleapis/api digest to 08b0e42 ([150a08f](https://github.com/d0ugal/slzb-exporter/commit/150a08f2b718d43cff8f1e268b77a3126832849e))
+* Update google.golang.org/genproto/googleapis/api digest to 1b09341 ([9f7e37e](https://github.com/d0ugal/slzb-exporter/commit/9f7e37eb55899abbaae0b99dc42a99b304c483aa))
+* Update google.golang.org/genproto/googleapis/api digest to ac3dfec ([fbbc6a3](https://github.com/d0ugal/slzb-exporter/commit/fbbc6a3e7fb734ac1c42abbf87fc0ee063bc5777))
+* Update google.golang.org/genproto/googleapis/rpc digest to 08b0e42 ([0bcdb48](https://github.com/d0ugal/slzb-exporter/commit/0bcdb48e56a854c9c7dbaca1e87d5e5789060121))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1b09341 ([5955ec9](https://github.com/d0ugal/slzb-exporter/commit/5955ec91e5ffb52204fa5b943adf38b607fe4a25))
+* Update google.golang.org/genproto/googleapis/rpc digest to ac3dfec ([cc0e7b6](https://github.com/d0ugal/slzb-exporter/commit/cc0e7b64423cfc100ae589cb57ab92cd448e7620))
+* Update module github.com/d0ugal/promexporter to v1.14.69 ([a3618ef](https://github.com/d0ugal/slzb-exporter/commit/a3618efc85fc8f01ef3e4c52865bad5b362a9f29))
+* Update module golang.org/x/crypto to v0.55.0 ([808250d](https://github.com/d0ugal/slzb-exporter/commit/808250d4101d2ac668b0f04d1e6b71e4b85f9c49))
+* Update module golang.org/x/net to v0.58.0 ([f495cf8](https://github.com/d0ugal/slzb-exporter/commit/f495cf83f82669118694d51360a3f9f53a189434))
+* Update module google.golang.org/grpc to v1.83.1 ([33f31c8](https://github.com/d0ugal/slzb-exporter/commit/33f31c89f82c4eafbf563cc0cb1e89655670763e))
+
 ## [2.16.48](https://github.com/d0ugal/slzb-exporter/compare/v2.16.47...v2.16.48) (2026-08-12)
 
 
