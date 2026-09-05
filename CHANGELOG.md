@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.49](https://github.com/d0ugal/slzb-exporter/compare/v2.16.48...v2.16.49) (2026-09-05)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.26.6 ([8d29d70](https://github.com/d0ugal/slzb-exporter/commit/8d29d70b80bb1c338b5bee21c99b59b1cf0d6265))
+* Update go toolchain directive to v1.27.0 ([c81b4bd](https://github.com/d0ugal/slzb-exporter/commit/c81b4bd4085ad74cabfe8533d254035a2db8bb50))
+* Update go toolchain directive to v1.27.1 ([05a69b8](https://github.com/d0ugal/slzb-exporter/commit/05a69b88827c52735ade6c013b7e6bf844f18213))
+* Update google.golang.org/genproto/googleapis/api digest to 08b0e42 ([150a08f](https://github.com/d0ugal/slzb-exporter/commit/150a08f2b718d43cff8f1e268b77a3126832849e))
+* Update google.golang.org/genproto/googleapis/api digest to 18b4a75 ([948147a](https://github.com/d0ugal/slzb-exporter/commit/948147a60596dd72a45eeee111661de559c88e7c))
+* Update google.golang.org/genproto/googleapis/api digest to 1b09341 ([9f7e37e](https://github.com/d0ugal/slzb-exporter/commit/9f7e37eb55899abbaae0b99dc42a99b304c483aa))
+* Update google.golang.org/genproto/googleapis/api digest to ac3dfec ([fbbc6a3](https://github.com/d0ugal/slzb-exporter/commit/fbbc6a3e7fb734ac1c42abbf87fc0ee063bc5777))
+* Update google.golang.org/genproto/googleapis/api digest to d0f1323 ([bffd56b](https://github.com/d0ugal/slzb-exporter/commit/bffd56bdc4ef48e636e611d4aed16c39aa31c345))
+* Update google.golang.org/genproto/googleapis/api digest to da73d73 ([479247b](https://github.com/d0ugal/slzb-exporter/commit/479247b37c29c53bd7fc3cb37b0f75d7923509e7))
+* Update google.golang.org/genproto/googleapis/rpc digest to 08b0e42 ([0bcdb48](https://github.com/d0ugal/slzb-exporter/commit/0bcdb48e56a854c9c7dbaca1e87d5e5789060121))
+* Update google.golang.org/genproto/googleapis/rpc digest to 18b4a75 ([e94657c](https://github.com/d0ugal/slzb-exporter/commit/e94657c6a287476f6419c48711081fad7c693e78))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1b09341 ([5955ec9](https://github.com/d0ugal/slzb-exporter/commit/5955ec91e5ffb52204fa5b943adf38b607fe4a25))
+* Update google.golang.org/genproto/googleapis/rpc digest to ac3dfec ([cc0e7b6](https://github.com/d0ugal/slzb-exporter/commit/cc0e7b64423cfc100ae589cb57ab92cd448e7620))
+* Update google.golang.org/genproto/googleapis/rpc digest to d0f1323 ([024afac](https://github.com/d0ugal/slzb-exporter/commit/024afacc8fd7b9d87c7307b54e2fecd63944cde4))
+* Update google.golang.org/genproto/googleapis/rpc digest to da73d73 ([0770a79](https://github.com/d0ugal/slzb-exporter/commit/0770a79dc5c3175bcc38d79226e0d48585b6a6fd))
+* Update module github.com/bytedance/sonic to v1.15.3 ([c0ca340](https://github.com/d0ugal/slzb-exporter/commit/c0ca340f8715ed7bf3496d0299759e49197b0588))
+* Update module github.com/d0ugal/promexporter to v1.14.69 ([a3618ef](https://github.com/d0ugal/slzb-exporter/commit/a3618efc85fc8f01ef3e4c52865bad5b362a9f29))
+* Update module github.com/gin-contrib/sse to v1.1.2 ([30d8a04](https://github.com/d0ugal/slzb-exporter/commit/30d8a04fac4c5f380086bd55d8c23ff1420fc849))
+* Update module github.com/go-playground/validator/v10 to v10.30.4 ([f154f7e](https://github.com/d0ugal/slzb-exporter/commit/f154f7eaa4060c50df4d283b7759fd9f9af00694))
+* Update module github.com/klauspost/compress to v1.20.0 ([661eab5](https://github.com/d0ugal/slzb-exporter/commit/661eab575ff1e9d79bfa0c29d829200161c965c7))
+* Update module github.com/prometheus/client_model to v0.6.3 ([68465c3](https://github.com/d0ugal/slzb-exporter/commit/68465c328ac7fbc57f7332a00a9d9d3908692eca))
+* Update module github.com/prometheus/common to v0.71.0 ([a2d0109](https://github.com/d0ugal/slzb-exporter/commit/a2d0109a4d99e183003ad10286349f5d7d80ec83))
+* Update module github.com/prometheus/procfs to v0.22.0 ([859a486](https://github.com/d0ugal/slzb-exporter/commit/859a486e1972a2371b98e395f212bc9f5e3cb00b))
+* Update module github.com/quic-go/quic-go to v0.62.0 ([22a7e37](https://github.com/d0ugal/slzb-exporter/commit/22a7e372c4356091150f40282353cf6041631a19))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.1 ([8b5f7bd](https://github.com/d0ugal/slzb-exporter/commit/8b5f7bd18865c361520f26f2d00ef8e7ebd639c8))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.8.2 ([976ea2b](https://github.com/d0ugal/slzb-exporter/commit/976ea2baf882b427456a09b8912aeca812023537))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.0 ([cce9da4](https://github.com/d0ugal/slzb-exporter/commit/cce9da4043139125d818d107b990a3b4048ec385))
+* Update module golang.org/x/crypto to v0.55.0 ([808250d](https://github.com/d0ugal/slzb-exporter/commit/808250d4101d2ac668b0f04d1e6b71e4b85f9c49))
+* Update module golang.org/x/crypto to v0.56.0 ([2d37b5c](https://github.com/d0ugal/slzb-exporter/commit/2d37b5cfd7c1a4fb8633b0d44082cd0a868221e4))
+* Update module golang.org/x/net to v0.58.0 ([f495cf8](https://github.com/d0ugal/slzb-exporter/commit/f495cf83f82669118694d51360a3f9f53a189434))
+* Update module google.golang.org/grpc to v1.83.1 ([33f31c8](https://github.com/d0ugal/slzb-exporter/commit/33f31c89f82c4eafbf563cc0cb1e89655670763e))
+* Update module google.golang.org/grpc to v1.83.2 ([602d044](https://github.com/d0ugal/slzb-exporter/commit/602d0446ac161ba32530a35398c6e242a1f503a7))
+* Update opentelemetry-go monorepo to v1.46.0 ([b503e9f](https://github.com/d0ugal/slzb-exporter/commit/b503e9ff6e449a6ee9babc49fac33f1c77b1f220))
+* Update opentelemetry-go-contrib monorepo to v0.71.0 ([9a433a5](https://github.com/d0ugal/slzb-exporter/commit/9a433a554b6ae17ce6a8071656f777e9f7a49f64))
+
 ## [2.16.48](https://github.com/d0ugal/slzb-exporter/compare/v2.16.47...v2.16.48) (2026-08-12)
 
 
