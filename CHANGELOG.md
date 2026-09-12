@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.50](https://github.com/d0ugal/slzb-exporter/compare/v2.16.49...v2.16.50) (2026-09-12)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to f61a6ca ([89b0267](https://github.com/d0ugal/slzb-exporter/commit/89b02671cd13ae7185eb2451ec21ce337cc3ccf5))
+* Update google.golang.org/genproto/googleapis/api digest to f8649dd ([28a5a5c](https://github.com/d0ugal/slzb-exporter/commit/28a5a5c1dd91fb7132ddac69f682ffb662015cb6))
+* Update google.golang.org/genproto/googleapis/rpc digest to f61a6ca ([02ba983](https://github.com/d0ugal/slzb-exporter/commit/02ba9836321770ecdb848bfe5d674162a5bf483e))
+* Update google.golang.org/genproto/googleapis/rpc digest to f8649dd ([15c20d4](https://github.com/d0ugal/slzb-exporter/commit/15c20d4ec80d0f8ef51a3adef29f3655e2283b2a))
+* Update module github.com/bytedance/sonic to v1.15.4 ([97da4ee](https://github.com/d0ugal/slzb-exporter/commit/97da4ee2e92eec838836b9a3fe93240f3874e4e1))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.1 ([c9a6530](https://github.com/d0ugal/slzb-exporter/commit/c9a653028132aab943ba50648079b24ea63b0064))
+* Update module golang.org/x/arch to v0.31.0 ([a8b0312](https://github.com/d0ugal/slzb-exporter/commit/a8b03126d31e3691a6c44c89a09d9779ba4a4381))
+* Update module golang.org/x/crypto to v0.57.0 ([ae1b167](https://github.com/d0ugal/slzb-exporter/commit/ae1b167d54c957c0a5331914d6130dd64c49df85))
+* Update module golang.org/x/net to v0.59.0 ([227e6d4](https://github.com/d0ugal/slzb-exporter/commit/227e6d4011cb2c05d12973e8af7b2cbfdef84f84))
+
 ## [2.16.49](https://github.com/d0ugal/slzb-exporter/compare/v2.16.48...v2.16.49) (2026-09-05)
 
 
