@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.52](https://github.com/d0ugal/slzb-exporter/compare/v2.16.51...v2.16.52) (2026-09-25)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to b142276 ([b237b93](https://github.com/d0ugal/slzb-exporter/commit/b237b933c42b190c0d6ce8ae9e53cac933e8f4e9))
+* Update google.golang.org/genproto/googleapis/rpc digest to b142276 ([175992a](https://github.com/d0ugal/slzb-exporter/commit/175992ac0342d0a7119baa3000a260ddfd657565))
+* Update module github.com/klauspost/compress to v1.20.1 ([26f3f15](https://github.com/d0ugal/slzb-exporter/commit/26f3f15467e14535fe93733bc678d5a133ac7773))
+* Update module github.com/quic-go/quic-go to v0.63.0 ([4b954d7](https://github.com/d0ugal/slzb-exporter/commit/4b954d71ec9536fc633b543fd94bca8489e046db))
+
 ## [2.16.51](https://github.com/d0ugal/slzb-exporter/compare/v2.16.50...v2.16.51) (2026-09-22)
 
 
