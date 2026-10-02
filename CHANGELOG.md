@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.53](https://github.com/d0ugal/slzb-exporter/compare/v2.16.52...v2.16.53) (2026-10-02)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 8a89bd6 ([5123fb9](https://github.com/d0ugal/slzb-exporter/commit/5123fb90c09fab276e965d0fa10b284d9d327e60))
+* Update google.golang.org/genproto/googleapis/rpc digest to 8a89bd6 ([2462b48](https://github.com/d0ugal/slzb-exporter/commit/2462b48a8ef17188a61679f78542418b9d13227c))
+* Update module github.com/d0ugal/promexporter to v1.14.70 ([9458310](https://github.com/d0ugal/slzb-exporter/commit/94583105224978bf5b7c61a795fab677477d0617))
+* Update module github.com/goccy/go-json to v0.11.2 ([fe35eb4](https://github.com/d0ugal/slzb-exporter/commit/fe35eb4062c03038cf82292151471363164f817d))
+* Update module github.com/grafana/pyroscope-go to v1.4.3 ([e9a48cd](https://github.com/d0ugal/slzb-exporter/commit/e9a48cd93add4d693ae90911d2ad59e6b27681db))
+* Update module go.opentelemetry.io/proto/otlp to v1.11.1 ([9dcc249](https://github.com/d0ugal/slzb-exporter/commit/9dcc249be80e79c70520444b3102cd4550a20c6a))
+
 ## [2.16.52](https://github.com/d0ugal/slzb-exporter/compare/v2.16.51...v2.16.52) (2026-09-29)
 
 
