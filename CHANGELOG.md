@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.54](https://github.com/d0ugal/slzb-exporter/compare/v2.16.53...v2.16.54) (2026-10-03)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.71 ([ba1a3d3](https://github.com/d0ugal/slzb-exporter/commit/ba1a3d36d108842d019ce58926e177e170c7c630))
+* Update opentelemetry-go monorepo to v1.47.0 ([44cd98c](https://github.com/d0ugal/slzb-exporter/commit/44cd98c409013d35bb623c8c593b3377fb0c2dcd))
+* Update opentelemetry-go-contrib monorepo to v0.72.0 ([3664dff](https://github.com/d0ugal/slzb-exporter/commit/3664dff2edc8d9b0b97428687fb7026df6a62ce2))
+
 ## [2.16.53](https://github.com/d0ugal/slzb-exporter/compare/v2.16.52...v2.16.53) (2026-10-02)
 
 
