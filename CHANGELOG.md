@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.55](https://github.com/d0ugal/slzb-exporter/compare/v2.16.54...v2.16.55) (2026-10-07)
+
+
+### Bug Fixes
+
+* Update module go.mongodb.org/mongo-driver/v2 to v2.9.2 ([2547ae2](https://github.com/d0ugal/slzb-exporter/commit/2547ae2186b2baee2c36f5847e5abc6eaa80c7a2))
+
 ## [2.16.54](https://github.com/d0ugal/slzb-exporter/compare/v2.16.53...v2.16.54) (2026-10-06)
 
 
