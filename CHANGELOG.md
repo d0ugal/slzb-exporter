@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.56](https://github.com/d0ugal/slzb-exporter/compare/v2.16.55...v2.16.56) (2026-10-10)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.2 ([b318c3d](https://github.com/d0ugal/slzb-exporter/commit/b318c3d0d631d4833b524b27ba7bd655b50d8cc3))
+* Update module github.com/prometheus/client_golang to v1.25.0 ([22265ef](https://github.com/d0ugal/slzb-exporter/commit/22265ef44f6dbfc4cf26624314283a68d89f6234))
+* Update module golang.org/x/arch to v0.32.0 ([41abbf6](https://github.com/d0ugal/slzb-exporter/commit/41abbf61f9f878c6b62141058dc2cea28f379175))
+* Update module golang.org/x/crypto to v0.58.0 ([9ed91d7](https://github.com/d0ugal/slzb-exporter/commit/9ed91d7da102a2c9f7235265f58ced98db0af803))
+* Update module golang.org/x/net to v0.60.0 ([49fc70a](https://github.com/d0ugal/slzb-exporter/commit/49fc70ab25f8cf336dcdf322d4568befbe46bbd8))
+* Update module golang.org/x/net to v0.61.0 ([d07e548](https://github.com/d0ugal/slzb-exporter/commit/d07e5481f57b638f6936585bfc974108d65c91d3))
+
 ## [2.16.55](https://github.com/d0ugal/slzb-exporter/compare/v2.16.54...v2.16.55) (2026-10-07)
 
 
