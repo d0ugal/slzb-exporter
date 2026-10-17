@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.57](https://github.com/d0ugal/slzb-exporter/compare/v2.16.56...v2.16.57) (2026-10-17)
+
+
+### Bug Fixes
+
+* Update module github.com/d0ugal/promexporter to v1.14.72 ([6571d6e](https://github.com/d0ugal/slzb-exporter/commit/6571d6e304a31be697fb2038049c246fd1140dd7))
+* Update module github.com/gabriel-vasile/mimetype to v1.4.16 ([3718bf1](https://github.com/d0ugal/slzb-exporter/commit/3718bf1f51b277658353921b60470dea5efb8bd3))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.32.0 ([1ad854a](https://github.com/d0ugal/slzb-exporter/commit/1ad854a618702edf36c39a07cb646fb39f55a19c))
+* Update module github.com/klauspost/cpuid/v2 to v2.4.1 ([9fde104](https://github.com/d0ugal/slzb-exporter/commit/9fde104c2ee9961ac3a0ffe94ab58a6e9c97d53c))
+* Update module github.com/quic-go/quic-go to v0.64.0 ([05835b6](https://github.com/d0ugal/slzb-exporter/commit/05835b65d65572d3345ced1e54937b33f68359e7))
+
 ## [2.16.56](https://github.com/d0ugal/slzb-exporter/compare/v2.16.55...v2.16.56) (2026-10-13)
 
 
