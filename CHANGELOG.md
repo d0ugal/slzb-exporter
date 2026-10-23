@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.58](https://github.com/d0ugal/slzb-exporter/compare/v2.16.57...v2.16.58) (2026-10-23)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.3 ([4476d4c](https://github.com/d0ugal/slzb-exporter/commit/4476d4c5eedec1c043459be564ac9f3f8a264e73))
+* Update google.golang.org/genproto/googleapis/api digest to ce908d2 ([c2906a6](https://github.com/d0ugal/slzb-exporter/commit/c2906a68389a4f252453f213f4f3c585425798f8))
+* Update google.golang.org/genproto/googleapis/rpc digest to ce908d2 ([160c3f5](https://github.com/d0ugal/slzb-exporter/commit/160c3f538a1ffd01b394a131c67982796a14fd9f))
+* Update module github.com/bytedance/sonic/loader to v0.5.3 ([b219b47](https://github.com/d0ugal/slzb-exporter/commit/b219b474224d63a5e5de74160e5e3f43cd342fc7))
+* Update module github.com/d0ugal/promexporter to v1.14.73 ([740b934](https://github.com/d0ugal/slzb-exporter/commit/740b9344755fbf1128c0b895c19f5c6ca8d886e9))
+* Update module github.com/quic-go/quic-go to v0.64.1 ([e0772a1](https://github.com/d0ugal/slzb-exporter/commit/e0772a1717fc0e0ab49ef9c72f3e2100697f86d3))
+
 ## [2.16.57](https://github.com/d0ugal/slzb-exporter/compare/v2.16.56...v2.16.57) (2026-10-17)
 
 
