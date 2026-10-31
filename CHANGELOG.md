@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.61](https://github.com/d0ugal/slzb-exporter/compare/v2.16.60...v2.16.61) (2026-10-31)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/rpc digest to 2ffab32 ([a35c775](https://github.com/d0ugal/slzb-exporter/commit/a35c775cb1b6c33be90911a869ca3634a07024ad))
+* Update module github.com/bytedance/sonic to v1.15.5 ([4b9ef86](https://github.com/d0ugal/slzb-exporter/commit/4b9ef86bbc706b702a2b6dd2852cb600cc75d22a))
+* Update module github.com/gin-contrib/sse to v1.2.0 ([afe7888](https://github.com/d0ugal/slzb-exporter/commit/afe788877d64474af0df23a90d2e54eb7f627d41))
+* Update module github.com/goccy/go-json to v0.12.0 ([06d3534](https://github.com/d0ugal/slzb-exporter/commit/06d353416a616c56e17eb2669f4246a3ff5844a5))
+* Update module github.com/grpc-ecosystem/grpc-gateway/v2 to v2.33.0 ([5b0abf6](https://github.com/d0ugal/slzb-exporter/commit/5b0abf68d00708929a6493d5c3ce3589afec9e9a))
+* Update module github.com/hashicorp/go-uuid to v1.0.4 ([e4f0d7b](https://github.com/d0ugal/slzb-exporter/commit/e4f0d7babfc08baaa412f50495c2fbfb945e314a))
+* Update module github.com/pandatix/go-abnf to v0.5.4 ([607fd1a](https://github.com/d0ugal/slzb-exporter/commit/607fd1a3a84e3e3c1b34ee51f6cecbbd7ee1fc9a))
+* Update module github.com/prometheus/common to v0.73.0 ([e3b8a13](https://github.com/d0ugal/slzb-exporter/commit/e3b8a13370ed209f331103cc5abae33fe329c86a))
+* Update module github.com/prometheus/common to v0.73.1 ([c86cf56](https://github.com/d0ugal/slzb-exporter/commit/c86cf56588c7bbd1330a89e7847ff0391aa87ae3))
+* Update module golang.org/x/net to v0.62.0 ([b0179d0](https://github.com/d0ugal/slzb-exporter/commit/b0179d01301bef2bf0accf9d0a2c7efcaa93c667))
+* Update module google.golang.org/grpc to v1.85.0 ([3448538](https://github.com/d0ugal/slzb-exporter/commit/3448538ff38e741c45e0590c6de7b9da39453fc1))
+
 ## [2.16.60](https://github.com/d0ugal/slzb-exporter/compare/v2.16.59...v2.16.60) (2026-10-27)
 
 
