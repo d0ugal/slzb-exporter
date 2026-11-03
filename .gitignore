@@ -51,9 +51,6 @@ Thumbs.db
 .env.local
 .env.*.local
 
-# Docker
-.dockerignore
-
 # Temporary files
 tmp/
 temp/

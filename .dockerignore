@@ -1,0 +1,7 @@
+# Only untracked build artifacts are listed here. Excluding tracked files
+# would make `git describe --dirty` stamp local builds as dirty when no
+# VERSION build arg is passed, so .git and the sources stay in the context.
+main
+slzb-exporter
+coverage.*
+.golangci-lint-cache
