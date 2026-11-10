@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.63](https://github.com/d0ugal/slzb-exporter/compare/v2.16.62...v2.16.63) (2026-11-10)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 09e21b2 ([048aae5](https://github.com/d0ugal/slzb-exporter/commit/048aae5371d129cd13c8db2d6a618badb3a4fd66))
+* Update module github.com/gin-contrib/sse to v1.2.1 ([d3b6079](https://github.com/d0ugal/slzb-exporter/commit/d3b6079145ed4e2045b4e64df50103204177c544))
+* Update module github.com/klauspost/compress to v1.20.4 ([63e6136](https://github.com/d0ugal/slzb-exporter/commit/63e613600f7c771d55e6dfc32a9fd31050dd125c))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.10.0 ([95d3fcd](https://github.com/d0ugal/slzb-exporter/commit/95d3fcd5a2bd91129639bd28c8ac6cbb44df83cc))
+
 ## [2.16.62](https://github.com/d0ugal/slzb-exporter/compare/v2.16.61...v2.16.62) (2026-11-06)
 
 
