@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.64](https://github.com/d0ugal/slzb-exporter/compare/v2.16.63...v2.16.64) (2026-11-13)
+
+
+### Bug Fixes
+
+* Update go toolchain directive to v1.27.4 ([fe056c8](https://github.com/d0ugal/slzb-exporter/commit/fe056c8f3466caa34ab9a6a4d45eb231540ea9f9))
+* Update google.golang.org/genproto/googleapis/rpc digest to 09e21b2 ([0db97b2](https://github.com/d0ugal/slzb-exporter/commit/0db97b2bef8b7cf6759e8deb8c6669b2cb2b10b8))
+* Update module github.com/d0ugal/promexporter to v1.14.76 ([3a30d71](https://github.com/d0ugal/slzb-exporter/commit/3a30d716a3458090ffe8e453d315e4f230e2c581))
+* Update module github.com/d0ugal/promexporter to v1.14.77 ([7050889](https://github.com/d0ugal/slzb-exporter/commit/7050889040abbd3470c02d7c03ed9180b20aeaaa))
+* Update module github.com/grafana/pyroscope-go to v1.5.0 ([5706b74](https://github.com/d0ugal/slzb-exporter/commit/5706b740d3d7e2625ee447d46ec6024407439ec7))
+* Update module github.com/prometheus/common to v0.74.0 ([db72b5a](https://github.com/d0ugal/slzb-exporter/commit/db72b5a6d514d907acf6c681cbcec520afba7ae8))
+* Update module golang.org/x/arch to v0.33.0 ([6a4711b](https://github.com/d0ugal/slzb-exporter/commit/6a4711b94359eb46ec7fd8ad377bfe220aebc9b6))
+* Update module golang.org/x/crypto to v0.59.0 ([0594fde](https://github.com/d0ugal/slzb-exporter/commit/0594fdeb4c816ac908da54d0f4e31571dd2edbf4))
+
 ## [2.16.63](https://github.com/d0ugal/slzb-exporter/compare/v2.16.62...v2.16.63) (2026-11-10)
 
 
