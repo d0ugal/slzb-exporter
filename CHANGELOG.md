@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.66](https://github.com/d0ugal/slzb-exporter/compare/v2.16.65...v2.16.66) (2026-11-20)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to c8830f6 ([7148e8b](https://github.com/d0ugal/slzb-exporter/commit/7148e8bd7331e65c19e7f43e85d3ab9acb2d813f))
+* Update google.golang.org/genproto/googleapis/rpc digest to c8830f6 ([494b5f8](https://github.com/d0ugal/slzb-exporter/commit/494b5f842096fc6922f197e31cde2870303be6d2))
+* Update module go.mongodb.org/mongo-driver/v2 to v2.10.1 ([8a18f72](https://github.com/d0ugal/slzb-exporter/commit/8a18f72da0324242f716360c4876cea1b7cf2902))
+* Update module golang.org/x/net to v0.63.0 ([29ad658](https://github.com/d0ugal/slzb-exporter/commit/29ad658d43cfe615ef114dd7f8e65e20e04d1048))
+
 ## [2.16.65](https://github.com/d0ugal/slzb-exporter/compare/v2.16.64...v2.16.65) (2026-11-17)
 
 
