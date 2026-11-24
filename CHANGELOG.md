@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.16.67](https://github.com/d0ugal/slzb-exporter/compare/v2.16.66...v2.16.67) (2026-11-24)
+
+
+### Bug Fixes
+
+* Update google.golang.org/genproto/googleapis/api digest to 1e707ab ([ee78caf](https://github.com/d0ugal/slzb-exporter/commit/ee78caf2c365f7351eb47937ffe7d32c9a9e5849))
+* Update google.golang.org/genproto/googleapis/rpc digest to 1e707ab ([2405d8b](https://github.com/d0ugal/slzb-exporter/commit/2405d8b17710f87ad35f4c9bd2d7d9ee21e04eab))
+* Update module github.com/d0ugal/promexporter to v1.14.78 ([03dccb8](https://github.com/d0ugal/slzb-exporter/commit/03dccb8e9e8be9a6e2a6d10ddcc3b5d63ab651af))
+* Update module github.com/klauspost/compress to v1.20.5 ([1039eba](https://github.com/d0ugal/slzb-exporter/commit/1039ebac1fe8a529daf709860de7b0fedc40d4c1))
+* Update module go.opentelemetry.io/auto/sdk to v1.2.2 ([bb49d56](https://github.com/d0ugal/slzb-exporter/commit/bb49d5621643b21241877f3b56a93a0de45bffc4))
+
 ## [2.16.66](https://github.com/d0ugal/slzb-exporter/compare/v2.16.65...v2.16.66) (2026-11-20)
 
 
